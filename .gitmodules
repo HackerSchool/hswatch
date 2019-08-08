@@ -1,0 +1,3 @@
+[submodule "hs-projects"]
+	path = hs-projects
+	url = https://github.com/jpgomes98/hs-projects
