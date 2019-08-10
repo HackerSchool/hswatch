@@ -1,23 +1,18 @@
 #include "display.h"
 
-Adafruit_SSD1306 * screen;
+SSD1306Wire * screen;
 
 int init_display(){
 
-  screen = new Adafruit_SSD1306(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
+  screen = new SSD1306Wire(0x3c, SDA, SCL); 
    
-    // SSD1306_SWITCHCAPVCC = generate display voltage from 3.3V internally
-  if(!screen->begin(SSD1306_SWITCHCAPVCC, 0x3C)) { // Address 0x3D for 128x64
-    return 1;
-  }
+  screen->init();
 
-  screen->setTextColor(WHITE);
-
-  screen->clearDisplay();
-  screen->drawBitmap(
-    (screen->width()  - LOGO_WIDTH ) / 2,
-    (screen->height() - LOGO_HEIGHT) / 2,
-    logo_bmp, LOGO_WIDTH, LOGO_HEIGHT, 1);
+  screen->clear();
+  screen->drawXbm(
+    (128  - LOGO_WIDTH ) / 2,
+    (64 - LOGO_HEIGHT) / 2,
+    LOGO_WIDTH, LOGO_HEIGHT, logo_bmp);
   screen->display();
   delay(3000);
 
@@ -29,10 +24,13 @@ void default_display(String title){
   int s;
   String p;
   
-  screen->clearDisplay();
-  screen->drawFastHLine(0,12,128,WHITE);
+  screen->clear();
+  screen->drawHorizontalLine(0,12,128);
 
-  s = title.length()*6*DEFAULT_TITLE_SIZE;
+  screen->setFont(ArialMT_Plain_10);
+  screen->setTextAlignment(TEXT_ALIGN_CENTER);
+
+  s = screen->getStringWidth(title);
 
   if(s>128){
     s = 128;
@@ -41,8 +39,6 @@ void default_display(String title){
     p = title;
   }
 
-  screen->setTextSize(DEFAULT_TITLE_SIZE);
-  screen->setCursor((128-s)/2,0);
-  screen->println(p);
+  screen->drawString(0, 0, p);
   screen->display();
 }

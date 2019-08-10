@@ -36,8 +36,8 @@ void setup() {
 void loop() {
   //App::app_search_by_id("TIM")->display();
   //init_display();
-  //screen->clearDisplay();
-  //screen->display();
+  screen->clear();
+  screen->display();
   delay(1000);
 }
 
@@ -47,8 +47,8 @@ void bt_task(void* par_in){
   //init_display();
   Serial.println(App::app_search_by_id("TIM")->id);
   //App::app_search_by_id("TIM")->display();
-  screen->clearDisplay();
-  screen->display();
+  //screen->clear();
+  //screen->display();
   //App::run_app("Home");
   Serial.println("ola");
   int len;

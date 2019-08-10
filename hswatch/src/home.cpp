@@ -15,31 +15,33 @@ void Home::start(){
 
 void Home::display(){
 
-    screen->clearDisplay();
+    String s="";
 
-    screen->drawFastHLine(0,12,128,WHITE);
+    screen->clear();
 
-    screen->setTextSize(3);
-    screen->setCursor(18,14);
+    screen->drawHorizontalLine(0,12,128);
+
+    screen->setFont(ArialMT_Plain_24);
+    screen->setTextAlignment(TEXT_ALIGN_CENTER);
     
     if(hour<10){
-        screen->print('0');
-        screen->print(hour);
+        s=s+"0";
+        s=s+String(hour);
     }else{
-        screen->print(hour);
+        s=s+String(hour);
     }
 
-    screen->print(':');
+    s=s+":";
 
     if(minute<10){
-        screen->print('0');
-        screen->print(minute);
+        s=s+"0";
+        s=s+String(minute);
     }else{
-        screen->print(minute);
+        s=s+String(minute);
     }
 
-    screen->drawFastHLine(0,51,128,WHITE);
-
+    screen->drawString(0, 14, s);
+    screen->drawHorizontalLine(0,51,128);
     screen->display();
 }
 
