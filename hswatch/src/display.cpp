@@ -1,24 +1,123 @@
+#include <Arduino.h>
 #include "display.h"
+#include "queue_display.h"
 
-SSD1306Wire * screen;
+void Display::clear(void){
+  msg_queue_display msg;
 
-int init_display(){
+  msg.type=_clear;
 
-  screen = new SSD1306Wire(0x3c, SDA, SCL); 
-   
-  screen->init();
+  xQueueSend(*queue_display,&msg, portMAX_DELAY);
 
-  screen->clear();
-  screen->drawXbm(
-    (128  - LOGO_WIDTH ) / 2,
-    (64 - LOGO_HEIGHT) / 2,
-    LOGO_WIDTH, LOGO_HEIGHT, logo_bmp);
-  screen->display();
-  delay(3000);
-
-  return 0;
 }
 
+void Display::display(void){
+  
+  msg_queue_display msg;
+
+  msg.type=_display;
+
+  xQueueSend(*queue_display,&msg, portMAX_DELAY);
+
+}
+
+void Display::setPixel(int16_t x, int16_t y){}
+void Display::drawLine(int16_t x0, int16_t y0, int16_t x1, int16_t y1){}
+void Display::drawRect(int16_t x, int16_t y, int16_t width, int16_t height){}
+void Display::fillRect(int16_t x, int16_t y, int16_t width, int16_t height){}
+void Display::drawCircle(int16_t x, int16_t y, int16_t radius){}
+void Display::fillCircle(int16_t x, int16_t y, int16_t radius){}
+
+void Display::drawHorizontalLine(int16_t x, int16_t y, int16_t length){
+  
+  msg_queue_display msg;
+
+  msg.type=_drawHorizontalLine;
+  msg.a = x;
+  msg.b = y;
+  msg.c = length;
+
+  xQueueSend(*queue_display,&msg, portMAX_DELAY);
+
+}
+
+void Display::drawVerticalLine(int16_t x, int16_t y, int16_t length){}
+void Display::drawProgressBar(uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint8_t progress){}
+void Display::drawFastImage(int16_t x, int16_t y, int16_t width, int16_t height, const uint8_t *image){}
+void Display::drawXbm(int16_t x, int16_t y, int16_t width, int16_t height, const char* xbm){}
+
+void Display::drawString(int16_t x, int16_t y, String text){
+
+  msg_queue_display msg;
+
+  msg.type=_drawString;
+  msg.a = x;
+  msg.b = y;
+
+  strcpy(msg.s,text.c_str());
+
+  xQueueSend(*queue_display,&msg, portMAX_DELAY);
+
+}
+
+void Display::drawStringMaxWidth(int16_t x, int16_t y, int16_t maxLineWidth, String text){}
+uint16_t Display::getStringWidth(String text){}
+
+void Display::setTextAlignment(align_text textAlignment){
+
+  msg_queue_display msg;
+
+  switch (textAlignment)
+  {
+  case left:
+    msg.a=0;
+    break;
+
+  case center:
+    msg.a=1;
+    break;
+  
+  case right:
+    msg.a=2;
+    break;
+  
+  default:
+    msg.a=3;
+    break;
+  }
+
+  msg.type=_setTextAlignment;
+
+  xQueueSend(*queue_display,&msg, portMAX_DELAY);
+
+}
+
+void Display::setFont(font_type font){
+
+  msg_queue_display msg;
+
+  switch (font)
+  {
+  case arial_10:
+    msg.a=0;
+    break;
+
+  case arial_16:
+    msg.a=1;
+    break;
+  
+  default:
+    msg.a=2;
+    break;
+  }
+
+  msg.type=_setFont;
+
+  xQueueSend(*queue_display,&msg, portMAX_DELAY);
+
+}
+
+/*
 void default_display(String title){
   
   int s;
@@ -41,4 +140,4 @@ void default_display(String title){
 
   screen->drawString(0, 0, p);
   screen->display();
-}
+}*/

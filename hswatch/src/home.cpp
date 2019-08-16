@@ -17,12 +17,12 @@ void Home::display(){
 
     String s="";
 
-    screen->clear();
+    Display::clear();
 
-    screen->drawHorizontalLine(0,12,128);
+    Display::drawHorizontalLine(0,12,128);
 
-    screen->setFont(ArialMT_Plain_24);
-    screen->setTextAlignment(TEXT_ALIGN_CENTER);
+    Display::setFont(arial_24);
+    Display::setTextAlignment(center);
     
     if(hour<10){
         s=s+"0";
@@ -40,9 +40,10 @@ void Home::display(){
         s=s+String(minute);
     }
 
-    screen->drawString(0, 14, s);
-    screen->drawHorizontalLine(0,51,128);
-    screen->display();
+    Display::drawString(64, 14, s);
+    Display::drawHorizontalLine(0,51,128);
+    Display::display();
+    
 }
 
 //void Home::but_up_left(){}

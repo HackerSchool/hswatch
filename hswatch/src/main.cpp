@@ -1,6 +1,10 @@
 #include <Arduino.h>
 #include "communication.h"
 #include "home.h"
+#include "logo_hs.h"
+#include <Wire.h>
+#include <SSD1306Wire.h>
+#include "queue_display.h"
 #include "display.h"
 
 #define B_LEFT_UP 18
@@ -12,7 +16,12 @@
 
 TaskHandle_t bt_task_h;
 
+QueueHandle_t * queue_display;
+
+SSD1306Wire screen(0x3c, SDA, SCL);
+
 void bt_task(void*);
+int init_display();
 
 void setup() {
 
@@ -26,6 +35,10 @@ void setup() {
   init_bluetooth("HSWatch");
   init_display();
 
+  queue_display = new QueueHandle_t();
+
+  *queue_display = xQueueCreate(10,sizeof(msg_queue_display));
+
   new Home("TIM","Home",NULL);
 
   App::run_app("Home");
@@ -34,11 +47,54 @@ void setup() {
 }
 
 void loop() {
-  //App::app_search_by_id("TIM")->display();
-  //init_display();
-  screen->clear();
-  screen->display();
-  delay(1000);
+
+  msg_queue_display msg;
+
+  //Display::clear();
+  //Display::display();
+
+  xQueueReceive(*queue_display, &msg, portMAX_DELAY);
+  
+  switch (msg.type)
+  {
+  case _clear:
+    screen.clear();
+    break;
+
+  case _display:
+    screen.display();
+    break;
+
+  case _drawHorizontalLine:
+    screen.drawHorizontalLine(msg.a,msg.b,msg.c);
+    break;
+  
+  case _drawString:
+    screen.drawString(msg.a,msg.b,String(msg.s));
+    break;
+
+  case _setTextAlignment:
+    if(msg.a==0){
+      screen.setTextAlignment(TEXT_ALIGN_LEFT);
+    }else if(msg.a==1){
+      screen.setTextAlignment(TEXT_ALIGN_CENTER);
+    }else if(msg.a==2){
+      screen.setTextAlignment(TEXT_ALIGN_RIGHT);
+    }else{
+      screen.setTextAlignment(TEXT_ALIGN_CENTER_BOTH);
+    }
+    break;
+  
+  default:
+    if(msg.a==0){
+      screen.setFont(ArialMT_Plain_10);
+    }else if(msg.a==1){
+      screen.setFont(ArialMT_Plain_16);
+    }else{
+      screen.setFont(ArialMT_Plain_24);
+    }
+    break;
+  }
 }
 
 void bt_task(void* par_in){
@@ -81,4 +137,21 @@ void bt_task(void* par_in){
     }
   }
 
+}
+
+int init_display(){
+   
+  screen.init();
+
+  screen.flipScreenVertically();
+
+  screen.clear();
+  screen.drawXbm(
+    (128  - LOGO_WIDTH ) / 2,
+    (64 - LOGO_HEIGHT) / 2,
+    LOGO_WIDTH, LOGO_HEIGHT, logo_hs);
+  screen.display();
+  delay(3000);
+
+  return 0;
 }
