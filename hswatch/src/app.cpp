@@ -2,6 +2,7 @@
 
 std::list<App*> App::app_stack;
 std::list<App*> App::app_list;
+std::list<App*> App::timer_attached_app;
 
 void App::display(){}
 
@@ -16,6 +17,8 @@ void App::but_down_left(){}
 void App::but_down_right(){}
 
 void App::bt_receive(char*){}
+
+void App::timer_1s(){}
 
 App::App(String id_in, String name_in, unsigned char* logo_in): id(id_in), name(name_in), logo(logo_in){
     app_list.push_back(this);
@@ -64,4 +67,18 @@ App* App::app_search_by_id(String id_in){
 
 std::list<App*> App::app_list_show(){
     return app_list;
+}
+
+void App::attach_timer(){
+    timer_attached_app.push_back(this);
+}
+
+void App::detach_timer(){
+    timer_attached_app.remove(this);
+}
+
+void App::call_timer(){
+    for(std::list<App*>::iterator it = timer_attached_app.begin(); it!=timer_attached_app.end(); it++){
+        (*it)->timer_1s();
+    }
 }

@@ -11,6 +11,7 @@ class Home: public App {
         //void but_down_left();
         //void but_down_right();
         void bt_receive(char*);
+        void timer_1s();
 
         Home(String,String,unsigned char*);
 
@@ -18,4 +19,5 @@ class Home: public App {
 
         unsigned char hour,minute,second,day,month,week_day;
         unsigned int year;
+        SemaphoreHandle_t mutex;
 };

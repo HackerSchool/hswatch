@@ -14,14 +14,18 @@
 
 #define BT_BUFFER_SIZE 300
 
-TaskHandle_t bt_task_h;
+TaskHandle_t bt_task_h, timer_task_h;
 
 QueueHandle_t * queue_display;
+
+hw_timer_t * timer = NULL;
 
 SSD1306Wire screen(0x3c, SDA, SCL);
 
 void bt_task(void*);
 int init_display();
+void IRAM_ATTR onTimer();
+void timer_task(void*);
 
 void setup() {
 
@@ -37,21 +41,25 @@ void setup() {
 
   queue_display = new QueueHandle_t();
 
-  *queue_display = xQueueCreate(10,sizeof(msg_queue_display));
+  *queue_display = xQueueCreate(15,sizeof(msg_queue_display));
 
   new Home("TIM","Home",NULL);
 
   App::run_app("Home");
 
   xTaskCreate(bt_task,"bluetooth task",8192,NULL,1,&bt_task_h);
+  xTaskCreate(timer_task,"timer task",8192,NULL,1,&timer_task_h);
+
+  timer = timerBegin(0,80,true);
+  timerAttachInterrupt(timer, &onTimer, true);
+  timerAlarmWrite(timer, 1000000, true);
+  timerAlarmEnable(timer);
+
 }
 
 void loop() {
 
   msg_queue_display msg;
-
-  //Display::clear();
-  //Display::display();
 
   xQueueReceive(*queue_display, &msg, portMAX_DELAY);
   
@@ -154,4 +162,16 @@ int init_display(){
   delay(3000);
 
   return 0;
+}
+
+void IRAM_ATTR onTimer(){
+  vTaskNotifyGiveFromISR(timer_task_h,NULL);
+}
+
+void timer_task(void*){
+  while (1)
+  {
+    ulTaskNotifyTake(pdFALSE, portMAX_DELAY);
+    App::call_timer();
+  }
 }

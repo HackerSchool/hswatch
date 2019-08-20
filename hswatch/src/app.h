@@ -16,6 +16,7 @@ class App {
         virtual void but_down_left();
         virtual void but_down_right();
         virtual void bt_receive(char*);
+        virtual void timer_1s();
 
         App(String,String,unsigned char*);
 
@@ -27,8 +28,13 @@ class App {
         static App* app_search_by_id(String);
         static std::list<App*> app_list_show();
 
+        void attach_timer();
+        void detach_timer();
+        static void call_timer();
+
     private:
 
         static std::list<App*> app_stack;
         static std::list<App*> app_list;
+        static std::list<App*> timer_attached_app;
 };
