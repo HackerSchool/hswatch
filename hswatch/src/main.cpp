@@ -14,8 +14,10 @@
 #define B_RIGHT_DOWN 17
 
 #define BT_BUFFER_SIZE 300
+#define DEBOUNCE_TIME 50
+#define DEBOUNCE_TIME2 50
 
-TaskHandle_t bt_task_h, timer_task_h;
+TaskHandle_t bt_task_h, timer_task_h, b_left_up_task_h, b_left_down_task_h, b_right_up_task_h, b_right_down_task_h;
 
 QueueHandle_t * queue_display;
 
@@ -23,10 +25,25 @@ hw_timer_t * timer = NULL;
 
 SSD1306Wire screen(0x3c, SDA, SCL);
 
+unsigned long debounce_left_up=0, debounce_left_down=0, debounce_right_up=0, debounce_right_down=0;
+
+int number_of_times=0;
+int number_of_times_r=0;
+
 void bt_task(void*);
 int init_display();
 void IRAM_ATTR onTimer();
 void timer_task(void*);
+
+void IRAM_ATTR onPressBLeftUp();
+void IRAM_ATTR onPressBLeftDown();
+void IRAM_ATTR onPressBRightUp();
+void IRAM_ATTR onPressBRightDown();
+void b_left_up_task(void*);
+void b_left_down_task(void*);
+void b_right_up_task(void*);
+void b_right_down_task(void*);
+
 
 void setup() {
 
@@ -51,11 +68,20 @@ void setup() {
 
 	xTaskCreate(bt_task,"bluetooth task",8192,NULL,1,&bt_task_h);
 	xTaskCreate(timer_task,"timer task",8192,NULL,1,&timer_task_h);
+	xTaskCreate(b_left_up_task,"button left up task",8192,NULL,1,&b_left_up_task_h);
+	xTaskCreate(b_left_down_task,"button left down task",8192,NULL,1,&b_left_down_task_h);
+	xTaskCreate(b_right_up_task,"button right up task",8192,NULL,1,&b_right_up_task_h);
+	xTaskCreate(b_right_down_task,"button right down task",8192,NULL,1,&b_right_down_task_h);
 
 	timer = timerBegin(0,80,true);
 	timerAttachInterrupt(timer, &onTimer, true);
 	timerAlarmWrite(timer, 1000000, true);
 	timerAlarmEnable(timer);
+
+	attachInterrupt(B_LEFT_UP, onPressBLeftUp, FALLING);
+	attachInterrupt(B_LEFT_DOWN, onPressBLeftDown, FALLING);
+	attachInterrupt(B_RIGHT_UP, onPressBRightUp, FALLING);
+	attachInterrupt(B_RIGHT_DOWN, onPressBRightDown, FALLING);
 
 }
 
@@ -184,5 +210,105 @@ void timer_task(void*){
 	{
 		ulTaskNotifyTake(pdFALSE, portMAX_DELAY);
 		App::call_timer();
+	}
+}
+
+void IRAM_ATTR onPressBLeftUp(){
+	vTaskNotifyGiveFromISR(b_left_up_task_h,NULL);
+}
+
+void IRAM_ATTR onPressBLeftDown(){
+	vTaskNotifyGiveFromISR(b_left_down_task_h,NULL);
+}
+
+void IRAM_ATTR onPressBRightUp(){
+	vTaskNotifyGiveFromISR(b_right_up_task_h,NULL);
+}
+
+void IRAM_ATTR onPressBRightDown(){
+	vTaskNotifyGiveFromISR(b_right_down_task_h,NULL);
+}
+
+void b_left_up_task(void*){
+	while (1)
+	{
+		ulTaskNotifyTake(pdFALSE, portMAX_DELAY);
+
+		if(millis()-DEBOUNCE_TIME>debounce_left_up){
+
+			delay(DEBOUNCE_TIME2);
+
+			if(!digitalRead(B_LEFT_UP)){
+
+				debounce_left_up=millis();
+				number_of_times++;
+				Serial.print("L: ");
+				Serial.println(number_of_times);
+			}
+		}
+		//App::call_timer();
+	}
+}
+
+void b_left_down_task(void*){
+	while (1)
+	{
+		ulTaskNotifyTake(pdFALSE, portMAX_DELAY);
+
+		if(millis()-DEBOUNCE_TIME>debounce_left_down){
+
+			delay(DEBOUNCE_TIME2);
+
+			if(!digitalRead(B_LEFT_DOWN)){
+
+				debounce_left_down=millis();
+				number_of_times--;
+				Serial.print("L: ");
+				Serial.println(number_of_times);
+			}
+		}
+		//App::call_timer();
+	}
+}
+
+void b_right_up_task(void*){
+	while (1)
+	{
+		ulTaskNotifyTake(pdFALSE, portMAX_DELAY);
+
+		if(millis()-DEBOUNCE_TIME>debounce_right_up){
+
+			delay(DEBOUNCE_TIME2);
+
+			if(!digitalRead(B_RIGHT_UP)){
+
+				debounce_right_up=millis();
+				number_of_times_r++;
+				Serial.print("R: ");
+				Serial.println(number_of_times_r);
+			}
+		}
+		//App::call_timer();
+	}
+}
+
+void b_right_down_task(void*){
+	while (1)
+	{
+		ulTaskNotifyTake(pdFALSE, portMAX_DELAY);
+
+		if(millis()-DEBOUNCE_TIME>debounce_right_down){
+
+			delay(DEBOUNCE_TIME2);
+
+			if(!digitalRead(B_RIGHT_DOWN)){
+
+				debounce_right_down=millis();
+				number_of_times_r--;
+				Serial.print("R: ");
+				Serial.println(number_of_times_r);
+			}
+		}
+		//App::call_timer();
 	}
 }
