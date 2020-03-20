@@ -157,6 +157,8 @@ void bt_task(void* par_in){
 }
 
 int init_display(){
+
+	Display::initDisplay();
 	 
 	screen.init();
 

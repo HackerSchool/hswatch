@@ -7,8 +7,6 @@ const char week_day_name[7][4] = {"DOM","SEG","TER","QUA","QUI","SEX","SAB"};
 
 int frame_n=0;
 
-SemaphoreHandle_t mutex_home;
-
 void Home::start(){
 
 	xSemaphoreTake(mutex_home,portMAX_DELAY);
@@ -300,7 +298,6 @@ void Home::notify(String title, String text, String icon){
 	if (text.length()>65){
 		text = text.substring(0,65)+"...";
 	}
-	
 
 	Display::clear();
 

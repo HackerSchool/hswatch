@@ -24,7 +24,7 @@ class Home: public App {
 
 		unsigned char hour,minute,second,day,month,week_day;
 		unsigned int year;
-		SemaphoreHandle_t mutex;
+		SemaphoreHandle_t mutex_home;
 		std::list<String> not_icon;
 		bool notifying = false;
 		unsigned char time_of_not;

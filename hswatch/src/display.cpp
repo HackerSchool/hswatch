@@ -2,7 +2,12 @@
 #include "display.h"
 #include "queue_display.h"
 
+static SemaphoreHandle_t mutex;
+
 void Display::clear(void){
+
+  xSemaphoreTake(mutex,portMAX_DELAY);
+
   msg_queue_display msg;
 
   msg.type=_clear;
@@ -18,6 +23,8 @@ void Display::display(void){
   msg.type=_display;
 
   xQueueSend(*queue_display,&msg, portMAX_DELAY);
+
+  xSemaphoreGive(mutex);
 
 }
 
@@ -143,6 +150,10 @@ void Display::setFont(font_type font){
 
   xQueueSend(*queue_display,&msg, portMAX_DELAY);
 
+}
+
+void Display::initDisplay(){
+  mutex = xSemaphoreCreateMutex();
 }
 
 /*

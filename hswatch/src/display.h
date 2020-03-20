@@ -28,6 +28,8 @@ class Display{
 	static void setTextAlignment(align_text textAlignment);
 	static void setFont(font_type fontData);
 
+	static void initDisplay();
+
 	//complex
 	//static void default_display(String);
 
