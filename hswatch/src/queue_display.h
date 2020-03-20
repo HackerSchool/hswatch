@@ -1,5 +1,5 @@
 #include <Arduino.h>
-#define BUFFER_SIZE 100
+#define BUFFER_SIZE 300
 
 extern QueueHandle_t * queue_display;
 
@@ -7,8 +7,8 @@ typedef enum type_message {_clear, _display, _setPixel, _drawLine, _drawRect, _f
 
 
 typedef struct msg_queue_display{
-    type_message type;
-    int a, b, c, d, e;
-    unsigned char* image;
-    char s[BUFFER_SIZE];
+	type_message type;
+	int a, b, c, d, e;
+	const uint8_t* image;
+	char s[BUFFER_SIZE];
 } msg_queue_display;

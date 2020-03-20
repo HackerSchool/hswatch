@@ -44,7 +44,21 @@ void Display::drawHorizontalLine(int16_t x, int16_t y, int16_t length){
 void Display::drawVerticalLine(int16_t x, int16_t y, int16_t length){}
 void Display::drawProgressBar(uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint8_t progress){}
 void Display::drawFastImage(int16_t x, int16_t y, int16_t width, int16_t height, const uint8_t *image){}
-void Display::drawXbm(int16_t x, int16_t y, int16_t width, int16_t height, const char* xbm){}
+
+void Display::drawXbm(int16_t x, int16_t y, int16_t width, int16_t height, const uint8_t* xbm){
+
+	msg_queue_display msg;
+
+	msg.type=_drawXbm;
+  	msg.a = x;
+	msg.b = y;
+	msg.c = width;
+	msg.d = height;
+	msg.image = xbm;
+
+	xQueueSend(*queue_display,&msg, portMAX_DELAY);
+
+}
 
 void Display::drawString(int16_t x, int16_t y, String text){
 
@@ -60,7 +74,21 @@ void Display::drawString(int16_t x, int16_t y, String text){
 
 }
 
-void Display::drawStringMaxWidth(int16_t x, int16_t y, int16_t maxLineWidth, String text){}
+void Display::drawStringMaxWidth(int16_t x, int16_t y, int16_t maxLineWidth, String text){
+  
+  msg_queue_display msg;
+
+  msg.type=_drawStringMaxWidth;
+  msg.a = x;
+  msg.b = y;
+  msg.c = maxLineWidth;
+
+  strcpy(msg.s,text.c_str());
+
+  xQueueSend(*queue_display,&msg, portMAX_DELAY);
+
+}
+
 uint16_t Display::getStringWidth(String text){}
 
 void Display::setTextAlignment(align_text textAlignment){
@@ -70,20 +98,20 @@ void Display::setTextAlignment(align_text textAlignment){
   switch (textAlignment)
   {
   case left:
-    msg.a=0;
-    break;
+	msg.a=0;
+	break;
 
   case center:
-    msg.a=1;
-    break;
+	msg.a=1;
+	break;
   
   case right:
-    msg.a=2;
-    break;
+	msg.a=2;
+	break;
   
   default:
-    msg.a=3;
-    break;
+	msg.a=3;
+	break;
   }
 
   msg.type=_setTextAlignment;
@@ -99,16 +127,16 @@ void Display::setFont(font_type font){
   switch (font)
   {
   case arial_10:
-    msg.a=0;
-    break;
+	msg.a=0;
+	break;
 
   case arial_16:
-    msg.a=1;
-    break;
+	msg.a=1;
+	break;
   
   default:
-    msg.a=2;
-    break;
+	msg.a=2;
+	break;
   }
 
   msg.type=_setFont;
@@ -132,10 +160,10 @@ void default_display(String title){
   s = screen->getStringWidth(title);
 
   if(s>128){
-    s = 128;
-    p = title.substring(0,128);
+	s = 128;
+	p = title.substring(0,128);
   }else{
-    p = title;
+	p = title;
   }
 
   screen->drawString(0, 0, p);
