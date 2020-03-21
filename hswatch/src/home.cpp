@@ -150,11 +150,29 @@ void Home::display(){
 	
 }
 
-//void Home::but_up_left(){}
+void Home::but_up_left(){
+
+	if(frame_n>0){
+		frame_n--;
+		display();
+	}
+}
 
 //void Home::but_up_right(){}
 
-//void Home::but_down_left(){}
+void Home::but_down_left(){
+
+	if(not_icon.empty()){
+		return;
+	}
+
+	if(frame_n<1){
+		frame_n++;
+		display();
+	}else{
+		App::run_app("Notification");
+	}
+}
 
 //void Home::but_down_right(){}
 
@@ -280,6 +298,7 @@ void Home::timer_1s(){
 			time_of_not++;
 		}else{
 			notifying=false;
+			curr_app()->display();
 		}
 	}else if(curr_app()==this){
 		display();

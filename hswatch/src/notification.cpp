@@ -75,11 +75,29 @@ void Notification::display(){
 	
 }
 
-//void Notification::but_up_left(){}
+void Notification::but_up_left(){
+	if(notification_number==1){
+		App::exit_app();
+	}else{
+		notification_number--;
+		index--;
+		display();
+	}
+}
 
 //void Notification::but_up_right(){}
 
-//void Notification::but_down_left(){}
+void Notification::but_down_left(){
+
+	index++;
+	if(index!=notification_list.end()){
+		notification_number++;
+		display();
+	}else{
+		index--;
+	}
+
+}
 
 //void Notification::but_down_right(){}
 

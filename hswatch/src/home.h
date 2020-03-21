@@ -8,9 +8,9 @@ class Home: public App {
 
 		void start();
 		void display();
-		//void but_up_left();
+		void but_up_left();
 		//void but_up_right();
-		//void but_down_left();
+		void but_down_left();
 		//void but_down_right();
 		void bt_receive(char*);
 		void timer_1s();

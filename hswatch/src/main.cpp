@@ -244,9 +244,10 @@ void b_left_up_task(void*){
 				number_of_times++;
 				Serial.print("L: ");
 				Serial.println(number_of_times);
+
+				App::curr_app()->but_up_left();
 			}
 		}
-		//App::call_timer();
 	}
 }
 
@@ -265,9 +266,10 @@ void b_left_down_task(void*){
 				number_of_times--;
 				Serial.print("L: ");
 				Serial.println(number_of_times);
+
+				App::curr_app()->but_down_left();
 			}
 		}
-		//App::call_timer();
 	}
 }
 
@@ -286,9 +288,10 @@ void b_right_up_task(void*){
 				number_of_times_r++;
 				Serial.print("R: ");
 				Serial.println(number_of_times_r);
+
+				App::curr_app()->but_up_right();
 			}
 		}
-		//App::call_timer();
 	}
 }
 
@@ -307,8 +310,9 @@ void b_right_down_task(void*){
 				number_of_times_r--;
 				Serial.print("R: ");
 				Serial.println(number_of_times_r);
+
+				App::curr_app()->but_down_right();
 			}
 		}
-		//App::call_timer();
 	}
 }

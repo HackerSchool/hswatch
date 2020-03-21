@@ -1,5 +1,5 @@
 TIM;horas;minutos;segundos;dia;mes;ano;semana\0
 NOT;|SMS|;hora;minuto;titulo;texto\0
-    |MSG|
+    |INS|
 
 ;=0x03
