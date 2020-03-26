@@ -1,4 +1,3 @@
 # HSWatch
 
-
-GitHub para a aplicação HSWatch @ HackerSchool.
+Descrição da aplicação do HSWatch.
