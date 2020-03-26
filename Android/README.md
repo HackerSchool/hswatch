@@ -1,1 +1,4 @@
-Versão Android do HSWatch
+# HSWatch
+
+
+GitHub para a aplicação HSWatch @ HackerSchool.

@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">HSWatch</string>
+    <string name="navigation_abrir">Abrir menu lateral</string>
+    <string name="navigation_fechar">Fechar menu lateral</string>
+</resources>

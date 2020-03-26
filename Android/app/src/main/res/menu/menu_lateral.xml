@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/disp"
+        android:icon="@drawable/ic_dispositivo"
+        android:title="Dispositivos"/>
+    <item android:id="@+id/novo"
+        android:icon="@drawable/ic_novo"
+        android:title="Adicionar novo dispositivo" />
+    <item android:id="@+id/informacoes"
+        android:icon="@drawable/ic_definicoes"
+        android:title="Informações"/>
+</menu>
