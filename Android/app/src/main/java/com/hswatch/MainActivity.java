@@ -27,6 +27,8 @@ public class MainActivity extends AppCompatActivity {
                 R.string.navigation_abrir, R.string.navigation_fechar);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
+
+        getSupportFragmentManager().beginTransaction().replace(R.id.frame, new paginaPrincipal()).commit();
     }
 
     @Override
