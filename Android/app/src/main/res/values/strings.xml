@@ -2,4 +2,8 @@
     <string name="app_name">HSWatch</string>
     <string name="navigation_abrir">Abrir menu lateral</string>
     <string name="navigation_fechar">Fechar menu lateral</string>
+    <string name="apresentadorTitulo">CONFIGURAÇÃO DO RELÓGIO</string>
+    <string name="apresentadorSubTitulo">É necessária a conexão ao relógio a fim de poder utilizar a aplicação</string>
+    <string name="apresentadorBtn">Ligar</string>
+    <string name="listarTitulo">Selecione o dispositivo</string>
 </resources>

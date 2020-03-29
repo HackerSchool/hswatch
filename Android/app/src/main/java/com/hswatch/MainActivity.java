@@ -7,21 +7,47 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.bluetooth.BluetoothAdapter;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static final String HISTORIA_PREFS = "historia_dispositivos_conectados";
+    public static final String VERIFICADOR = "verificador_conexao";
+    public static final String NOME = "historia_nome_dispositivo";
+
     private DrawerLayout drawerLayout;
+    private Toolbar toolbar;
+
+    private String nome_disp;
+    private boolean verificador;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        verificacao_Inicial();
         setContentView(R.layout.activity_main);
-//        verificacao_Inicial();
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        verificarHistoriaDispositivos();
+        iniciarEcraPrinciapal();
+    }
+
+    private void verificarHistoriaDispositivos() {
+        SharedPreferences sharedPreferences = getSharedPreferences(HISTORIA_PREFS, MODE_PRIVATE);
+        if (sharedPreferences.getBoolean(VERIFICADOR, false)) {
+            Toast.makeText(getApplicationContext(), "Está conectado ao dispositivo: " +
+                    sharedPreferences.getString(NOME, "Erro"), Toast.LENGTH_LONG).show();
+        } else {
+            startActivity(new Intent(MainActivity.this, atividade_config.class));
+        }
+    }
+
+    private void iniciarEcraPrinciapal() {
         drawerLayout = findViewById(R.id.atividade_principal);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
                 R.string.navigation_abrir, R.string.navigation_fechar);
@@ -40,11 +66,18 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    //    private void verificacao_Inicial() {
-//        BluetoothAdapter radioBT = BluetoothAdapter.getDefaultAdapter();
-//        if (radioBT == null){
-//            Toast.makeText(this, "Bluetooth Indisponível!", Toast.LENGTH_LONG).show();
-//            finish();
-//        }
-//    }
+    private void verificacao_Inicial() {
+        BluetoothAdapter radioBT = BluetoothAdapter.getDefaultAdapter();
+        if (radioBT == null){
+            Toast.makeText(this, "Bluetooth Indisponível!", Toast.LENGTH_LONG).show();
+            finish();
+        }
+        try {
+            if (!radioBT.isEnabled()) {
+
+            }
+        } catch (NullPointerException e) {
+            Log.e("mainTAG", "Ocorreu um erro na verificação do bluetooth!", e);
+        }
+    }
 }

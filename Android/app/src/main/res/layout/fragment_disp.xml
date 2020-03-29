@@ -1,36 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:background="#E9E9E9"
     android:orientation="vertical"
     android:padding="12dp">
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:layout_gravity="center_horizontal"
-        android:layout_margin="12dp">
+        android:layout_margin="12dp"
+        android:orientation="vertical">
+
         <ImageView
             android:layout_width="128dp"
             android:layout_height="128dp"
-            android:src="@drawable/ic_hs_logo"/>
+            android:src="@drawable/ic_hs_logo" />
+
         <TextView
             android:id="@+id/txt_estado"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Conectado"
-            android:textSize="24sp"
-            android:textAlignment="center"/>
+            android:textAlignment="center"
+            android:textSize="24sp" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rec_frag"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:listitem="@layout/opcao_disp"
-        android:scrollbars="vertical"
         android:layout_marginTop="12dp"
-        android:layout_marginBottom="12dp"/>
+        android:layout_marginBottom="12dp"
+        android:scrollbars="vertical"
+        tools:listitem="@layout/opcao_disp" />
 </androidx.appcompat.widget.LinearLayoutCompat>

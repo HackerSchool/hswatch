@@ -17,11 +17,21 @@ public class opcoesAdapter extends RecyclerView.Adapter<opcoesAdapter.opcoesView
 
     private ArrayList<opcoesItem> opcoesItems;
 
+    private onItemClickListener onitemclicklistener;
+
+    public interface onItemClickListener{
+        void onItemClick(int position);
+    }
+
+    public void setOnitemclicklistener(onItemClickListener onItemClickListener) {
+        onitemclicklistener = onItemClickListener;
+    }
+
     @NonNull
     @Override
     public opcoesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.opcao_disp, parent, false);
-        return new opcoesViewHolder(v);
+        return new opcoesViewHolder(v, onitemclicklistener);
     }
 
     @Override
@@ -41,12 +51,22 @@ public class opcoesAdapter extends RecyclerView.Adapter<opcoesAdapter.opcoesView
     public static class opcoesViewHolder extends RecyclerView.ViewHolder {
         private ImageView marcaImagem;
         private TextView marcaTexto;
-        private ImageButton marcaBotao;
-        public opcoesViewHolder(@NonNull View itemView) {
+        public opcoesViewHolder(@NonNull View itemView, final onItemClickListener listener) {
             super(itemView);
             marcaImagem = itemView.findViewById(R.id.op_simb);
             marcaTexto = itemView.findViewById(R.id.op_txt);
-            marcaBotao = itemView.findViewById(R.id.op_sele);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (listener != null) {
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                            listener.onItemClick(position);
+                        }
+                    }
+                }
+            });
         }
     }
 
