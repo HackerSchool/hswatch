@@ -63,8 +63,7 @@ public class listar_fragment extends Fragment {
                         Toast.LENGTH_LONG).show();
 
                 Intent iniciarServico = new Intent(view.getContext(), Servico.class);
-//                iniciarServico.putExtra(Constantes.TEXTOBTSERV, nome);
-//                iniciarServico.putExtra(Constantes.TEXTONOTSERV, "Conectado a " + nome);
+                iniciarServico.putExtra(getResources().getString(R.string.ServicoDisp), nome);
 
                 ContextCompat.startForegroundService(view.getContext(), iniciarServico);
 
