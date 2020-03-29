@@ -10,7 +10,6 @@ import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
@@ -22,8 +21,6 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private Toolbar toolbar;
 
-    private String nome_disp;
-    private boolean verificador;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,13 +68,6 @@ public class MainActivity extends AppCompatActivity {
         if (radioBT == null){
             Toast.makeText(this, "Bluetooth Indisponível!", Toast.LENGTH_LONG).show();
             finish();
-        }
-        try {
-            if (!radioBT.isEnabled()) {
-
-            }
-        } catch (NullPointerException e) {
-            Log.e("mainTAG", "Ocorreu um erro na verificação do bluetooth!", e);
         }
     }
 }

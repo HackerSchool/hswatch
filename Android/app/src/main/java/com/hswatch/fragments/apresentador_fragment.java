@@ -8,23 +8,25 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.hswatch.R;
 import com.hswatch.atividade_config;
 
+import java.util.Objects;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.viewpager.widget.ViewPager;
 
 import static android.app.Activity.RESULT_OK;
 
 public class apresentador_fragment extends Fragment {
 
-    public static final int ATIVAR_BT = 1;
+//    TAG
+    public static final String TAG = "hswatch.fragment.apres";
 
-    public static final String TAG = "apresentador_log";
+//    Variáveis globais
+    private boolean verificador = false;
 
     @Nullable
     @Override
@@ -40,8 +42,13 @@ public class apresentador_fragment extends Fragment {
         seguidor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intBT = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-                startActivityForResult(intBT, ATIVAR_BT);
+                if (verificador) {
+                    ((atividade_config) Objects.requireNonNull(getActivity())).seguir_fragment();
+                    verificador = false;
+                } else {
+                    final Intent intBT = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+                    startActivityForResult(intBT, getResources().getInteger(R.integer.ATIVAR_BT));
+                }
             }
         });
     }
@@ -49,12 +56,9 @@ public class apresentador_fragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == ATIVAR_BT && resultCode == RESULT_OK){
-            try {
-                ((atividade_config)getActivity()).seguir_fragment();
-            } catch (NullPointerException e) {
-                Log.e(TAG, "Não foi possível fazer a transição", e);
-            }
+        if (requestCode == getResources().getInteger(R.integer.ATIVAR_BT) && resultCode == RESULT_OK){
+            verificador = true;
+            ((atividade_config) Objects.requireNonNull(getActivity())).seguir_fragment();
         }
     }
 

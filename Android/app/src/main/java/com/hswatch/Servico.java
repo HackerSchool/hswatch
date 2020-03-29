@@ -27,7 +27,7 @@ import static com.hswatch.App.CANAL_SERVICO;
 public class Servico extends Service {
 
 //    TAG
-    public static final String TAG = "hswatch.Servico.TAG";
+    public static final String TAG = "hswatch.service.Servico";
 
 //    UUID
     public static final UUID uid = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
@@ -235,6 +235,9 @@ public class Servico extends Service {
             inputStream = inputStreamL;
             outputStream = outputStreamL;
             estadoAtual = getResources().getInteger(R.integer.ESTADO_CONECTADO);
+            Intent sinalVerde = new Intent(getResources().getString(R.string.LISTAR_FRAG));
+            sinalVerde.putExtra(getResources().getString(R.string.SINAL_VERDE), true);
+            sendBroadcast(sinalVerde);
         }
 
         @Override

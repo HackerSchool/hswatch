@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -20,6 +21,7 @@ public class atividade_config extends AppCompatActivity {
 
     private ViewPager viewPager;
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,7 +41,7 @@ public class atividade_config extends AppCompatActivity {
         viewPager.setAdapter(new viewPagerAdapter(getSupportFragmentManager(), list));
     }
 
-    public void seguir_fragment () throws NullPointerException{
+    public void seguir_fragment () {
         viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
     }
 

@@ -7,4 +7,6 @@
     <string name="apresentadorBtn">Ligar</string>
     <string name="listarTitulo">Selecione o dispositivo</string>
     <string name="ServicoDisp">hswatch.Servico.BTDispositivo</string>
+    <string name="SINAL_VERDE">hswatch.sinal.verde</string>
+    <string name="LISTAR_FRAG">hswatch.fragment.listar</string>
 </resources>
