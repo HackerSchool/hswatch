@@ -16,7 +16,7 @@ class Home: public App {
 		void timer_1s();
 
 		void notify(String, String, String);
-		void delete_notification(char[4]);
+		void delete_notification(String);
 
 		Home(String,String,unsigned char*);
 

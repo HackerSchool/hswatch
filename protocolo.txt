@@ -1,5 +1,18 @@
+Telemovel->Relogio
+
 TIM;horas;minutos;segundos;dia;mes;ano;semana\0
 NOT;|SMS|;hora;minuto;titulo;texto\0
     |INS|
-
+MET;location{;icon;temp;precepitação}\0
+                   repetirx5
 ;=0x03
+semana=1-domingo
+       2-segunda
+       3-terça
+       4-quarta
+       5-quinta
+       6-sexta
+       7-sabado
+
+Relogio->Telemovel
+MET\0

@@ -80,6 +80,10 @@ void Home::display(){
 
 	xSemaphoreGive(mutex_home);
 
+	if(frame_n==1&&not_icon.empty()){
+		frame_n=0;
+	}
+
 	if(frame_n==0){
 		Display::clear();
 
@@ -99,6 +103,13 @@ void Home::display(){
 		Display::drawString(64, 38, s3);
 
 		Display::drawHorizontalLine(0,51,128);
+
+		if(!not_icon.empty()){
+			Display::setFont(arial_24);
+			Display::setTextAlignment(center);
+			Display::drawString(64, 38, "...");
+		}
+
 		Display::display();
 	}else{
 		Display::clear();
@@ -346,6 +357,10 @@ void Home::notify(String title, String text, String icon){
 		}
 	}
 
+}
+
+void Home::delete_notification(String icon){
+	not_icon.remove(icon);
 }
 
 Home::Home(String id_in, String name_in, unsigned char* logo_in): App(id_in,name_in,logo_in) {

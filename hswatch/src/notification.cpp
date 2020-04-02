@@ -32,17 +32,21 @@ void Notification::display(){
 	title = *((*index).title);
 	text = *((*index).text);
 
+	if (text.length()>65){
+		text = text.substring(0,65)+"...";
+	}
+
 	Display::clear();
 
-	Display::setFont(arial_16);
+	Display::setFont(arial_10);
 	Display::setTextAlignment(center);
 	Display::drawString(64, 0, title);
 
 	Display::drawHorizontalLine(0,12,128);
 
-	Display::setFont(arial_16);
-	Display::setTextAlignment(both);
-	Display::drawString(64, 32, text);
+	Display::setFont(arial_10);
+	Display::setTextAlignment(center);
+	Display::drawStringMaxWidth(64, 13, 128, text);
   
 
 	if(hour<10){
@@ -61,13 +65,15 @@ void Notification::display(){
 		s=s+String(minute);
 	}
 
+	Serial.println(s);
+
 	s2 = String(notification_number) + "/" + String(notification_list.size());
 
 	Display::drawHorizontalLine(0,51,128);
 	
 	Display::setFont(arial_10);
 	Display::setTextAlignment(right);
-	Display::drawString(0, 53, s);
+	Display::drawString(127, 53, s);
 	Display::setTextAlignment(left);
 	Display::drawString(0, 53, s2);
 
@@ -85,7 +91,43 @@ void Notification::but_up_left(){
 	}
 }
 
-//void Notification::but_up_right(){}
+void Notification::but_up_right(){
+
+	int count_item=0;
+
+	for(std::list<notification>::iterator i=notification_list.begin(); i!=notification_list.end() ;i++){
+		if(*(index->logo)==*(i->logo)){
+			count_item++;
+		}
+	}
+	
+	if(count_item<2){
+		Home* home =(Home*) App::app_search_by_name("Home");
+		home->delete_notification(*(index->logo));
+	}
+
+	delete index->text;
+	delete index->title;
+	delete index->logo;
+
+	std::list<notification>::iterator prev=index;
+
+	if(notification_number==1){
+		xSemaphoreTake(mutex,portMAX_DELAY);
+		notification_list.erase(index);
+		xSemaphoreGive(mutex);
+		App::exit_app();
+	}else{
+		notification_number--;
+		prev--;
+		xSemaphoreTake(mutex,portMAX_DELAY);
+		notification_list.erase(index);
+		xSemaphoreGive(mutex);
+		index=prev;
+		display();
+	}
+
+}
 
 void Notification::but_down_left(){
 
@@ -105,7 +147,7 @@ void Notification::bt_receive(char* message){
 
 	Serial.println("received notification");
 
-	notification * new_not = (notification*) malloc(sizeof(notification)); 
+	notification new_not; 
 
 	char * str, * context, delim[2];
 
@@ -116,39 +158,37 @@ void Notification::bt_receive(char* message){
 	if(str==NULL)
 		return;
 
-	new_not->logo = new String(str);
+	new_not.logo = new String(str);
 
 	str = strtok_r(NULL,delim,&context);
 	if(str==NULL)
 		return;
-	new_not->hour=atoi(str);
+	new_not.hour=atoi(str);
 
 	str = strtok_r(NULL,delim,&context);
 	if(str==NULL)
 		return;
-	new_not->minute=atoi(str);
+	new_not.minute=atoi(str);
 	
 	str = strtok_r(NULL,delim,&context);
 	if(str==NULL)
 		return;
-	new_not->title = new String(str);
+	new_not.title = new String(str);
 
 	str = strtok_r(NULL,"\0",&context);
 		if(str==NULL)
 		return;
-	new_not->text = new String(str);
+	new_not.text = new String(str);
 	
 	xSemaphoreTake(mutex,portMAX_DELAY);
 
-	notification_list.push_front((*new_not));
+	notification_list.push_front(new_not);
 
 	xSemaphoreGive(mutex);
 
-	notification n = notification_list.front();
-
 	Home* home =(Home*) App::app_search_by_name("Home");
 
-	home->notify(*(new_not->title), *(new_not->text), *(new_not->logo));
+	home->notify(*(new_not.title), *(new_not.text), *(new_not.logo));
 }
 
 Notification::Notification(String id_in, String name_in, unsigned char* logo_in): App(id_in,name_in,logo_in) {
