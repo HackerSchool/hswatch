@@ -6,45 +6,57 @@ static SemaphoreHandle_t mutex;
 
 void Display::clear(void){
 
-  xSemaphoreTake(mutex,portMAX_DELAY);
+	xSemaphoreTake(mutex,portMAX_DELAY);
 
-  msg_queue_display msg;
+	msg_queue_display msg;
 
-  msg.type=_clear;
+	msg.type=_clear;
 
-  xQueueSend(*queue_display,&msg, portMAX_DELAY);
+	xQueueSend(*queue_display,&msg, portMAX_DELAY);
 
 }
 
 void Display::display(void){
-  
-  msg_queue_display msg;
+	
+	msg_queue_display msg;
 
-  msg.type=_display;
+	msg.type=_display;
 
-  xQueueSend(*queue_display,&msg, portMAX_DELAY);
+	xQueueSend(*queue_display,&msg, portMAX_DELAY);
 
-  xSemaphoreGive(mutex);
+	xSemaphoreGive(mutex);
 
 }
 
 void Display::setPixel(int16_t x, int16_t y){}
 void Display::drawLine(int16_t x0, int16_t y0, int16_t x1, int16_t y1){}
-void Display::drawRect(int16_t x, int16_t y, int16_t width, int16_t height){}
+
+void Display::drawRect(int16_t x, int16_t y, int16_t width, int16_t height){
+	msg_queue_display msg;
+
+	msg.type=_drawRect;
+	msg.a = x;
+	msg.b = y;
+	msg.c = width;
+	msg.d = height;
+
+	xQueueSend(*queue_display,&msg, portMAX_DELAY);
+}
+
 void Display::fillRect(int16_t x, int16_t y, int16_t width, int16_t height){}
 void Display::drawCircle(int16_t x, int16_t y, int16_t radius){}
 void Display::fillCircle(int16_t x, int16_t y, int16_t radius){}
 
 void Display::drawHorizontalLine(int16_t x, int16_t y, int16_t length){
-  
-  msg_queue_display msg;
+	
+	msg_queue_display msg;
 
-  msg.type=_drawHorizontalLine;
-  msg.a = x;
-  msg.b = y;
-  msg.c = length;
+	msg.type=_drawHorizontalLine;
+	msg.a = x;
+	msg.b = y;
+	msg.c = length;
 
-  xQueueSend(*queue_display,&msg, portMAX_DELAY);
+	xQueueSend(*queue_display,&msg, portMAX_DELAY);
 
 }
 
@@ -57,7 +69,7 @@ void Display::drawXbm(int16_t x, int16_t y, int16_t width, int16_t height, const
 	msg_queue_display msg;
 
 	msg.type=_drawXbm;
-  	msg.a = x;
+		msg.a = x;
 	msg.b = y;
 	msg.c = width;
 	msg.d = height;
@@ -69,30 +81,30 @@ void Display::drawXbm(int16_t x, int16_t y, int16_t width, int16_t height, const
 
 void Display::drawString(int16_t x, int16_t y, String text){
 
-  msg_queue_display msg;
+	msg_queue_display msg;
 
-  msg.type=_drawString;
-  msg.a = x;
-  msg.b = y;
+	msg.type=_drawString;
+	msg.a = x;
+	msg.b = y;
 
-  strcpy(msg.s,text.c_str());
+	strcpy(msg.s,text.c_str());
 
-  xQueueSend(*queue_display,&msg, portMAX_DELAY);
+	xQueueSend(*queue_display,&msg, portMAX_DELAY);
 
 }
 
 void Display::drawStringMaxWidth(int16_t x, int16_t y, int16_t maxLineWidth, String text){
-  
-  msg_queue_display msg;
+	
+	msg_queue_display msg;
 
-  msg.type=_drawStringMaxWidth;
-  msg.a = x;
-  msg.b = y;
-  msg.c = maxLineWidth;
+	msg.type=_drawStringMaxWidth;
+	msg.a = x;
+	msg.b = y;
+	msg.c = maxLineWidth;
 
-  strcpy(msg.s,text.c_str());
+	strcpy(msg.s,text.c_str());
 
-  xQueueSend(*queue_display,&msg, portMAX_DELAY);
+	xQueueSend(*queue_display,&msg, portMAX_DELAY);
 
 }
 
@@ -100,83 +112,83 @@ uint16_t Display::getStringWidth(String text){}
 
 void Display::setTextAlignment(align_text textAlignment){
 
-  msg_queue_display msg;
+	msg_queue_display msg;
 
-  switch (textAlignment)
-  {
-  case left:
+	switch (textAlignment)
+	{
+	case left:
 	msg.a=0;
 	break;
 
-  case center:
+	case center:
 	msg.a=1;
 	break;
-  
-  case right:
+	
+	case right:
 	msg.a=2;
 	break;
-  
-  default:
+	
+	default:
 	msg.a=3;
 	break;
-  }
+	}
 
-  msg.type=_setTextAlignment;
+	msg.type=_setTextAlignment;
 
-  xQueueSend(*queue_display,&msg, portMAX_DELAY);
+	xQueueSend(*queue_display,&msg, portMAX_DELAY);
 
 }
 
 void Display::setFont(font_type font){
 
-  msg_queue_display msg;
+	msg_queue_display msg;
 
-  switch (font)
-  {
-  case arial_10:
+	switch (font)
+	{
+	case arial_10:
 	msg.a=0;
 	break;
 
-  case arial_16:
+	case arial_16:
 	msg.a=1;
 	break;
-  
-  default:
+	
+	default:
 	msg.a=2;
 	break;
-  }
+	}
 
-  msg.type=_setFont;
+	msg.type=_setFont;
 
-  xQueueSend(*queue_display,&msg, portMAX_DELAY);
+	xQueueSend(*queue_display,&msg, portMAX_DELAY);
 
 }
 
 void Display::initDisplay(){
-  mutex = xSemaphoreCreateMutex();
+	mutex = xSemaphoreCreateMutex();
 }
 
 /*
 void default_display(String title){
-  
-  int s;
-  String p;
-  
-  screen->clear();
-  screen->drawHorizontalLine(0,12,128);
+	
+	int s;
+	String p;
+	
+	screen->clear();
+	screen->drawHorizontalLine(0,12,128);
 
-  screen->setFont(ArialMT_Plain_10);
-  screen->setTextAlignment(TEXT_ALIGN_CENTER);
+	screen->setFont(ArialMT_Plain_10);
+	screen->setTextAlignment(TEXT_ALIGN_CENTER);
 
-  s = screen->getStringWidth(title);
+	s = screen->getStringWidth(title);
 
-  if(s>128){
+	if(s>128){
 	s = 128;
 	p = title.substring(0,128);
-  }else{
+	}else{
 	p = title;
-  }
+	}
 
-  screen->drawString(0, 0, p);
-  screen->display();
+	screen->drawString(0, 0, p);
+	screen->display();
 }*/

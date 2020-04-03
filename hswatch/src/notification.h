@@ -12,7 +12,7 @@ class Notification: public App {
 		//void but_down_right();
 		void bt_receive(char*);
 
-		Notification(String,String,unsigned char*);
+		Notification(String,String,const unsigned char*);
 
 	private:
 

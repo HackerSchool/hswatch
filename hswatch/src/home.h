@@ -2,6 +2,11 @@
 
 #define NOTIFICATION_TIME 10
 
+typedef struct timestamp{
+	unsigned char hour,minute,second,day,month,week_day;
+	unsigned int year;
+}timestamp;
+
 class Home: public App {
 
 	public:
@@ -11,14 +16,15 @@ class Home: public App {
 		void but_up_left();
 		//void but_up_right();
 		void but_down_left();
-		//void but_down_right();
+		void but_down_right();
 		void bt_receive(char*);
 		void timer_1s();
 
 		void notify(String, String, String);
 		void delete_notification(String);
+		timestamp show_time();
 
-		Home(String,String,unsigned char*);
+		Home(String,String,const unsigned char*);
 
 	private:
 

@@ -191,6 +191,6 @@ void Notification::bt_receive(char* message){
 	home->notify(*(new_not.title), *(new_not.text), *(new_not.logo));
 }
 
-Notification::Notification(String id_in, String name_in, unsigned char* logo_in): App(id_in,name_in,logo_in) {
+Notification::Notification(String id_in, String name_in, const unsigned char* logo_in): App(id_in,name_in,logo_in) {
 		mutex = xSemaphoreCreateMutex();
 }

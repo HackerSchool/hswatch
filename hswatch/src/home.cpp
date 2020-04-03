@@ -185,7 +185,9 @@ void Home::but_down_left(){
 	}
 }
 
-//void Home::but_down_right(){}
+void Home::but_down_right(){
+		App::run_app("Menu");
+}
 
 void Home::bt_receive(char* message){
 
@@ -363,6 +365,19 @@ void Home::delete_notification(String icon){
 	not_icon.remove(icon);
 }
 
-Home::Home(String id_in, String name_in, unsigned char* logo_in): App(id_in,name_in,logo_in) {
+timestamp Home::show_time(){
+	timestamp t;
+	t.hour=hour;
+	t.minute=minute;
+	t.second=second;
+	t.day=day;
+	t.month=month;
+	t.week_day=week_day;
+	t.year=year;
+
+	return t;
+}
+
+Home::Home(String id_in, String name_in, const unsigned char* logo_in): App(id_in,name_in,logo_in) {
 		mutex_home = xSemaphoreCreateMutex();
 }

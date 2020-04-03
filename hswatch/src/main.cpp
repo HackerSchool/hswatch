@@ -7,6 +7,8 @@
 #include "queue_display.h"
 #include "display.h"
 #include "notification.h"
+#include "menu.h"
+#include "logo_app.h"
 
 #define B_LEFT_UP 18
 #define B_LEFT_DOWN 16
@@ -63,6 +65,9 @@ void setup() {
 
 	new Home("TIM","Home",NULL);
 	new Notification("NOT","Notification",NULL);
+	
+	
+	new Menu("Men","Menu",NULL);
 
 	App::run_app("Home");
 
@@ -99,6 +104,10 @@ void loop() {
 
 	case _display:
 		screen.display();
+		break;
+
+	case _drawRect:
+		screen.drawRect(msg.a,msg.b,msg.c,msg.d);
 		break;
 
 	case _drawHorizontalLine:

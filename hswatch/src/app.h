@@ -4,6 +4,8 @@
 #include <Arduino.h>
 #include <list>
 
+//typedef struct AppListHandler app_list_handler;
+
 class App {
 
 	public:
@@ -21,7 +23,7 @@ class App {
 		virtual void bt_receive(char*);
 		virtual void timer_1s();
 
-		App(String,String,unsigned char*);
+		App(String,String,const unsigned char*);
 
 		static void exit_app();
 		static void run_app(String);
