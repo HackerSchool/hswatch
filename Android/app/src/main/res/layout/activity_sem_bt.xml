@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".bluetooth.sem_bt"
+    android:padding="24dp"
+    android:id="@+id/semBTatividade">
+
+    <TextView
+        android:id="@+id/semBTTitulo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/semBTTitulo"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textStyle="bold"
+        android:layout_centerHorizontal="true"
+        android:paddingTop="156dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/semBTTexto"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/semBTTitulo"
+        android:paddingTop="6dp"/>
+
+</RelativeLayout>

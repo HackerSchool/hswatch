@@ -17,8 +17,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.hswatch.R;
-import com.hswatch.Servico;
-import com.hswatch.atividade_config;
+import com.hswatch.bluetooth.Servico;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,18 +29,18 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
-import static android.app.Activity.RESULT_OK;
-
 public class listar_fragment extends Fragment {
 
 //    TAG
-    public static final String TAG = "hswatch.fragment.listar";
+    private static final String TAG = "hswatch.fragment.listar";
 
 //    Objetos UI
     private ListView listView;
 
 //    BroadcastReceiver
     private Recetor recetor;
+
+    private boolean verificador = true;
 
     @Nullable
     @Override
@@ -53,12 +52,11 @@ public class listar_fragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        Intent intBT = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-        startActivityForResult(intBT, getResources().getInteger(R.integer.ATIVAR_BT));
-
         listView = view.findViewById(R.id.listarLista);
 
         recetor = new Recetor();
+
+        listarDispositivosPareados();
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
@@ -79,6 +77,7 @@ public class listar_fragment extends Fragment {
     public void onStart() {
         super.onStart();
         IntentFilter intentFilter = new IntentFilter(getResources().getString(R.string.LISTAR_FRAG));
+        intentFilter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
         Objects.requireNonNull(getActivity()).registerReceiver(recetor, intentFilter);
     }
 
@@ -89,6 +88,19 @@ public class listar_fragment extends Fragment {
 
     }
 
+    private void listarDispositivosPareados() {
+        Set<BluetoothDevice> setBT = BluetoothAdapter.getDefaultAdapter().getBondedDevices();
+        List<String> nomes = new ArrayList<>();
+        if (setBT.size() > 0){
+            for (BluetoothDevice disp : setBT){
+                nomes.add(disp.getName());
+            }
+            listView.setEnabled(true);
+            ArrayAdapter<String> listaNomes = new ArrayAdapter<>(Objects.requireNonNull(getContext()), android.R.layout.simple_expandable_list_item_1, nomes);
+            listView.setAdapter(listaNomes);
+        }
+    }
+
     public class Recetor extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -96,32 +108,18 @@ public class listar_fragment extends Fragment {
             if (acao != null) {
                 Log.v(TAG, "Sinal Verde!");
                 if (acao.equals(getResources().getString(R.string.LISTAR_FRAG)) &&
-                        intent.getBooleanExtra(getResources().getString(R.string.SINAL_VERDE), false)) {
+                        intent.getBooleanExtra(getResources().getString(R.string.SINAL_VERDE), false) && verificador) {
                     try {
                         ((atividade_config) Objects.requireNonNull(getActivity())).seguir_fragment();
                     } catch (NullPointerException e) {
                         Log.e(TAG, "Não foi possível fazer a transição", e);
                     }
+                } else if (acao.equals(getResources().getString(R.string.LISTAR_FRAG)) &&
+                        !intent.getBooleanExtra(getResources().getString(R.string.SINAL_VERDE), false)) {
+                    verificador = false;
                 }
             }
-
         }
-    }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == getResources().getInteger(R.integer.ATIVAR_BT) && resultCode == RESULT_OK){
-            Set<BluetoothDevice> setBT = BluetoothAdapter.getDefaultAdapter().getBondedDevices();
-            List<String> nomes = new ArrayList<>();
-            if (setBT.size() > 0){
-                for (BluetoothDevice disp : setBT){
-                    nomes.add(disp.getName());
-                }
-                listView.setEnabled(true);
-                ArrayAdapter<String> listaNomes = new ArrayAdapter<>(Objects.requireNonNull(getContext()), android.R.layout.simple_expandable_list_item_1, nomes);
-                listView.setAdapter(listaNomes);
-            }
-        }
     }
 }

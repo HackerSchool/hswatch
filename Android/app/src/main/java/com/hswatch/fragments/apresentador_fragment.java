@@ -3,14 +3,12 @@ package com.hswatch.fragments;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.hswatch.R;
-import com.hswatch.atividade_config;
 
 import java.util.Objects;
 
@@ -46,8 +44,7 @@ public class apresentador_fragment extends Fragment {
                     ((atividade_config) Objects.requireNonNull(getActivity())).seguir_fragment();
                     verificador = false;
                 } else {
-                    final Intent intBT = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-                    startActivityForResult(intBT, getResources().getInteger(R.integer.ATIVAR_BT));
+                    startActivityForResult(new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE), getResources().getInteger(R.integer.ATIVAR_BT));
                 }
             }
         });

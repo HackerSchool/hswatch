@@ -7,6 +7,21 @@
     <string name="apresentadorBtn">Ligar</string>
     <string name="listarTitulo">Selecione o dispositivo</string>
     <string name="ServicoDisp">hswatch.Servico.BTDispositivo</string>
-    <string name="SINAL_VERDE">hswatch.sinal.verde</string>
+    <string name="SINAL_VERDE">sinal.verde.bt</string>
     <string name="LISTAR_FRAG">hswatch.fragment.listar</string>
+    <string name="semBTTitulo">Tem o Bluetooth desligado!</string>
+    <string name="semBTTexto">Ative o Bluetooth e depois carregue neste ecrã para começar a sua experiência com o HSWatch!</string>
+    <string name="SINAL_NOT">sinal.notificacao.servico</string>
+    <string name="ELEMENTO">sinal.elemento.not</string>
+    <string name="domingo">DOMINGO</string>
+
+    <string-array name="nomes_semana">
+        <item>domingo</item>
+        <item>segunda-feira</item>
+        <item>terça-feira</item>
+        <item>quarta-feira</item>
+        <item>quinta-feira</item>
+        <item>sexta-feira</item>
+        <item>sábado</item>
+    </string-array>
 </resources>

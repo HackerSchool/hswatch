@@ -16,6 +16,6 @@ public class finalizador_fragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.frame_3, container, false);
+        return inflater.inflate(R.layout.finalizador_fragment, container, false);
     }
 }
