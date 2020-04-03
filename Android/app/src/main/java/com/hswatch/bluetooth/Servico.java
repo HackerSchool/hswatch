@@ -281,6 +281,7 @@ public class Servico extends Service {
         public void run() {
             byte bytes;
             int bufferposition = 0;
+            Objeto verificador = new Objeto();
             tempo();
             while (estadoAtual == getResources().getInteger(R.integer.ESTADO_CONECTADO)){
                 try{
@@ -308,6 +309,10 @@ public class Servico extends Service {
                     Log.e(TAG, "Algo correu mal na leitura", e);
                     conexaoPerdida();
                     break;
+                }
+                if (verificador.passagem_de_hora() == true){
+                    Log.i(TAG, "Passou o tempo!");
+                    tempo();
                 }
             }
         }
