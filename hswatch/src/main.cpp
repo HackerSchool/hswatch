@@ -10,6 +10,9 @@
 #include "menu.h"
 #include "logo_app.h"
 
+//Include App go here
+#include "timer.h"
+
 #define B_LEFT_UP 18
 #define B_LEFT_DOWN 16
 #define B_RIGHT_UP 19
@@ -66,8 +69,10 @@ void setup() {
 	new Home("TIM","Home",NULL);
 	new Notification("NOT","Notification",NULL);
 	
+	//App Initialization goes here
+	new Timer("CHR","Chronograph & Timer",logo_timer);
 	
-	new Menu("Men","Menu",NULL);
+	new Menu("MEN","Menu",NULL);
 
 	App::run_app("Home");
 
@@ -108,6 +113,10 @@ void loop() {
 
 	case _drawRect:
 		screen.drawRect(msg.a,msg.b,msg.c,msg.d);
+		break;
+
+	case _fillRect:
+		screen.fillRect(msg.a,msg.b,msg.c,msg.d);
 		break;
 
 	case _drawHorizontalLine:

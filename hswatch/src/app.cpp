@@ -20,11 +20,16 @@ void App::bt_receive(char*){}
 
 void App::timer_1s(){}
 
+void App::exit(){}
+
 App::App(String id_in, String name_in, const unsigned char* logo_in): id(id_in), name(name_in), logo(logo_in){
 	app_list.push_back(this);
 }
 
 void App::exit_app(){
+
+	curr_app()->exit();
+
 	if(app_stack.size()>1){
 		app_stack.pop_front();
 		curr_app()->display();

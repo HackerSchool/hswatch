@@ -9,21 +9,7 @@ int frame_n=0;
 
 void Home::start(){
 
-	xSemaphoreTake(mutex_home,portMAX_DELAY);
-
-	hour=0;
-	minute=0;
-	second=0;
-	day=1;
-	month=1;
-	year=2000;
-	week_day = 1;
-
-	xSemaphoreGive(mutex_home);
-
 	display();
-
-	this->attach_timer();
 }
 
 void Home::display(){
@@ -379,5 +365,19 @@ timestamp Home::show_time(){
 }
 
 Home::Home(String id_in, String name_in, const unsigned char* logo_in): App(id_in,name_in,logo_in) {
-		mutex_home = xSemaphoreCreateMutex();
+	mutex_home = xSemaphoreCreateMutex();
+
+	xSemaphoreTake(mutex_home,portMAX_DELAY);
+
+	hour=0;
+	minute=0;
+	second=0;
+	day=1;
+	month=1;
+	year=2000;
+	week_day = 1;
+
+	xSemaphoreGive(mutex_home);
+
+	this->attach_timer();
 }

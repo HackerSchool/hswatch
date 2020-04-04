@@ -56,11 +56,11 @@ void Menu::display(){
 		}
 
 		Display::drawXbm(48,16,LOGO_APP_WIDTH,LOGO_APP_HEIGHT,app_array[index]->logo);
-		Display::drawRect(46,14,38,38);
+		Display::drawRect(46,14,38,36);
 		
 		Display::setFont(arial_10);
 		Display::setTextAlignment(center);
-		Display::drawString(64, 53, app_array[index]->name);
+		Display::drawString(64, 52, app_array[index]->name);
 
 		if(index!=n_app-1){
 			Display::drawXbm(95,16,LOGO_APP_WIDTH,LOGO_APP_HEIGHT,app_array[index+1]->logo);

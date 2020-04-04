@@ -1,4 +1,3 @@
-#include <Arduino.h>
 #include "display.h"
 #include "queue_display.h"
 
@@ -43,7 +42,18 @@ void Display::drawRect(int16_t x, int16_t y, int16_t width, int16_t height){
 	xQueueSend(*queue_display,&msg, portMAX_DELAY);
 }
 
-void Display::fillRect(int16_t x, int16_t y, int16_t width, int16_t height){}
+void Display::fillRect(int16_t x, int16_t y, int16_t width, int16_t height){
+	msg_queue_display msg;
+
+	msg.type=_fillRect;
+	msg.a = x;
+	msg.b = y;
+	msg.c = width;
+	msg.d = height;
+
+	xQueueSend(*queue_display,&msg, portMAX_DELAY);
+}
+
 void Display::drawCircle(int16_t x, int16_t y, int16_t radius){}
 void Display::fillCircle(int16_t x, int16_t y, int16_t radius){}
 

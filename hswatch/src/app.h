@@ -22,6 +22,7 @@ class App {
 		virtual void but_down_right();
 		virtual void bt_receive(char*);
 		virtual void timer_1s();
+		virtual void exit();
 
 		App(String,String,const unsigned char*);
 

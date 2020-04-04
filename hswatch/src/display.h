@@ -1,6 +1,8 @@
 #ifndef DISPLAY_H
 #define DISPLAY_H
 
+#include <Arduino.h>
+
 typedef enum align_text {left, center, right, both} align_text;
 typedef enum font_type {arial_10, arial_16, arial_24} font_type;
 

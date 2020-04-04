@@ -1,11 +1,7 @@
 #include "app.h"
+#include "tools.h"
 
 #define NOTIFICATION_TIME 10
-
-typedef struct timestamp{
-	unsigned char hour,minute,second,day,month,week_day;
-	unsigned int year;
-}timestamp;
 
 class Home: public App {
 
