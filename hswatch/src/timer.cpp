@@ -1,5 +1,12 @@
 #include "timer.h"
 
+unsigned char vibration_pattern_power[2] = {255,0};
+unsigned int vibration_pattern_time[2] = {2000,1000};
+unsigned char vibration_pattern_size = 2;
+unsigned char vibration_pattern_repeat = 5;
+
+TaskHandle_t timer_vibrator_task;
+
 void Timer::start(){
 	display();
 }
@@ -252,6 +259,7 @@ void Timer::but_up_left(){
 	case timer_end:
 		state=timer;
 		end_blink=false;
+		cancel_vibration(timer_vibrator_task);
 		display();
 		break;
 
@@ -301,6 +309,7 @@ void Timer::but_up_right(){
 	
 		state=timer;
 		end_blink=false;
+		cancel_vibration(timer_vibrator_task);
 		display();
 		
 		break;
@@ -363,6 +372,7 @@ void Timer::but_down_left(){
 		
 		state=timer;
 		end_blink=false;
+		cancel_vibration(timer_vibrator_task);
 		display();
 		
 		break;
@@ -432,6 +442,7 @@ void Timer::but_down_right(){
 	
 		state=timer;
 		end_blink=false;
+		cancel_vibration(timer_vibrator_task);
 		display();
 	
 		break;
@@ -482,15 +493,16 @@ void Timer::timer_1s(){
 					timer_running=false;
 					minute_t=0;
 					second_t=0;
-
 					xSemaphoreGive(mutex_timer);
+
+					vibrate(vibration_pattern_power,vibration_pattern_time,vibration_pattern_size, vibration_pattern_repeat, &timer_vibrator_task);
+
 					if(App::curr_app()!=this){
 						App::run_app("Chronograph & Timer");
 					}else{
 						display();
 					}
 					return;
-					//to be continued
 				}else{
 					hour_t--;
 				}
