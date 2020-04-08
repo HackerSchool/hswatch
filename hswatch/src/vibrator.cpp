@@ -1,8 +1,7 @@
 #include "vibrator.h"
-#include <esp32-hal-ledc.h>
 
 #define PWM_FREQ 5000
-#define PWM_CHANNEL 0
+#define PWM_CHANNEL 2
 #define PWM_RESOLUTION 8
 #define PWM_GPIO 32
 

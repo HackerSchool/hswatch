@@ -7,6 +7,14 @@ unsigned char vibration_pattern_repeat = 5;
 
 TaskHandle_t timer_vibrator_task;
 
+unsigned char buzzer_pattern_power[8] = {255,0,255,0,255,0,255,0};
+unsigned int buzzer_pattern_time[8] = {500,500,500,500,500,500,500,1500};
+unsigned int buzzer_pattern_frequency[8] = {2000,2000,2000,2000,2000,2000,2000,2000};
+unsigned char buzzer_pattern_size = 8;
+unsigned char buzzer_pattern_repeat = 3;
+
+TaskHandle_t timer_buzzer_task;
+
 void Timer::start(){
 	display();
 }
@@ -260,6 +268,7 @@ void Timer::but_up_left(){
 		state=timer;
 		end_blink=false;
 		cancel_vibration(timer_vibrator_task);
+		cancel_buzz(timer_buzzer_task);
 		display();
 		break;
 
@@ -310,6 +319,7 @@ void Timer::but_up_right(){
 		state=timer;
 		end_blink=false;
 		cancel_vibration(timer_vibrator_task);
+		cancel_buzz(timer_buzzer_task);
 		display();
 		
 		break;
@@ -373,6 +383,7 @@ void Timer::but_down_left(){
 		state=timer;
 		end_blink=false;
 		cancel_vibration(timer_vibrator_task);
+		cancel_buzz(timer_buzzer_task);
 		display();
 		
 		break;
@@ -443,6 +454,7 @@ void Timer::but_down_right(){
 		state=timer;
 		end_blink=false;
 		cancel_vibration(timer_vibrator_task);
+		cancel_buzz(timer_buzzer_task);
 		display();
 	
 		break;
@@ -496,6 +508,7 @@ void Timer::timer_1s(){
 					xSemaphoreGive(mutex_timer);
 
 					vibrate(vibration_pattern_power,vibration_pattern_time,vibration_pattern_size, vibration_pattern_repeat, &timer_vibrator_task);
+					buzz(buzzer_pattern_power,buzzer_pattern_time,buzzer_pattern_frequency,buzzer_pattern_size,buzzer_pattern_repeat,&timer_buzzer_task);
 
 					if(App::curr_app()!=this){
 						App::run_app("Chronograph & Timer");

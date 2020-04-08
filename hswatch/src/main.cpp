@@ -10,6 +10,7 @@
 #include "menu.h"
 #include "logo_app.h"
 #include "vibrator.h"
+#include "buzzer.h"
 
 //Include App go here
 #include "timer.h"
@@ -63,6 +64,7 @@ void setup() {
 	init_bluetooth("HSWatch");
 	init_display();
 	init_vibrator();
+	init_buzzer();
 
 	queue_display = new QueueHandle_t();
 
