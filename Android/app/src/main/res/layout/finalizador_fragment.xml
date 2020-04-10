@@ -1,7 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimaryDark">
+    android:background="@color/colorPrimary"
+    android:padding="24dp">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        android:id="@+id/finalizadorTitulo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="78dp"
+        android:text="@string/finalizador_titulo"
+        android:textAllCaps="true"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textStyle="bold"
+        android:layout_centerHorizontal="true"
+        android:textColor="#ffffffff"/>
+
+
+    <TextView
+        android:id="@+id/finalizadorTexto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/finalizador_texto"
+        android:layout_below="@+id/finalizadorTitulo"
+        android:paddingTop="90dp"
+        android:paddingStart="12dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textStyle="bold"
+        android:textColor="#ffffffff" />
+
+    <ImageView
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:src="@drawable/ic_check_black_24dp"
+        android:layout_below="@id/finalizadorTexto"
+        android:layout_centerHorizontal="true"
+        android:paddingTop="12dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/finalizadorBtn"
+        android:text="@string/finalizador_sub_texto"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textStyle="bold"
+        android:paddingBottom="48dp"
+        android:paddingStart="12dp"
+        android:textColor="#ffffffff"/>
+
+    <Button
+        android:id="@+id/finalizadorBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:text="@string/apresentadorBtn"
+        android:textAppearance="@style/TextAppearance.AppCompat.Button"
+        android:background="@drawable/estilo_butao" />
+
+</RelativeLayout>

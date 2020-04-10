@@ -6,4 +6,9 @@
         <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
 
+    <style name="MenuLateral" parent="AppTheme.NoActionBar">
+        <item name="android:windowBackground">@drawable/menu_lateral</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+    </style>
+
 </resources>

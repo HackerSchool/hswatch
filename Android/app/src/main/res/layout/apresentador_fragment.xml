@@ -2,31 +2,30 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="#6DBA83"
+    android:background="@color/colorPrimary"
     android:padding="24dp">
 
     <TextView
         android:id="@+id/apresentadorTitulo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingTop="156dp"
+        android:paddingTop="78dp"
         android:text="@string/apresentadorTitulo"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textStyle="bold"
-        android:layout_centerHorizontal="true"/>
-
+        android:layout_centerHorizontal="true"
+        android:textColor="#ffffffff"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/apresentadorTitulo"
         android:layout_gravity="center"
         android:text="@string/apresentadorSubTitulo"
-        android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textStyle="bold"
-        android:padding="12dp"/>
+        android:paddingTop="90dp"
+        android:textColor="#ffffffff"/>
 
     <Button
         android:id="@+id/apresentadorBtn"
@@ -34,7 +33,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:text="@string/apresentadorBtn"/>
+        android:text="@string/apresentadorBtn"
+        android:textAppearance="@style/TextAppearance.AppCompat.Button"
+        android:background="@drawable/estilo_butao" />
 
 
 </RelativeLayout>

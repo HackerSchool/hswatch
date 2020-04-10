@@ -5,4 +5,9 @@
     <color name="colorAccent">#D81B60</color>
     <color name="HS_Primario">#6DBA83</color>
     <color name="HS_Logo">#6bba75</color>
+    <color name="HS_Circ_1">#3a7d44</color>
+    <color name="HS_Circ_2">#4b8855</color>
+    <color name="HS_Circ_3">#5d9466</color>
+    <color name="HS_Circ_4">#81ac88</color>
+    <color name="HS_Circ_5">#e9e9e9</color>
 </resources>

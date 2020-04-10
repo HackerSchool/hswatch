@@ -33,8 +33,8 @@ public class sem_bt extends AppCompatActivity {
         public boolean onTouch(View v, MotionEvent event) {
             if (event.getAction() == MotionEvent.ACTION_DOWN && BluetoothAdapter.getDefaultAdapter().isEnabled()) {
                 v.performClick();
-                Log.v(TAG, "Clicki" + "\t" + (event.getAction() == MotionEvent.ACTION_DOWN) + "\t" + BluetoothAdapter.getDefaultAdapter().isEnabled());
-                startActivity(new Intent(getApplicationContext(), atividade_config.class));
+//                Log.v(TAG, "Clicki" + "\t" + (event.getAction() == MotionEvent.ACTION_DOWN) + "\t" + BluetoothAdapter.getDefaultAdapter().isEnabled());
+                finish();
                 return true;
             }
             return false;

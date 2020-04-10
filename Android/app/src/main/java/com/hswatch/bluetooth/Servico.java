@@ -20,10 +20,6 @@ import com.hswatch.R;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.text.DateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
 import androidx.annotation.Nullable;
@@ -55,7 +51,7 @@ public class Servico extends Service {
 //    Inicialização de variáveis
     Character[] caracteres;
     StringBuilder mensagemRecebida;
-    Map<String, String> semana = new HashMap<>();
+    String dispositivoEscolhido;
 
     @Override
     public void onCreate() {
@@ -84,7 +80,7 @@ public class Servico extends Service {
         intentFilterServico.addAction(BluetoothDevice.ACTION_ACL_CONNECTED);
         registerReceiver(recetor, intentFilterServico);
 
-        String dispositivoEscolhido = intent.getStringExtra(getResources().getString(R.string.ServicoDisp));
+        dispositivoEscolhido = intent.getStringExtra(getResources().getString(R.string.ServicoDisp));
 
         Intent notificacaoIntent = new Intent(this, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificacaoIntent, 0);
@@ -105,10 +101,6 @@ public class Servico extends Service {
                 dispositivoBluetooth = dispositivo;
                 break;
             }
-        }
-        String[] semanaArray = getResources().getStringArray(R.array.nomes_semana);
-        for (int i = 1; i <= semanaArray.length; i++) {
-            semana.put(semanaArray[i - 1], String.valueOf(i));
         }
 
 //        Iniciar Thread de conexão
@@ -161,17 +153,8 @@ public class Servico extends Service {
             stopSelf();
         }
     }
-    void tempo () {
-        String[] mensagem = {
-                DateFormat.getTimeInstance().format(new Date()).split(":")[0],
-                DateFormat.getTimeInstance().format(new Date()).split(":")[1],
-                DateFormat.getTimeInstance().format(new Date()).split(":")[2],
-                DateFormat.getDateInstance().format(new Date()).split("/")[0],
-                DateFormat.getDateInstance().format(new Date()).split("/")[1],
-                DateFormat.getDateInstance().format(new Date()).split("/")[2],
-                semana.get(DateFormat.getDateInstance(DateFormat.FULL)
-                        .format(new Date()).split(",")[0])
-        };
+    void tempo (Profile profile) {
+        String[] mensagem = profile.recetorTempo();
         if (threadConectado != null) {
             threadConectado.escrever("TIM".getBytes());
             for (String msg : mensagem) {
@@ -258,6 +241,8 @@ public class Servico extends Service {
         private final InputStream inputStream;
         private final OutputStream outputStream;
 
+        private final Profile profileDispositivo;
+
         ThreadConectado(BluetoothSocket bluetoothsocket) {
             bluetoothSocket = bluetoothsocket;
             InputStream inputStreamL = null;
@@ -274,15 +259,17 @@ public class Servico extends Service {
             estadoAtual = getResources().getInteger(R.integer.ESTADO_CONECTADO);
             Intent sinalVerde = new Intent(getResources().getString(R.string.LISTAR_FRAG));
             sinalVerde.putExtra(getResources().getString(R.string.SINAL_VERDE), true);
+            sinalVerde.putExtra(getResources().getString(R.string.NOME), dispositivoEscolhido);
             sendBroadcast(sinalVerde);
+            Log.v(TAG, "Foi mandado o sinal verde!");
+            profileDispositivo = new Profile(getApplicationContext(), dispositivoBluetooth.getName());
         }
 
         @Override
         public void run() {
             byte bytes;
             int bufferposition = 0;
-            Objeto verificador = new Objeto();
-            tempo();
+            tempo(profileDispositivo);
             while (estadoAtual == getResources().getInteger(R.integer.ESTADO_CONECTADO)){
                 try{
                     int bytesavailable = inputStream.available();
@@ -294,9 +281,9 @@ public class Servico extends Service {
                         for (int i=0; i<bytesavailable; i++){
                             bytes = buffer[i];
                             if (bufferposition == 7) {
-                                for (Character caractere : caracteres) {
-                                    if (caractere != null) {
-                                        mensagemRecebida.append(caractere.toString());
+                                for (Character caracteres : caracteres) {
+                                    if (caracteres != null) {
+                                        mensagemRecebida.append(caracteres.toString());
                                     }
                                 }
                                 bufferposition = 0;
@@ -310,10 +297,11 @@ public class Servico extends Service {
                     conexaoPerdida();
                     break;
                 }
-                if (verificador.passagem_de_hora() == true){
+                if (profileDispositivo.passagem_de_hora()){
                     Log.i(TAG, "Passou o tempo!");
-                    tempo();
+                    tempo(profileDispositivo);
                 }
+
             }
         }
 

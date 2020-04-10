@@ -1,5 +1,6 @@
 package com.hswatch;
 
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,4 +45,5 @@ public class paginaPrincipal extends Fragment {
             }
         });
     }
+
 }

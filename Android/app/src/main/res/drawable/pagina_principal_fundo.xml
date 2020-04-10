@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="#e9e9e9"/>
+        </shape>
+    </item>
+    <item android:gravity="top">
+        <shape android:shape="rectangle">
+            <size android:height="260dp"/>
+            <corners android:bottomLeftRadius="@dimen/raio_pagina_principal_toolbar"
+                android:bottomRightRadius="@dimen/raio_pagina_principal_toolbar"/>
+            <solid android:color="@color/HS_Circ_4"/>
+        </shape>
+    </item>
+    <item android:gravity="top">
+        <shape android:shape="rectangle">
+            <size android:height="230dp"/>
+            <corners android:bottomLeftRadius="@dimen/raio_pagina_principal_toolbar"
+                android:bottomRightRadius="@dimen/raio_pagina_principal_toolbar"/>
+            <solid android:color="@color/HS_Circ_3"/>
+        </shape>
+    </item>
+    <item android:gravity="top">
+        <shape android:shape="rectangle">
+            <size android:height="200dp"/>
+            <corners android:bottomLeftRadius="@dimen/raio_pagina_principal_toolbar"
+                android:bottomRightRadius="@dimen/raio_pagina_principal_toolbar"/>
+            <solid android:color="@color/HS_Circ_1"/>
+        </shape>
+    </item>
+</layer-list>

@@ -3,17 +3,23 @@
     <string name="navigation_abrir">Abrir menu lateral</string>
     <string name="navigation_fechar">Fechar menu lateral</string>
     <string name="apresentadorTitulo">CONFIGURAÇÃO DO RELÓGIO</string>
-    <string name="apresentadorSubTitulo">É necessária a conexão ao relógio a fim de poder utilizar a aplicação</string>
+    <string name="apresentadorSubTitulo">Vai configurar o relógio à aplicação HSWatch e a partir daí serão gerenciadas todas as trocas de dados entre a aplicação e o relógio. Carregue no botão para começar!</string>
     <string name="apresentadorBtn">Ligar</string>
     <string name="listarTitulo">Selecione o dispositivo</string>
     <string name="ServicoDisp">hswatch.Servico.BTDispositivo</string>
     <string name="SINAL_VERDE">sinal.verde.bt</string>
     <string name="LISTAR_FRAG">hswatch.fragment.listar</string>
+    <string name="FINALIZAR_FRAG">hswatch.fragment.finalizador</string>
     <string name="semBTTitulo">Tem o Bluetooth desligado!</string>
     <string name="semBTTexto">Ative o Bluetooth e depois carregue neste ecrã para começar a sua experiência com o HSWatch!</string>
     <string name="SINAL_NOT">sinal.notificacao.servico</string>
     <string name="ELEMENTO">sinal.elemento.not</string>
     <string name="domingo">DOMINGO</string>
+    <string name="AVISO_NOT_LIST">O HSWatch necessita do acesso às notificações para o seu funcionamento e de efeitos de demonstragem.\nDeseja ativar a leitura das notificações?</string>
+    <string name="finalizador_titulo">Conexão realizada com sucesso!</string>
+    <string name="finalizador_texto">Agora tem o relógio conectado com a aplicação HSWatch! Carregue no botão para começar a personalizar e definir os seus novos parâmetros.</string>
+    <string name="finalizador_sub_texto">Esperemos que desfrute ao máximo da sua aplicação daqui para a frente!</string>
+    <string name="NOME">sinal.nome</string>
 
     <string-array name="nomes_semana">
         <item>domingo</item>

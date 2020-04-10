@@ -4,4 +4,5 @@
     <integer name="ESTADO_CONECTANDO">2</integer>
     <integer name="ESTADO_CONECTADO">3</integer>
     <integer name="ATIVAR_BT">1</integer>
+
 </resources>

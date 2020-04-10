@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:opacity="translucent">
+
+    <item android:drawable="@color/HS_Circ_5"/>
+
+    <item>
+        <bitmap android:src="@drawable/sem_fundo_hs"
+            android:gravity="center"
+            android:filter="false"
+            android:alpha=".5"/>
+    </item>
+</layer-list>

@@ -3,9 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#E9E9E9"
     android:orientation="vertical"
-    android:padding="12dp">
+    android:padding="12dp"
+    android:background="@drawable/pagina_principal_fundo"
+    android:id="@+id/paginaPrincipalLayout">
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="wrap_content"
@@ -17,7 +18,7 @@
         <ImageView
             android:layout_width="128dp"
             android:layout_height="128dp"
-            android:src="@drawable/ic_hs_logo" />
+            android:src="@drawable/sem_fundo_hs" />
 
         <TextView
             android:id="@+id/txt_estado"
@@ -31,7 +32,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rec_frag"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_marginTop="12dp"
         android:layout_marginBottom="12dp"
         android:scrollbars="vertical"

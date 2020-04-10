@@ -36,12 +36,12 @@ public class apresentador_fragment extends Fragment {
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        Button seguidor = view.findViewById(R.id.apresentadorBtn);
-        seguidor.setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.apresentadorBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (verificador) {
                     ((atividade_config) Objects.requireNonNull(getActivity())).seguir_fragment();
+                    ((atividade_config) Objects.requireNonNull(getActivity())).listaBluetooth(true);
                     verificador = false;
                 } else {
                     startActivityForResult(new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE), getResources().getInteger(R.integer.ATIVAR_BT));
@@ -56,6 +56,7 @@ public class apresentador_fragment extends Fragment {
         if (requestCode == getResources().getInteger(R.integer.ATIVAR_BT) && resultCode == RESULT_OK){
             verificador = true;
             ((atividade_config) Objects.requireNonNull(getActivity())).seguir_fragment();
+            ((atividade_config) Objects.requireNonNull(getActivity())).listaBluetooth(true);
         }
     }
 

@@ -1,15 +1,13 @@
 package com.hswatch;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.bluetooth.BluetoothAdapter;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.provider.Settings;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.hswatch.bluetooth.sem_bt;
@@ -27,7 +25,9 @@ public class atividade_splash extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_atividade_splash);
-        verificacao_Inicial();
+        startActivity(new Intent(this, MainActivity.class));
+//        verificacao_Inicial();
+//        startActivityForResult(new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE), getResources().getInteger(R.integer.ATIVAR_BT));
     }
 
     private void verificacao_Inicial() {
@@ -35,29 +35,6 @@ public class atividade_splash extends AppCompatActivity {
         if (radioBT == null){
             Toast.makeText(this, "Bluetooth Indisponível!", Toast.LENGTH_LONG).show();
             finish();
-        }
-        String notificationListenerString = Settings.Secure.getString(this.getContentResolver(),"enabled_notification_listeners");
-        //Check notifications access permission
-        if (notificationListenerString == null || !notificationListenerString.contains(getPackageName()))
-        {
-            //The notification access has not acquired yet!
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage("O HSWatch necessita do acesso às notificações para o seu funcionamento e de efeitos de demonstragem.\nDeseja ativar a leitura das notificações?")
-                    .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            startActivity(new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"));
-                            startActivityForResult(new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE), getResources().getInteger(R.integer.ATIVAR_BT));
-                        }
-                    })
-                    .setNegativeButton("Não", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.cancel();
-                            finish();
-                        }
-                    });
-            builder.create().show();
         }
     }
 
