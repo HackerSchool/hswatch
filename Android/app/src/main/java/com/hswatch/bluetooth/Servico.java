@@ -20,6 +20,8 @@ import com.hswatch.R;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
 import androidx.annotation.Nullable;
@@ -35,7 +37,7 @@ public class Servico extends Service {
 //    UUID
     public static final UUID uid = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 
-//    Estado
+    //    Estado
     private int estadoAtual;
 
 //    Bluetooth
@@ -43,6 +45,11 @@ public class Servico extends Service {
 
 //    BroadcastReceiver
     private Recetor recetor;
+
+//    Chaves do Recetor
+    public static final String ACAO_SERVICO_NOT = "sinal.notificacao.servico";
+    public static final String ELEMENTO_SERVICO_NOT = "sinal.elemento.not";
+    public static final String ACAO_SERVICO_TEMPO_API = "sinal.api_tempo.servico";
 
 //    Thread's
     ThreadConexao threadConexao;
@@ -78,6 +85,8 @@ public class Servico extends Service {
         IntentFilter intentFilterServico = new IntentFilter();
         intentFilterServico.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
         intentFilterServico.addAction(BluetoothDevice.ACTION_ACL_CONNECTED);
+        intentFilterServico.addAction(ACAO_SERVICO_NOT);
+        intentFilterServico.addAction(ACAO_SERVICO_TEMPO_API);
         registerReceiver(recetor, intentFilterServico);
 
         dispositivoEscolhido = intent.getStringExtra(getResources().getString(R.string.ServicoDisp));
@@ -166,7 +175,6 @@ public class Servico extends Service {
     }
 
     public class Recetor extends BroadcastReceiver {
-
         @Override
         public void onReceive(Context context, Intent intent) {
             final String acao = intent.getAction();
@@ -182,6 +190,18 @@ public class Servico extends Service {
                     break;
                 case BluetoothDevice.ACTION_ACL_DISCONNECTED:
                     Toast.makeText(getApplicationContext(), "Perdida a conexão Bluetooth", Toast.LENGTH_SHORT).show();
+                    conexaoPerdida();
+                    break;
+                case ACAO_SERVICO_NOT:
+                    if (threadConectado != null) {
+                        try{
+                            threadConectado.escrever(intent.getByteArrayExtra(ELEMENTO_SERVICO_NOT));
+                        } catch (Exception e){
+                            Log.e(TAG, "Chatice pah...", e);
+                        }
+                    }
+                    break;
+                default:break;
             }
         }
     }
@@ -282,7 +302,7 @@ public class Servico extends Service {
                             bytes = buffer[i];
                             if (bufferposition == 7) {
                                 for (Character caracteres : caracteres) {
-                                    if (caracteres != null) {
+                                    if (caracteres != null && !caracteres.equals(Arrays.toString(NotificationListener.delimitador))) {
                                         mensagemRecebida.append(caracteres.toString());
                                     }
                                 }
@@ -290,6 +310,15 @@ public class Servico extends Service {
                             } else {
                                 caracteres[bufferposition++] = (char) bytes;
                             }
+                        }
+                        if (mensagemRecebida.equals("MET")) {
+                            List<String> mensagemTemperatura = profileDispositivo.jsonParserTempo();
+                            threadConectado.escrever("MET".getBytes());
+                            for (int i = 0; i < mensagemTemperatura.size(); i++) {
+                                threadConectado.escrever(NotificationListener.separador);
+                                threadConectado.escrever(mensagemTemperatura.get(i).getBytes());
+                            }
+                            threadConectado.escrever(NotificationListener.delimitador);
                         }
                     }
                 } catch (IOException e){

@@ -12,8 +12,6 @@
     <string name="FINALIZAR_FRAG">hswatch.fragment.finalizador</string>
     <string name="semBTTitulo">Tem o Bluetooth desligado!</string>
     <string name="semBTTexto">Ative o Bluetooth e depois carregue neste ecrã para começar a sua experiência com o HSWatch!</string>
-    <string name="SINAL_NOT">sinal.notificacao.servico</string>
-    <string name="ELEMENTO">sinal.elemento.not</string>
     <string name="domingo">DOMINGO</string>
     <string name="AVISO_NOT_LIST">O HSWatch necessita do acesso às notificações para o seu funcionamento e de efeitos de demonstragem.\nDeseja ativar a leitura das notificações?</string>
     <string name="finalizador_titulo">Conexão realizada com sucesso!</string>

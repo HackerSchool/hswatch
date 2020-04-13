@@ -8,8 +8,6 @@ import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
 import android.util.Log;
 
-import com.hswatch.R;
-
 import java.text.DateFormat;
 import java.util.Date;
 
@@ -27,7 +25,7 @@ public class NotificationListener extends NotificationListenerService {
     public void onCreate() {
         super.onCreate();
         notificationListenerRecetor = new NotificationListenerRecetor();
-        IntentFilter intentFilter = new IntentFilter(getResources().getString(R.string.SINAL_NOT));
+        IntentFilter intentFilter = new IntentFilter(Servico.ACAO_SERVICO_NOT);
         registerReceiver(notificationListenerRecetor, intentFilter);
     }
 
@@ -63,16 +61,16 @@ public class NotificationListener extends NotificationListenerService {
         try {
             for (String elemento : msg){
                 indexelemento ++;
-                Intent notificacaoRecebida = new Intent(getResources().getString(R.string.SINAL_NOT));
-                notificacaoRecebida.putExtra(getResources().getString(R.string.ELEMENTO), elemento.getBytes());
+                Intent notificacaoRecebida = new Intent(Servico.ACAO_SERVICO_NOT);
+                notificacaoRecebida.putExtra(Servico.ELEMENTO_SERVICO_NOT, elemento.getBytes());
                 sendBroadcast(notificacaoRecebida);
                 if (elemento.equals(texto)) {
-                    Intent notdelimitador = new Intent(getResources().getString(R.string.SINAL_NOT))
-                            .putExtra(getResources().getString(R.string.ELEMENTO), delimitador);
+                    Intent notdelimitador = new Intent(Servico.ACAO_SERVICO_NOT)
+                            .putExtra(Servico.ELEMENTO_SERVICO_NOT, delimitador);
                     sendBroadcast(notdelimitador);
                 } else {
-                    Intent notseparador = new Intent(getResources().getString(R.string.SINAL_NOT))
-                            .putExtra(getResources().getString(R.string.ELEMENTO), separador);
+                    Intent notseparador = new Intent(Servico.ACAO_SERVICO_NOT)
+                            .putExtra(Servico.ELEMENTO_SERVICO_NOT, separador);
                     sendBroadcast(notseparador);
                 }
             }
