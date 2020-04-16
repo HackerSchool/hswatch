@@ -1,6 +1,5 @@
 package com.hswatch;
 
-import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +23,7 @@ public class paginaPrincipal extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         opcoesItems.add(new opcoesItem(R.drawable.ic_bluetooth_black_24dp, "Configurações de conexão"));
         opcoesItems.add(new opcoesItem(R.drawable.ic_access_alarm_black_24dp, "Alarme"));
+        opcoesItems.add(new opcoesItem(R.drawable.ic_notifications_black_24dp, "Notificações"));
         return inflater.inflate(R.layout.fragment_disp, container, false);
     }
 
@@ -40,10 +40,27 @@ public class paginaPrincipal extends Fragment {
         OpcoesAdapter.setOnitemclicklistener(new opcoesAdapter.onItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                Toast.makeText(getContext(), "Cliqou no " + position, Toast.LENGTH_LONG).show();
+                acaoItem(position);
 //                começar atividade
             }
         });
+    }
+
+    private void acaoItem(int position) {
+        switch (position) {
+            case 0:
+                Toast.makeText(getContext(), "Ativar configurações da conexão - Tempo de refresh", Toast.LENGTH_LONG).show();
+                break;
+            case 1:
+                Toast.makeText(getContext(), "Ativar Alarme - configurações dos alarmes e mais", Toast.LENGTH_LONG).show();
+                break;
+            case 2:
+                Toast.makeText(getContext(), "Ativar Notificações - Verificar para quais aplicações o relógio mostra e história do que foi mandado", Toast.LENGTH_LONG).show();
+                break;
+            default:
+                Toast.makeText(getContext(), "Fora de alcance" + position, Toast.LENGTH_LONG).show();
+                break;
+        }
     }
 
 }

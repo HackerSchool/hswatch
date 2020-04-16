@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="raio_pagina_principal_toolbar">40dp</dimen>
+    <dimen name="DEF_Titulo">24sp</dimen>
+    <dimen name="DEF_TextMin">12sp</dimen>
+    <dimen name="DEF_Text">18sp</dimen>
 </resources>

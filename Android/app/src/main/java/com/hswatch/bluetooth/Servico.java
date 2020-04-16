@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.hswatch.MainActivity;
 import com.hswatch.R;
+import com.hswatch.definicoes;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -50,6 +51,7 @@ public class Servico extends Service {
     public static final String ACAO_SERVICO_NOT = "sinal.notificacao.servico";
     public static final String ELEMENTO_SERVICO_NOT = "sinal.elemento.not";
     public static final String ACAO_SERVICO_TEMPO_API = "sinal.api_tempo.servico";
+    public static final String  ACAO_SERVICO_DEFINICOES = "sinal.servico.definicoes";
 
 //    Thread's
     ThreadConexao threadConexao;
@@ -59,6 +61,9 @@ public class Servico extends Service {
     Character[] caracteres;
     StringBuilder mensagemRecebida;
     String dispositivoEscolhido;
+
+//    Perfile do dispositivo
+    private Profile profileDispositivo;
 
     @Override
     public void onCreate() {
@@ -87,6 +92,7 @@ public class Servico extends Service {
         intentFilterServico.addAction(BluetoothDevice.ACTION_ACL_CONNECTED);
         intentFilterServico.addAction(ACAO_SERVICO_NOT);
         intentFilterServico.addAction(ACAO_SERVICO_TEMPO_API);
+        intentFilterServico.addAction(definicoes.ACAO_DEFINICOES_SERVICO);
         registerReceiver(recetor, intentFilterServico);
 
         dispositivoEscolhido = intent.getStringExtra(getResources().getString(R.string.ServicoDisp));
@@ -162,6 +168,7 @@ public class Servico extends Service {
             stopSelf();
         }
     }
+
     void tempo (Profile profile) {
         String[] mensagem = profile.recetorTempo();
         if (threadConectado != null) {
@@ -199,6 +206,29 @@ public class Servico extends Service {
                         } catch (Exception e){
                             Log.e(TAG, "Chatice pah...", e);
                         }
+                    }
+                    break;
+                case definicoes.ACAO_DEFINICOES_SERVICO:
+                    if (profileDispositivo != null && threadConectado != null) {
+                        if (intent.getStringExtra(definicoes.DIRETIVA).equals("alterar")) {
+                            profileDispositivo.alterarCidade();
+                        } else {
+                            Intent requesitoLimpar = new Intent(ACAO_SERVICO_DEFINICOES)
+                                    .putExtra(definicoes.DIRETIVA, "limpar");
+                            sendBroadcast(requesitoLimpar);
+                            for (String cidade : profileDispositivo.getIdCidade().keySet()) {
+                                Log.v(TAG, "Mandar cidade para o spinner");
+                                Intent requesitoCidade = new Intent(ACAO_SERVICO_DEFINICOES)
+                                        .putExtra(definicoes.DIRETIVA, cidade);
+                                sendBroadcast(requesitoCidade);
+                            }
+                            sendBroadcast(new Intent(ACAO_SERVICO_DEFINICOES).
+                                    putExtra(definicoes.DIRETIVA, "ativar"));
+                        }
+                    } else {
+                        Intent requesitoLimpar = new Intent(ACAO_SERVICO_DEFINICOES)
+                                .putExtra(definicoes.DIRETIVA, "Erro");
+                        sendBroadcast(requesitoLimpar);
                     }
                     break;
                 default:break;
@@ -261,8 +291,6 @@ public class Servico extends Service {
         private final InputStream inputStream;
         private final OutputStream outputStream;
 
-        private final Profile profileDispositivo;
-
         ThreadConectado(BluetoothSocket bluetoothsocket) {
             bluetoothSocket = bluetoothsocket;
             InputStream inputStreamL = null;
@@ -302,7 +330,8 @@ public class Servico extends Service {
                             bytes = buffer[i];
                             if (bufferposition == 7) {
                                 for (Character caracteres : caracteres) {
-                                    if (caracteres != null && !caracteres.equals(Arrays.toString(NotificationListener.delimitador))) {
+                                    if (caracteres != null && !caracteres.toString().equals(Arrays
+                                            .toString(NotificationListener.delimitador))) {
                                         mensagemRecebida.append(caracteres.toString());
                                     }
                                 }
@@ -311,7 +340,7 @@ public class Servico extends Service {
                                 caracteres[bufferposition++] = (char) bytes;
                             }
                         }
-                        if (mensagemRecebida.equals("MET")) {
+                        if (mensagemRecebida.toString().equals("MET")) {
                             List<String> mensagemTemperatura = profileDispositivo.jsonParserTempo();
                             threadConectado.escrever("MET".getBytes());
                             for (int i = 0; i < mensagemTemperatura.size(); i++) {

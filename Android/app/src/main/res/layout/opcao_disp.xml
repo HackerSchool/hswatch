@@ -16,9 +16,9 @@
         android:id="@+id/op_txt"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text=" "
+        android:text="Algo"
         android:layout_weight="1"
         android:layout_gravity="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textAppearance="@style/TextAppearance.AppCompat.Inverse"
         />
 </androidx.appcompat.widget.LinearLayoutCompat>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CheckedTextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="?attr/dropdownListPreferredItemHeight"
+    android:background="#e9e9e9"
+    android:textAlignment="center"
+    android:textSize="@dimen/DEF_Text"
+    android:textColor="@android:color/black"
+    android:padding="4dp"/>

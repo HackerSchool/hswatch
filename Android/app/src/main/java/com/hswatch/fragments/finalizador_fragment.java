@@ -31,6 +31,7 @@ public class finalizador_fragment extends Fragment {
             public void onClick(View v) {
                 ((atividade_config) Objects.requireNonNull(getActivity())).guardarDispositivo();
                 startActivity(new Intent(getContext(), MainActivity.class));
+                getActivity().finish();
             }
         });
     }

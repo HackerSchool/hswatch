@@ -18,6 +18,14 @@
     <string name="finalizador_texto">Agora tem o relógio conectado com a aplicação HSWatch! Carregue no botão para começar a personalizar e definir os seus novos parâmetros.</string>
     <string name="finalizador_sub_texto">Esperemos que desfrute ao máximo da sua aplicação daqui para a frente!</string>
     <string name="NOME">sinal.nome</string>
+    <string name="MENU_CASA">Página Principal</string>
+    <string name="MENU_DISPOSITIVOS">Dispositivos</string>
+    <string name="MENU_ADICIONAR">Adicionar novo dispositivo</string>
+    <string name="MENU_DEFINICOES">Definições</string>
+    <string name="DEF_UNIDADE">Unidade de temperatura</string>
+    <string name="DEF_TEMPO_TITULO">Meteorologia</string>
+    <string name="DEF_CIDADE">Cidade escolhida</string>
+    <string name="DEF_APAGAR_DADOS">Repor dados</string>
 
     <string-array name="nomes_semana">
         <item>domingo</item>

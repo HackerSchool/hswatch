@@ -31,6 +31,8 @@ import androidx.fragment.app.Fragment;
 
 public class listar_fragment extends Fragment {
 
+    public static final String TAG = "hswatch.frag.listar";
+
 //    Objetos UI
     private ListView listView;
 
@@ -73,8 +75,8 @@ public class listar_fragment extends Fragment {
             for (BluetoothDevice disp : setBT){
                 nomes.add(disp.getName());
             }
-            listView.setEnabled(true);
-            ArrayAdapter<String> listaNomes = new ArrayAdapter<>(Objects.requireNonNull(getContext()), android.R.layout.simple_expandable_list_item_1, nomes);
+            ArrayAdapter<String> listaNomes = new ArrayAdapter<>(Objects.requireNonNull(getContext()),
+                    R.layout.lista_emparelhados_layout, nomes);
             listView.setAdapter(listaNomes);
         }
     }

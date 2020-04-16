@@ -5,7 +5,7 @@
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:name=".App"
@@ -16,26 +16,33 @@
         android:roundIcon="@mipmap/ic_launcher_hs_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".atividade_splash"
+        <activity android:name=".definicoes"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".atividade_splash"
             android:theme="@style/SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter></activity>
+            </intent-filter>
+        </activity>
         <activity android:name=".bluetooth.sem_bt" />
         <activity
             android:name=".fragments.atividade_config"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".MainActivity"
-            android:theme="@style/MenuLateral">
-        </activity>
+            android:theme="@style/MenuLateral"/>
+
         <service android:name=".bluetooth.Servico" />
-        <service android:name=".bluetooth.NotificationListener"
+        <service
+            android:name=".bluetooth.NotificationListener"
             android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
-        <intent-filter>
-            <action android:name="android.service.notification.NotificationListenerService"/>
-        </intent-filter>
+            <intent-filter>
+                <action android:name="android.service.notification.NotificationListenerService" />
+            </intent-filter>
         </service>
     </application>
+
 </manifest>

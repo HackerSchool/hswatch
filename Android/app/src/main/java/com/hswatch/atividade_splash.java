@@ -7,7 +7,6 @@ import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.hswatch.bluetooth.sem_bt;
@@ -24,7 +23,7 @@ public class atividade_splash extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_atividade_splash);
+        setContentView(R.layout.activity_splash);
         startActivity(new Intent(this, MainActivity.class));
 //        verificacao_Inicial();
 //        startActivityForResult(new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE), getResources().getInteger(R.integer.ATIVAR_BT));
@@ -58,6 +57,7 @@ public class atividade_splash extends AppCompatActivity {
             startActivity(new Intent(this, MainActivity.class));
         } else {
             startActivity(new Intent(this, atividade_config.class));
+            finish();
         }
     }
 }

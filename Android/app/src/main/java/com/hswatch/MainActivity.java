@@ -1,5 +1,6 @@
 package com.hswatch;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,10 +10,19 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.view.MenuItem;
 
-public class MainActivity extends AppCompatActivity {
+import com.google.android.material.navigation.NavigationView;
+import com.hswatch.fragments.atividade_config;
+
+import static com.hswatch.atividade_splash.HISTORIA_PREFS;
+import static com.hswatch.fragments.atividade_config.NOME;
+import static com.hswatch.fragments.atividade_config.VERIFICADOR;
+
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout drawerLayout;
     Toolbar toolbar;
@@ -25,10 +35,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
 //        Iniciar Menu Lateral
-        iniciarEcraPrinciapal();
-
-//        Permissoes
-        configurarNotifcacoes();
+        iniciarEcraPrinciapal(savedInstanceState);
     }
 
     void configurarNotifcacoes() {
@@ -55,14 +62,22 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void iniciarEcraPrinciapal() {
+    private void iniciarEcraPrinciapal(Bundle savedInstanceState) {
         drawerLayout = findViewById(R.id.atividade_principal);
+        NavigationView navigationView = findViewById(R.id.navigation_view);
+        navigationView.setNavigationItemSelectedListener(this);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
                 R.string.navigation_abrir, R.string.navigation_fechar);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.frame,
+                    new paginaPrincipal()).commit();
+            navigationView.setCheckedItem(R.id.navigation_view);
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.frame, new paginaPrincipal()).commit();
+//        Permissoes
+            configurarNotifcacoes();
+        }
     }
 
 
@@ -73,5 +88,41 @@ public class MainActivity extends AppCompatActivity {
         } else {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+//            Página principal
+            case R.id.casa:
+                getSupportFragmentManager().beginTransaction().replace(R.id.frame,
+                        new paginaPrincipal()).commit();
+                break;
+
+//                Lista de dispositivos guardados (facil de emparelhar no futuro)
+//            case R.id.disp:
+//                getSupportFragmentManager().beginTransaction().replace(R.id.frame,
+//                        new paginaPrincipal()).commit();
+//                break;
+
+//            Iniciar uma nova conexão
+            case R.id.novo:
+                startActivity(new Intent(getApplicationContext(), atividade_config.class));
+                break;
+
+//                Definições
+            case R.id.def:
+                startActivity(new Intent(getApplicationContext(), definicoes.class));
+                break;
+            case R.id.apagar:
+                SharedPreferences sharedPreferences = getSharedPreferences(HISTORIA_PREFS, MODE_PRIVATE);
+                sharedPreferences.edit()
+                        .putString(NOME, "Erro")
+                        .putBoolean(VERIFICADOR, false)
+                        .apply();
+                finishAffinity();
+        }
+        drawerLayout.closeDrawer(GravityCompat.START);
+        return true;
     }
 }

@@ -29,9 +29,9 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class Profile {
 
-    private static final String DEFINICOES = "definicoes_hswatch";
-    private static final String DEFINICOES_UNIDADE_TEMPO = "definicoes_unidade_tempo";
-    private static final String DEFINICOES_CIDADE = "definicoes_cidade";
+    public static final String DEFINICOES = "definicoes_hswatch";
+    public static final String DEFINICOES_UNIDADE_TEMPO = "definicoes_unidade_tempo";
+    public static final String DEFINICOES_CIDADE = "definicoes_cidade";
 
     private RequestQueue requestQueue;
 
@@ -104,12 +104,12 @@ public class Profile {
 
     private int conversorTempo(int valor) {
         SharedPreferences sharedPreferences = this.context.getSharedPreferences(DEFINICOES, MODE_PRIVATE);
-        String unidade = sharedPreferences.getString(DEFINICOES_UNIDADE_TEMPO, "Celsius");
+        String unidade = sharedPreferences.getString(DEFINICOES_UNIDADE_TEMPO, "ºC");
 //        unidade = (unidade != null) ? unidade : "Celsius";
         switch (unidade) {
-            case "Celsius":
+            case "ºC":
                 return valor - 276;
-            case "Fahrenheit":
+            case "ºF":
                 return (int) ((valor-276)*1.8 + 32);
             default:
                 return valor;
