@@ -14,6 +14,7 @@
 
 //Include App go here
 #include "timer.h"
+#include "alarm.h"
 
 #define B_LEFT_UP 18
 #define B_LEFT_DOWN 16
@@ -75,6 +76,7 @@ void setup() {
 	
 	//App Initialization goes here
 	new Timer("CHR","Chronograph & Timer",logo_timer);
+	new Alarm("ALA","Alarm", logo_alarm);
 	
 	new Menu("MEN","Menu",NULL);
 

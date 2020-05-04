@@ -77,5 +77,7 @@ void vibrate_task(void* par_in){
 }
 
 void cancel_vibration(TaskHandle_t task){
+	if(task==NULL)
+		return;
 	xTaskNotifyGive(task);
 }

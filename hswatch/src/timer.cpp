@@ -1,20 +1,5 @@
 #include "timer.h"
 
-unsigned char vibration_pattern_power[2] = {255,0};
-unsigned int vibration_pattern_time[2] = {2000,1000};
-unsigned char vibration_pattern_size = 2;
-unsigned char vibration_pattern_repeat = 5;
-
-TaskHandle_t timer_vibrator_task;
-
-unsigned char buzzer_pattern_power[8] = {255,0,255,0,255,0,255,0};
-unsigned int buzzer_pattern_time[8] = {500,500,500,500,500,500,500,1500};
-unsigned int buzzer_pattern_frequency[8] = {2000,2000,2000,2000,2000,2000,2000,2000};
-unsigned char buzzer_pattern_size = 8;
-unsigned char buzzer_pattern_repeat = 3;
-
-TaskHandle_t timer_buzzer_task;
-
 void Timer::start(){
 	display();
 }
