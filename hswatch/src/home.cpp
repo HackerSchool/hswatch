@@ -121,7 +121,13 @@ void Home::display(){
 	}else{
 		Display::clear();
 
-		Display::drawXbm(0,0,ALARM_ICON_W,ALARM_ICON_H,alarm_icon);
+		if(en_alarm){
+			Display::setFont(arial_10);
+			Display::setTextAlignment(left);
+			Display::drawString(10, 0, s4);
+			Display::drawXbm(0,0,ALARM_ICON_W,ALARM_ICON_H,alarm_icon);
+
+		}
 		Display::drawHorizontalLine(0,12,128);
 
 		Display::setFont(arial_24);
