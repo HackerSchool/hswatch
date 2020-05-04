@@ -1,4 +1,5 @@
 #include "alarm.h"
+#include "home.h"
 
 void Alarm::start(){
 	display();
@@ -255,6 +256,8 @@ void Alarm::but_up_left(){
 
 void Alarm::but_up_right(){
 
+	Home* home = (Home*) App::app_search_by_name("Home");
+
 	if(alarm_off()){
 		return;
 	}
@@ -265,6 +268,7 @@ void Alarm::but_up_right(){
 
 		alarm1 = !alarm1;
 
+		home->alarm1_en=!home->alarm1_en;
 		display();
 
 		break;
@@ -273,6 +277,7 @@ void Alarm::but_up_right(){
 
 		alarm2 = !alarm2;
 
+		home->alarm2_en=!home->alarm2_en;
 		display();
 
 		break;
@@ -281,6 +286,7 @@ void Alarm::but_up_right(){
 
 		alarm3 = !alarm3;
 
+		home->alarm3_en=!home->alarm3_en;
 		display();
 
 		break;

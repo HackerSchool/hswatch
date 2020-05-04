@@ -14,7 +14,21 @@ void Home::start(){
 
 void Home::display(){
 
-	String s="", s2="", s3="";
+	String s="", s2="", s3="", s4="";
+	bool en_alarm=false;
+
+	if(alarm1_en){
+		s4=s4+"1 ";
+		en_alarm=true;
+	}
+	if(alarm2_en){
+		s4=s4+"2 ";
+		en_alarm=true;
+	}
+	if(alarm3_en){
+		s4=s4+"3 ";
+		en_alarm=true;
+	}
 	
 	xSemaphoreTake(mutex_home,portMAX_DELAY);
 
@@ -73,6 +87,13 @@ void Home::display(){
 	if(frame_n==0){
 		Display::clear();
 
+		if(en_alarm){
+			Display::setFont(arial_10);
+			Display::setTextAlignment(left);
+			Display::drawString(10, 0, s4);
+			Display::drawXbm(0,0,ALARM_ICON_W,ALARM_ICON_H,alarm_icon);
+
+		}
 		Display::drawHorizontalLine(0,12,128);
 
 		Display::setFont(arial_24);
@@ -100,6 +121,7 @@ void Home::display(){
 	}else{
 		Display::clear();
 
+		Display::drawXbm(0,0,ALARM_ICON_W,ALARM_ICON_H,alarm_icon);
 		Display::drawHorizontalLine(0,12,128);
 
 		Display::setFont(arial_24);
@@ -378,6 +400,10 @@ Home::Home(String id_in, String name_in, const unsigned char* logo_in): App(id_i
 	week_day = 1;
 
 	xSemaphoreGive(mutex_home);
+
+	alarm1_en=false;
+	alarm2_en=false;
+	alarm3_en=false;
 
 	this->attach_timer();
 }

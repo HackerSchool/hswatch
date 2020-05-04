@@ -20,6 +20,8 @@ class Home: public App {
 		void delete_notification(String);
 		timestamp show_time();
 
+		bool alarm1_en, alarm2_en, alarm3_en;
+
 		Home(String,String,const unsigned char*);
 
 	private:
