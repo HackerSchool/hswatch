@@ -202,6 +202,7 @@ public class Servico extends Service {
                 case ACAO_SERVICO_NOT:
                     if (threadConectado != null) {
                         try{
+                            Toast.makeText(getApplicationContext(), "Recebida mensagem!", Toast.LENGTH_LONG).show();
                             threadConectado.escrever(intent.getByteArrayExtra(ELEMENTO_SERVICO_NOT));
                         } catch (Exception e){
                             Log.e(TAG, "Chatice pah...", e);

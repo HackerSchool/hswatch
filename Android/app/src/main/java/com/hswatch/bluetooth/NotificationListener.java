@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.util.Date;
@@ -41,6 +42,7 @@ public class NotificationListener extends NotificationListenerService {
         NotificacaoRecebida(sbn.getNotification().extras.getString("android.title"),
                 sbn.getNotification().extras.getString("android.text"),
                 sbn.getNotification().category);
+        Toast.makeText(getApplicationContext(), "Recebida mensagem: " + sbn.getNotification().extras.getString("android.text"), Toast.LENGTH_LONG).show();
     }
 
     private void NotificacaoRecebida(String titulo, String texto, String category) {
