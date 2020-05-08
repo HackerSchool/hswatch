@@ -58,6 +58,8 @@ void Alarm::display(){
     xSemaphoreGive(mutex_alarm2);
     xSemaphoreGive(mutex_alarm1);
 
+	Display::drawHorizontalLine(0,12,128);
+
 	if(hour<10){
 		s=s+"0";
 		s=s+String(hour);

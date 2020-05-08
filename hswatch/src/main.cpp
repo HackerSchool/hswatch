@@ -11,10 +11,12 @@
 #include "logo_app.h"
 #include "vibrator.h"
 #include "buzzer.h"
+#include "led.h"
 
 //Include App go here
 #include "timer.h"
 #include "alarm.h"
+#include "weather.h"
 
 #define B_LEFT_UP 18
 #define B_LEFT_DOWN 16
@@ -66,6 +68,7 @@ void setup() {
 	init_display();
 	init_vibrator();
 	init_buzzer();
+	init_led();
 
 	queue_display = new QueueHandle_t();
 
@@ -77,6 +80,7 @@ void setup() {
 	//App Initialization goes here
 	new Timer("CHR","Chronograph & Timer",logo_timer);
 	new Alarm("ALA","Alarm", logo_alarm);
+	new Weather("WEA","Weather", logo_weather);
 	
 	new Menu("MEN","Menu",NULL);
 

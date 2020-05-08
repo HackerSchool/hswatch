@@ -3,7 +3,6 @@
 #include "logo_notification.h"
 
 const unsigned char n_days_in_month[12] = {31,28,31,30,31,30,31,31,30,31,30,31};
-const char week_day_name[7][4] = {"DOM","SEG","TER","QUA","QUI","SEX","SAB"};
 
 int frame_n=0;
 
