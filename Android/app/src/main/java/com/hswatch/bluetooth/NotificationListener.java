@@ -86,6 +86,18 @@ public class NotificationListener extends NotificationListenerService {
         super.onNotificationRemoved(sbn);
     }
 
+    @Override
+    public void onListenerConnected() {
+        super.onListenerConnected();
+        Toast.makeText(getApplicationContext(), "Conectado! Serviço de Notificações está ligado!", Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onListenerDisconnected() {
+        super.onListenerDisconnected();
+        Toast.makeText(getApplicationContext(), "Desconectado! Serviço de Notificações está desligado!", Toast.LENGTH_LONG).show();
+    }
+
     public static class NotificationListenerRecetor extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
