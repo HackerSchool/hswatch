@@ -17,7 +17,7 @@ class Weather: public App {
 
 		const unsigned char* icon_converter(int icon);
 
-		enum State {loading, page1, page2} state;
+		enum State {loading, page1, page2, page3} state;
 		SemaphoreHandle_t mutex_weather;
 		bool available;
 		String location;

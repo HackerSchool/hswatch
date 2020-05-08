@@ -1,4 +1,5 @@
 #include "app.h"
+#include "tools.h"
 
 class Notification: public App {
 
@@ -25,4 +26,24 @@ class Notification: public App {
 		std::list<notification> notification_list;
 		std::list<notification>::iterator index;
 		unsigned char notification_number;
+
+		std::list<notification>::iterator led_notification;
+
+		TaskHandle_t led_task;
+
+		unsigned char pattern_r[2] = {255,0};
+		unsigned char pattern_g[2] = {0,0};
+		unsigned char pattern_b[2] = {0,0};
+		unsigned int led_pattern_time[2] = {2000,2000};
+		unsigned char led_pattern_size = 2;
+		unsigned char led_pattern_repeat = 255;
+
+		led_pattern pattern = {
+			.r=pattern_r,
+			.g=pattern_g,
+			.b=pattern_b,
+			.time=led_pattern_time,
+			.size=led_pattern_size,
+			.repeat=led_pattern_repeat
+		};
 };

@@ -27,6 +27,10 @@ void Notification::display(){
 	unsigned char hour, minute;
 	String title, text, s="", s2="";
 
+	if(index==led_notification){
+		cancel_blink_led(led_task);
+	}
+
 	hour = (*index).hour;
 	minute = (*index).minute;
 	title = *((*index).title);
@@ -183,12 +187,16 @@ void Notification::bt_receive(char* message){
 	xSemaphoreTake(mutex,portMAX_DELAY);
 
 	notification_list.push_front(new_not);
+	led_notification=notification_list.begin();
 
 	xSemaphoreGive(mutex);
 
 	Home* home =(Home*) App::app_search_by_name("Home");
 
 	home->notify(*(new_not.title), *(new_not.text), *(new_not.logo));
+
+	cancel_blink_led(led_task);
+	blink_led(pattern, &led_task);
 }
 
 Notification::Notification(String id_in, String name_in, const unsigned char* logo_in): App(id_in,name_in,logo_in) {

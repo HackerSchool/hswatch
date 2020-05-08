@@ -7,6 +7,9 @@ void Weather::start(){
 
 	send_bt(buf, 5);
 
+	if(state!=loading)
+		state=page1;
+
 	display();
 
 }
@@ -43,8 +46,10 @@ void Weather::display(){
 
 		if(state==page1){
 			n = 0;
+		}else if(state==page2){
+			n = 2;
 		}else{
-			n = 3;
+			n = 4;
 		}
 
 		timestamp t = show_time();
@@ -52,29 +57,29 @@ void Weather::display(){
 		Display::clear();
 
 		Display::setFont(arial_10);
+		Display::setTextAlignment(center);
+
+		Display::drawString(64, 0, location);
+
+		Display::drawHorizontalLine(0,12,128);
+
 		Display::setTextAlignment(left);
+		Display::drawString(15, 15, week_day_name[(t.week_day+n-1)%7]);
+		Display::drawString(84, 15, week_day_name[(t.week_day+n)%7]);
 
-		Serial.println(t.week_day);
-
-		Display::drawString(25, 0, week_day_name[(t.week_day+n-1)%7]);
-		Display::drawString(54, 0, week_day_name[(t.week_day+n)%7]);
-		Display::drawString(100, 0, week_day_name[(t.week_day+n+1)%7]);
-
-		Display::drawXbm(9,16,LOGO_WEATHER_WIDTH,LOGO_WEATHER_HEIGHT,icon_converter(forecast[n].icon));
-		Display::drawXbm(51,16,LOGO_WEATHER_WIDTH,LOGO_WEATHER_HEIGHT,icon_converter(forecast[n+1].icon));
-		Display::drawXbm(93,16,LOGO_WEATHER_WIDTH,LOGO_WEATHER_HEIGHT,icon_converter(forecast[n+2].icon));
+		Display::drawXbm(0,35,LOGO_WEATHER_WIDTH,LOGO_WEATHER_HEIGHT,icon_converter(forecast[n].icon));
+		Display::drawXbm(68,35,LOGO_WEATHER_WIDTH,LOGO_WEATHER_HEIGHT,icon_converter(forecast[n+1].icon));
 		
 		Display::setFont(arial_10);
-		//Display::drawString(0, 41, forecast[n].max_temp + "/" + forecast[n].min_temp + "C");
-		//Display::drawString(42, 41, forecast[n+1].max_temp + "/" + forecast[n+1].min_temp + "C");
-		//Display::drawString(84, 41, forecast[n+2].max_temp + "/" + forecast[n+2].min_temp + "C");
-		Display::drawString(0, 41, forecast[n].max_temp + "C");
-		Display::drawString(42, 41, forecast[n+1].max_temp + "C");
-		Display::drawString(84, 41, forecast[n+2].max_temp + "C");
+		
+		Display::drawString(27, 30, forecast[n].max_temp + "C");
+		Display::drawString(95, 30, forecast[n+1].max_temp + "C");
 
-		Display::drawString(25, 52, forecast[n].rain + "%");
-		Display::drawString(54, 52, forecast[n+1].rain + "%");
-		Display::drawString(100, 52, forecast[n+2].rain + "%");
+		Display::drawString(27, 41, forecast[n].min_temp + "C");
+		Display::drawString(95, 41, forecast[n+1].min_temp + "C");
+
+		Display::drawString(33, 52, forecast[n].rain + "%");
+		Display::drawString(101, 52, forecast[n+1].rain + "%");
 
 		Display::display();
 
@@ -94,6 +99,11 @@ void Weather::but_down_left(){
 		display();
 		break;
 	
+	case page3:
+		state=page2;
+		display();
+		break;
+	
 	default:
 		break;
 	}
@@ -106,6 +116,11 @@ void Weather::but_down_right(){
 	{
 	case page1:
 		state=page2;
+		display();
+		break;
+
+	case page2:
+		state=page3;
 		display();
 		break;
 	
@@ -168,9 +183,11 @@ void Weather::bt_receive(char* message){
 
 	xSemaphoreGive(mutex_weather);
 
-	state=page1;
-	display();	
-
+	if(state==loading)
+		state=page1;
+	
+	if(App::curr_app()==this)
+		display();	
 }
 
 const unsigned char* Weather::icon_converter(int icon){

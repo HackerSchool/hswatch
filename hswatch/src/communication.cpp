@@ -13,6 +13,7 @@ int receive_bt(char * buf, int size){
 }
 
 void send_bt(char * buffer, int size){
-	while(size>0)
-		size = size - bt.write((uint8_t *)buffer, size);
+	if(bt.hasClient())
+		while(size>0)
+			size = size - bt.write((uint8_t *)buffer, size);
 }

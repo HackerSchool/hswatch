@@ -11,6 +11,7 @@
 #include "logo_app.h"
 #include "vibrator.h"
 #include "buzzer.h"
+#include "led.h"
 
 //Include App go here
 #include "timer.h"
@@ -67,6 +68,7 @@ void setup() {
 	init_display();
 	init_vibrator();
 	init_buzzer();
+	init_led();
 
 	queue_display = new QueueHandle_t();
 
