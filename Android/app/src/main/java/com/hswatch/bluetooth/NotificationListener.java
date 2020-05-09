@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.IBinder;
 import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
 import android.util.Log;
@@ -28,6 +29,11 @@ public class NotificationListener extends NotificationListenerService {
         notificationListenerRecetor = new NotificationListenerRecetor();
         IntentFilter intentFilter = new IntentFilter(Servico.ACAO_SERVICO_NOT);
         registerReceiver(notificationListenerRecetor, intentFilter);
+    }
+
+    @Override
+    public IBinder onBind(Intent intent) {
+        return super.onBind(intent);
     }
 
     @Override
