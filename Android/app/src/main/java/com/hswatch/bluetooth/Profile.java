@@ -59,8 +59,9 @@ public class Profile {
         }
     }
 
+
     public List<String> jsonParserTempo() {
-        String url = "https://api.openweathermap.org/data/2.5/forecast?id=" + this.idCidade.get(this.cidade) + "&appid=c8e0a561f6bef99dddf373438831ed08";
+        String url = "http://api.weatherbit.io/v2.0/forecast/daily?city="+ this.idCidade.get(this.cidade) +"&key=e2cd4478289c4b5ab5ac602203922b80&days=6";
         final List<String> mensagemClima = new ArrayList<>();
         mensagemClima.add(this.cidade);
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
@@ -68,7 +69,7 @@ public class Profile {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
-                            JSONArray jsonArray = response.getJSONArray("list");
+                            JSONArray jsonArray = response.getJSONArray("");
                             for (int j = 0; j < jsonArray.length(); j = j + 8) {
                                 JSONObject condicoes = jsonArray.getJSONObject(j).getJSONObject("main");
                                 JSONObject clima = jsonArray.getJSONObject(j).getJSONArray("weather").getJSONObject(0);
