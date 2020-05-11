@@ -160,19 +160,30 @@ void Notification::but_up_right(){
 
 	std::list<notification>::iterator prev=index;
 
-	if(notification_number==1){
-		xSemaphoreTake(mutex,portMAX_DELAY);
-		notification_list.erase(index);
-		xSemaphoreGive(mutex);
-		App::exit_app();
+	if(notification_list.size()==notification_number){
+		if(notification_number==1){
+			xSemaphoreTake(mutex,portMAX_DELAY);
+			notification_list.erase(index);
+			xSemaphoreGive(mutex);
+			App::exit_app();
+		}else{
+			notification_number--;
+			prev--;
+			xSemaphoreTake(mutex,portMAX_DELAY);
+			notification_list.erase(index);
+			xSemaphoreGive(mutex);
+			index=prev;
+			display();
+		}
+
 	}else{
-		notification_number--;
-		prev--;
+		prev++;
 		xSemaphoreTake(mutex,portMAX_DELAY);
 		notification_list.erase(index);
 		xSemaphoreGive(mutex);
 		index=prev;
 		display();
+
 	}
 
 }
