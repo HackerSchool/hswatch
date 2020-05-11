@@ -39,13 +39,14 @@ public class Profile {
 
     private Map<String, Integer> idCidade = new HashMap<>();
 
-    private long hora_inicial;
+    private long hora_inicial_tempo, hora_inicial_clima;
     private String cidade = "Lisbon";
     private Context context;
+    private boolean obter_API = true;
 
     public Profile (Context context, String nome) {
 //        Iniciar contador
-        hora_inicial = System.nanoTime();
+        hora_inicial_tempo = System.nanoTime();
 
         this.context = context;
         this.requestQueue = Volley.newRequestQueue(this.context);
@@ -60,7 +61,8 @@ public class Profile {
     }
 
     public List<String> jsonParserTempo() {
-        String url = "https://api.openweathermap.org/data/2.5/forecast?id=" + this.idCidade.get(this.cidade) + "&appid=c8e0a561f6bef99dddf373438831ed08";
+        if (!obter_API) { return null; }
+        String url = "http://api.weatherbit.io/v2.0/forecast/daily?city="+ this.idCidade.get(this.cidade) +"&key=e2cd4478289c4b5ab5ac602203922b80&days=6";
         final List<String> mensagemClima = new ArrayList<>();
         mensagemClima.add(this.cidade);
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
@@ -68,16 +70,15 @@ public class Profile {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
-                            JSONArray jsonArray = response.getJSONArray("list");
-                            for (int j = 0; j < jsonArray.length(); j = j + 8) {
-                                JSONObject condicoes = jsonArray.getJSONObject(j).getJSONObject("main");
-                                JSONObject clima = jsonArray.getJSONObject(j).getJSONArray("weather").getJSONObject(0);
+                            JSONArray jsonArray = response.getJSONArray("data");
+                            for (int j = 0; j < jsonArray.length(); j ++) {
+                                JSONObject condicoes = jsonArray.getJSONObject(j);
+                                JSONObject icon = condicoes.getJSONArray("weather").getJSONObject(0);
 
-                                mensagemClima.add(String.valueOf(conversorTempo(condicoes.getInt("temp"))));
-                                mensagemClima.add(String.valueOf(condicoes.getInt("humidity")));
-                                mensagemClima.add(tradutorTempo(clima.getString("main")));
-                                mensagemClima.add(clima.getString("icon"));
-                                mensagemClima.add(jsonArray.getJSONObject(j).getString("dt_txt"));
+                                mensagemClima.add(icon.toString());
+                                mensagemClima.add(String.valueOf(conversorTempo(condicoes.getInt("max_temp"))));
+                                mensagemClima.add(String.valueOf(condicoes.getInt("min_temp")));
+                                mensagemClima.add(String.valueOf(condicoes.getInt("pop")));
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -90,6 +91,8 @@ public class Profile {
             }
         });
         this.requestQueue.add(request);
+        obter_API = false;
+        hora_inicial_clima = System.nanoTime();
         return mensagemClima;
     }
 
@@ -108,35 +111,30 @@ public class Profile {
 //        unidade = (unidade != null) ? unidade : "Celsius";
         switch (unidade) {
             case "ºC":
-                return valor - 276;
+                return valor;
             case "ºF":
                 return (int) ((valor-276)*1.8 + 32);
             default:
-                return valor;
-        }
-    }
-
-    private String tradutorTempo(String tempo) {
-        switch (tempo) {
-            case "Rain":
-                return "Chuva";
-            case "Clear":
-                return "Sol";
-            case "Clouds":
-                return "Nublado";
-            default:
-                return tempo;
+                return valor + 276;
         }
     }
 
     boolean passagem_de_hora(){
         long hora_passada = System.nanoTime();
-//        6e10 = 1 minuto
-        boolean verificador_da_passagem = hora_passada - this.hora_inicial > 6e10;
-        if (verificador_da_passagem){
-            this.hora_inicial = hora_passada;
+
+        if (!obter_API) {
+            boolean verificador_da_passagem_clima = hora_passada - this.hora_inicial_clima > 3*60*6e10;
+            if (verificador_da_passagem_clima) {
+                obter_API = true;
+            }
         }
-        return verificador_da_passagem;
+
+//        6e10 = 1 minuto
+        boolean verificador_da_passagem_hora = hora_passada - this.hora_inicial_tempo > 6e10;
+        if (verificador_da_passagem_hora)
+            this.hora_inicial_tempo = hora_passada;
+
+        return verificador_da_passagem_hora;
     }
 
     private void criarMapCidade() {

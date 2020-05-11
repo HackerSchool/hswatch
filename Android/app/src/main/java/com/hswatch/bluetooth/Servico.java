@@ -37,6 +37,7 @@ public class Servico extends Service {
 
 //    UUID
     public static final UUID uid = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
+    private static final String INDICADOR_CLIMA = "WEA";
 
     //    Estado
     private int estadoAtual;
@@ -341,14 +342,16 @@ public class Servico extends Service {
                                 caracteres[bufferposition++] = (char) bytes;
                             }
                         }
-                        if (mensagemRecebida.toString().equals("MET")) {
+                        if (mensagemRecebida.toString().equals(INDICADOR_CLIMA)) {
                             List<String> mensagemTemperatura = profileDispositivo.jsonParserTempo();
-                            threadConectado.escrever("MET".getBytes());
-                            for (int i = 0; i < mensagemTemperatura.size(); i++) {
-                                threadConectado.escrever(NotificationListener.separador);
-                                threadConectado.escrever(mensagemTemperatura.get(i).getBytes());
+                            if (mensagemTemperatura != null) {
+                                threadConectado.escrever(INDICADOR_CLIMA.getBytes());
+                                for (int i = 0; i < mensagemTemperatura.size(); i++) {
+                                    threadConectado.escrever(NotificationListener.separador);
+                                    threadConectado.escrever(mensagemTemperatura.get(i).getBytes());
+                                }
+                                threadConectado.escrever(NotificationListener.delimitador);
                             }
-                            threadConectado.escrever(NotificationListener.delimitador);
                         }
                     }
                 } catch (IOException e){
@@ -356,8 +359,7 @@ public class Servico extends Service {
                     conexaoPerdida();
                     break;
                 }
-                if (profileDispositivo.passagem_de_hora()){
-                    Log.i(TAG, "Passou o tempo!");
+                if (profileDispositivo.passagem_de_hora()) {
                     tempo(profileDispositivo);
                 }
 
