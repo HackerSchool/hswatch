@@ -319,46 +319,16 @@ void Home::timer_1s(){
 
 	xSemaphoreGive(mutex_home);
 
-	if(notifying){
-		if(time_of_not<NOTIFICATION_TIME){
-			time_of_not++;
-		}else{
-			notifying=false;
-			curr_app()->display();
-		}
-	}else if(curr_app()==this){
+	if(curr_app()==this){
 		display();
 	}
 }
 
 void Home::notify(String title, String text, String icon){
-
-	notifying = true;
-	time_of_not = 0;
 	
 	if (frame_n == 0){
 		frame_n = 1;
 	}
-
-	if (text.length()>65){
-		text = text.substring(0,65)+"...";
-	}
-
-	Display::clear();
-
-	Display::setFont(arial_10);
-	Display::setTextAlignment(center);
-	Display::drawString(64, 0, title);
-
-	Display::drawHorizontalLine(0,12,128);
-
-	Display::setFont(arial_10);
-	Display::setTextAlignment(center);
-	Display::drawStringMaxWidth(64, 13, 128, text);
-	
-	Display::drawHorizontalLine(0,51,128);
-
-	Display::display();
 
 	not_icon.push_front(icon);
 

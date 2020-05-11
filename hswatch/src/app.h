@@ -38,11 +38,15 @@ class App {
 		void detach_timer();
 		static void call_timer();
 
+		static void init_app();
+
 	private:
 
 		static std::list<App*> app_stack;
 		static std::list<App*> app_list;
 		static std::list<App*> timer_attached_app;
+
+		static void detach_timer_task(void*);
 };
 
 #endif

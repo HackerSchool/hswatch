@@ -1,8 +1,6 @@
 #include "app.h"
 #include "tools.h"
 
-#define NOTIFICATION_TIME 10
-
 class Home: public App {
 
 	public:
@@ -30,6 +28,4 @@ class Home: public App {
 		unsigned int year;
 		SemaphoreHandle_t mutex_home;
 		std::list<String> not_icon;
-		bool notifying = false;
-		unsigned char time_of_not;
 };

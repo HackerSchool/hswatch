@@ -27,7 +27,36 @@ void Notification::display(){
 	unsigned char hour, minute;
 	String title, text, s="", s2="";
 
-	if(index==led_notification){
+	if(notifying){
+
+		title = *((*notification_list.begin()).title);
+		text = *((*notification_list.begin()).text);
+
+		if (text.length()>65){
+			text = text.substring(0,65)+"...";
+		}
+
+		Display::clear();
+
+		Display::setFont(arial_10);
+		Display::setTextAlignment(center);
+		Display::drawString(64, 0, title);
+
+		Display::drawHorizontalLine(0,12,128);
+
+		Display::setFont(arial_10);
+		Display::setTextAlignment(center);
+		Display::drawStringMaxWidth(64, 13, 128, text);
+	
+		Display::drawHorizontalLine(0,51,128);
+
+		Display::display();
+
+		return;
+	}
+
+	if(led_blink){
+		led_blink=false;
 		cancel_blink_led(led_task);
 	}
 
@@ -86,6 +115,14 @@ void Notification::display(){
 }
 
 void Notification::but_up_left(){
+
+	if(notifying){
+		notifying=false;
+		this->detach_timer();
+		App::exit_app();
+		return;
+	}
+
 	if(notification_number==1){
 		App::exit_app();
 	}else{
@@ -96,6 +133,13 @@ void Notification::but_up_left(){
 }
 
 void Notification::but_up_right(){
+
+	if(notifying){
+		notifying=false;
+		this->detach_timer();
+		App::exit_app();
+		return;
+	}
 
 	int count_item=0;
 
@@ -135,6 +179,13 @@ void Notification::but_up_right(){
 
 void Notification::but_down_left(){
 
+	if(notifying){
+		notifying=false;
+		this->detach_timer();
+		App::exit_app();
+		return;
+	}
+
 	index++;
 	if(index!=notification_list.end()){
 		notification_number++;
@@ -145,7 +196,14 @@ void Notification::but_down_left(){
 
 }
 
-//void Notification::but_down_right(){}
+void Notification::but_down_right(){
+	if(notifying){
+		notifying=false;
+		this->detach_timer();
+		App::exit_app();
+		return;
+	}
+}
 
 void Notification::bt_receive(char* message){
 
@@ -187,18 +245,42 @@ void Notification::bt_receive(char* message){
 	xSemaphoreTake(mutex,portMAX_DELAY);
 
 	notification_list.push_front(new_not);
-	led_notification=notification_list.begin();
 
 	xSemaphoreGive(mutex);
+
+	notifying=true;
+	time_of_not=0;
+	this->attach_timer();
 
 	Home* home =(Home*) App::app_search_by_name("Home");
 
 	home->notify(*(new_not.title), *(new_not.text), *(new_not.logo));
 
-	cancel_blink_led(led_task);
-	blink_led(pattern, &led_task);
+	if(App::curr_app()!=this){
+		App::run_app("Notification");
+	}else{
+		display();
+	}
+}
+
+void Notification::timer_1s(){
+	Serial.println("p1");
+	if(notifying){
+		if(time_of_not<NOTIFICATION_TIME){
+			time_of_not++;
+		}else{
+			notifying=false;
+			this->detach_timer();
+			led_blink=true;
+			cancel_blink_led(led_task);
+			blink_led(pattern, &led_task);
+			App::exit_app();
+		}
+	}
 }
 
 Notification::Notification(String id_in, String name_in, const unsigned char* logo_in): App(id_in,name_in,logo_in) {
 		mutex = xSemaphoreCreateMutex();
+		notifying=false;
+		led_blink=false;
 }

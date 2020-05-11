@@ -4,6 +4,9 @@ std::list<App*> App::app_stack;
 std::list<App*> App::app_list;
 std::list<App*> App::timer_attached_app;
 
+SemaphoreHandle_t mutex_app;
+TaskHandle_t task_h;
+
 void App::display(){}
 
 void App::but_up_left(){
@@ -75,15 +78,35 @@ std::list<App*> App::app_list_show(){
 }
 
 void App::attach_timer(){
+	xSemaphoreTake(mutex_app,portMAX_DELAY);
 	timer_attached_app.push_back(this);
+	timer_attached_app.unique();
+	xSemaphoreGive(mutex_app);
 }
 
 void App::detach_timer(){
-	timer_attached_app.remove(this);
+	xTaskCreate(detach_timer_task,"detach timer task",8192,this,1,&task_h);
 }
 
 void App::call_timer(){
+	xSemaphoreTake(mutex_app,portMAX_DELAY);
 	for(std::list<App*>::iterator it = timer_attached_app.begin(); it!=timer_attached_app.end(); it++){
 		(*it)->timer_1s();
 	}
+	xSemaphoreGive(mutex_app);
+}
+
+void App::init_app(){
+	mutex_app = xSemaphoreCreateMutex();
+}
+
+void App::detach_timer_task(void* par){
+
+	App* a = (App*) par;
+
+	xSemaphoreTake(mutex_app,portMAX_DELAY);
+	timer_attached_app.remove(a);
+	xSemaphoreGive(mutex_app);
+	
+	vTaskDelete(NULL);
 }
