@@ -1,6 +1,8 @@
 #include "app.h"
 #include "tools.h"
 
+#define NOTIFICATION_TIME 10
+
 class Notification: public App {
 
 	public:
@@ -10,8 +12,9 @@ class Notification: public App {
 		void but_up_left();
 		void but_up_right();
 		void but_down_left();
-		//void but_down_right();
+		void but_down_right();
 		void bt_receive(char*);
+		void timer_1s();
 
 		Notification(String,String,const unsigned char*);
 
@@ -27,12 +30,13 @@ class Notification: public App {
 		std::list<notification>::iterator index;
 		unsigned char notification_number;
 
-		std::list<notification>::iterator led_notification;
+		bool notifying, led_blink;
+		unsigned char time_of_not;
 
 		TaskHandle_t led_task;
 
-		unsigned char pattern_r[2] = {255,0};
-		unsigned char pattern_g[2] = {0,0};
+		unsigned char pattern_r[2] = {100, 50};
+		unsigned char pattern_g[2] = {255, 255};
 		unsigned char pattern_b[2] = {0,0};
 		unsigned int led_pattern_time[2] = {2000,2000};
 		unsigned char led_pattern_size = 2;

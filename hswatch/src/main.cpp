@@ -12,6 +12,7 @@
 #include "vibrator.h"
 #include "buzzer.h"
 #include "led.h"
+#include "app.h"
 
 //Include App go here
 #include "timer.h"
@@ -69,6 +70,7 @@ void setup() {
 	init_vibrator();
 	init_buzzer();
 	init_led();
+	App::init_app();
 
 	queue_display = new QueueHandle_t();
 
