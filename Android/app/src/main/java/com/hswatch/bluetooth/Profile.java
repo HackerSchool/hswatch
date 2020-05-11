@@ -111,11 +111,11 @@ public class Profile {
 //        unidade = (unidade != null) ? unidade : "Celsius";
         switch (unidade) {
             case "ºC":
-                return valor - 276;
+                return valor;
             case "ºF":
                 return (int) ((valor-276)*1.8 + 32);
             default:
-                return valor;
+                return valor + 276;
         }
     }
 
