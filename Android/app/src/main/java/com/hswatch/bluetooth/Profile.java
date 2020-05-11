@@ -71,7 +71,7 @@ public class Profile {
                     public void onResponse(JSONObject response) {
                         try {
                             JSONArray jsonArray = response.getJSONArray("data");
-                            for (int j = 0; j < jsonArray.length(); j = j + 8) {
+                            for (int j = 0; j < jsonArray.length(); j ++) {
                                 JSONObject condicoes = jsonArray.getJSONObject(j);
                                 JSONObject icon = condicoes.getJSONArray("weather").getJSONObject(0);
 
