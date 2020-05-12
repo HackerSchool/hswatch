@@ -26,6 +26,7 @@
     <string name="DEF_TEMPO_TITULO">Meteorologia</string>
     <string name="DEF_CIDADE">Cidade escolhida</string>
     <string name="DEF_APAGAR_DADOS">Repor dados</string>
+    <string name="MENU_NOTIFICAOES">Notificações</string>
 
     <string-array name="nomes_semana">
         <item>domingo</item>

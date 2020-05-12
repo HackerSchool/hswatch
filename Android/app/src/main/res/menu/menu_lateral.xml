@@ -16,5 +16,8 @@
     <item android:id="@+id/apagar"
         android:icon="@drawable/ic_delete_forever_black_24dp"
         android:title="@string/DEF_APAGAR_DADOS"/>
+    <item android:id="@+id/notif"
+        android:icon="@drawable/ic_notifications_black_24dp"
+        android:title="@string/MENU_NOTIFICAOES"/>
 
 </menu>

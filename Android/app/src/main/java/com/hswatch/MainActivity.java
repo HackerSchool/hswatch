@@ -121,6 +121,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         .putBoolean(VERIFICADOR, false)
                         .apply();
                 finishAffinity();
+
+//                Notificações
+            case R.id.notif:
+                startActivity(new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"));
         }
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
