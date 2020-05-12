@@ -23,6 +23,166 @@ void init_led(){
 	mutex_led = xSemaphoreCreateMutex();
 }
 
+void rainbow_led(TaskHandle_t * task_h){
+
+	led_pattern * p =(led_pattern*) malloc(sizeof(led_pattern));
+
+	p->size=156;
+	p->repeat=255;
+
+	p->r = (unsigned char*) malloc(sizeof(unsigned char)*p->size);
+	p->g = (unsigned char*) malloc(sizeof(unsigned char)*p->size);
+	p->b = (unsigned char*) malloc(sizeof(unsigned char)*p->size);
+	p->time = (unsigned int*) malloc(sizeof(int)*p->size);
+	int t=0;
+
+	for(int r=255; r>=0; r=r-5){
+		p->r[t]=r;
+		p->g[t]=255-r;
+		p->b[t]=0;
+		p->time[t]=100;
+		t++;
+	}
+
+	for(int g=255; g>=0; g=g-5){
+		p->r[t]=0;
+		p->g[t]=g;
+		p->b[t]=255-g;
+		p->time[t]=100;
+		t++;
+	}
+
+	for(int b=255; b>=0; b=b-5){
+		p->r[t]=255-b;
+		p->g[t]=0;
+		p->b[t]=b;
+		p->time[t]=100;
+		t++;
+	}
+
+	xTaskCreate(blink_task,"blink task",8192,p,1,task_h);
+}
+
+void fade_led(unsigned char r, unsigned char g, unsigned char b, TaskHandle_t * task_h){
+	
+	led_pattern * p =(led_pattern*) malloc(sizeof(led_pattern));
+
+	p->size=103;
+	p->repeat=255;
+
+	p->r = (unsigned char*) malloc(sizeof(unsigned char)*p->size);
+	p->g = (unsigned char*) malloc(sizeof(unsigned char)*p->size);
+	p->b = (unsigned char*) malloc(sizeof(unsigned char)*p->size);
+	p->time = (unsigned int*) malloc(sizeof(int)*p->size);
+	
+	int t=0;
+
+	for(float m=0; m<=1; m=m+0.02){
+		p->r[t]=r*m;
+		p->g[t]=g*m;
+		p->b[t]=b*m;
+		p->time[t]=50;
+		t++;
+	}
+	
+	for(float m=1; m>=0; m=m-0.02){
+		p->r[t]=r*m;
+		p->g[t]=g*m;
+		p->b[t]=b*m;
+		p->time[t]=50;
+		t++;
+	}
+
+	p->r[t]=0;
+	p->g[t]=0;
+	p->b[t]=0;
+	p->time[t]=5000;
+
+	xTaskCreate(blink_task,"blink task",8192,p,1,task_h);	
+}
+
+void fade2_led(unsigned char r, unsigned char g, unsigned char b, TaskHandle_t * task_h){
+	
+	led_pattern * p =(led_pattern*) malloc(sizeof(led_pattern));
+
+	p->size=103;
+	p->repeat=255;
+
+	p->r = (unsigned char*) malloc(sizeof(unsigned char)*p->size);
+	p->g = (unsigned char*) malloc(sizeof(unsigned char)*p->size);
+	p->b = (unsigned char*) malloc(sizeof(unsigned char)*p->size);
+	p->time = (unsigned int*) malloc(sizeof(int)*p->size);
+	
+	int t=0;
+	float aux;
+
+	for(float m=0; m<=1; m=m+0.02){
+		aux=m*m;
+		p->r[t]=r*aux;
+		p->g[t]=g*aux;
+		p->b[t]=b*aux;
+		p->time[t]=50;
+		t++;
+	}
+	
+	for(float m=1; m>=0; m=m-0.02){
+		aux=m*m;
+		p->r[t]=r*aux;
+		p->g[t]=g*aux;
+		p->b[t]=b*aux;
+		p->time[t]=50;
+		t++;
+	}
+
+	p->r[t]=0;
+	p->g[t]=0;
+	p->b[t]=0;
+	p->time[t]=5000;
+
+	xTaskCreate(blink_task,"blink task",8192,p,1,task_h);	
+}
+
+void fade3_led(unsigned char r, unsigned char g, unsigned char b, TaskHandle_t * task_h){
+	
+	led_pattern * p =(led_pattern*) malloc(sizeof(led_pattern));
+
+	p->size=103;
+	p->repeat=255;
+
+	p->r = (unsigned char*) malloc(sizeof(unsigned char)*p->size);
+	p->g = (unsigned char*) malloc(sizeof(unsigned char)*p->size);
+	p->b = (unsigned char*) malloc(sizeof(unsigned char)*p->size);
+	p->time = (unsigned int*) malloc(sizeof(int)*p->size);
+	
+	int t=0;
+	float aux;
+
+	for(float m=0; m<=1; m=m+0.02){
+		aux=m*m*m;
+		p->r[t]=r*aux;
+		p->g[t]=g*aux;
+		p->b[t]=b*aux;
+		p->time[t]=50;
+		t++;
+	}
+	
+	for(float m=1; m>=0; m=m-0.02){
+		aux=m*m*m;
+		p->r[t]=r*aux;
+		p->g[t]=g*aux;
+		p->b[t]=b*aux;
+		p->time[t]=50;
+		t++;
+	}
+
+	p->r[t]=0;
+	p->g[t]=0;
+	p->b[t]=0;
+	p->time[t]=5000;
+
+	xTaskCreate(blink_task,"blink task",8192,p,1,task_h);	
+}
+
 void blink_led(led_pattern p, TaskHandle_t * task_h){
 	
 	led_pattern * pattern =(led_pattern*) malloc(sizeof(led_pattern));

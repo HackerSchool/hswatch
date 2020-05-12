@@ -1,6 +1,17 @@
 #include "notification.h"
 #include "display.h"
 #include "home.h"
+#include <map>
+
+std::map<std::string, std::vector<unsigned char>> notification_color = {
+    { "SMS", {200,100,0} },
+	{ "EMA", {100,0,0} },
+	{ "FAC", {0,0,100} },
+	{ "INS", {100,0,100} },
+	{ "MES", {0,50,150} },
+	{ "TEL", {0,100,0} },
+	{ "WHA", {0,150,50} }
+};
 
 SemaphoreHandle_t mutex;
 
@@ -275,7 +286,6 @@ void Notification::bt_receive(char* message){
 }
 
 void Notification::timer_1s(){
-	Serial.println("p1");
 	if(notifying){
 		if(time_of_not<NOTIFICATION_TIME){
 			time_of_not++;
@@ -283,8 +293,18 @@ void Notification::timer_1s(){
 			notifying=false;
 			this->detach_timer();
 			led_blink=true;
+
 			cancel_blink_led(led_task);
-			blink_led(pattern, &led_task);
+
+			std::string logo = notification_list.front().logo->c_str();
+			
+			if(notification_color.find(logo)==notification_color.end()){
+				fade3_led(100,100,100,&led_task);
+			}else{
+				fade3_led(notification_color.find(logo)->second[0],notification_color.find(logo)->second[1],notification_color.find(logo)->second[2],&led_task);
+			}
+			//rainbow_led(&led_task);
+			//blink_led(pattern, &led_task);
 			App::exit_app();
 		}
 	}

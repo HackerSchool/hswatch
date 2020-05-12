@@ -35,11 +35,11 @@ class Notification: public App {
 
 		TaskHandle_t led_task;
 
-		unsigned char pattern_r[2] = {100, 50};
-		unsigned char pattern_g[2] = {255, 255};
-		unsigned char pattern_b[2] = {0,0};
+		/*unsigned char pattern_r[2] = {0, 0};
+		unsigned char pattern_g[2] = {0, 255};
+		unsigned char pattern_b[2] = {255,255};
 		unsigned int led_pattern_time[2] = {2000,2000};
-		unsigned char led_pattern_size = 2;
+		unsigned int led_pattern_size = 2;
 		unsigned char led_pattern_repeat = 255;
 
 		led_pattern pattern = {
@@ -49,5 +49,5 @@ class Notification: public App {
 			.time=led_pattern_time,
 			.size=led_pattern_size,
 			.repeat=led_pattern_repeat
-		};
+		};*/
 };
