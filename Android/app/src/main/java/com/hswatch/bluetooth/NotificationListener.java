@@ -103,12 +103,12 @@ public class NotificationListener extends NotificationListenerService {
     @Override
     public void onListenerDisconnected() {
         super.onListenerDisconnected();
-//        String notificationListenerString = Settings.Secure.getString(this.getContentResolver(),"enabled_notification_listeners");
-//        //Check notifications access permission
-//        if (!(notificationListenerString == null || !notificationListenerString.contains(getPackageName())))
-//        {
-//            requestRebind(ComponentName.createRelative(this.getApplicationContext().getPackageName(), "ListenerNotificationTest"));
-//        }
+        String notificationListenerString = Settings.Secure.getString(this.getContentResolver(),"enabled_notification_listeners");
+        //Check notifications access permission
+        if (!(notificationListenerString == null || !notificationListenerString.contains(getPackageName())))
+        {
+            requestRebind(ComponentName.createRelative(this.getApplicationContext().getPackageName(), "ListenerNotificationTest"));
+        }
         Toast.makeText(getApplicationContext(), "Desconectado! Serviço de Notificações está desligado!", Toast.LENGTH_LONG).show();
     }
 
