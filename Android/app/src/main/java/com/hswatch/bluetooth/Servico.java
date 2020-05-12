@@ -354,7 +354,6 @@ public class Servico extends Service {
                                 caracteres[bufferposition++] = (char) bytes;
                             }
                         }
-                        writeToFile(mensagemRecebida.toString(), getApplicationContext());
                         if (mensagemRecebida.toString().equals(INDICADOR_CLIMA)) {
                             List<String> mensagemTemperatura = profileDispositivo.jsonParserTempo();
                             if (mensagemTemperatura != null) {
