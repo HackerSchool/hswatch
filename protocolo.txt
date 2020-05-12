@@ -3,6 +3,12 @@ Telemovel->Relogio
 TIM;horas;minutos;segundos;dia;mes;ano;semana\0
 NOT;|SMS|;hora;minuto;titulo;texto\0
     |INS|
+    |EMA|
+    |FAC|
+    |MES|
+    |TEL|
+    |WHA|
+
 WEA;location{;icon;temp_max;temp_min;precepitação}\0
                           repetirx6
 ;=0x03
