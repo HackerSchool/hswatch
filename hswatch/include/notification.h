@@ -33,7 +33,7 @@ class Notification: public App {
 		bool notifying, led_blink;
 		unsigned char time_of_not;
 
-		TaskHandle_t led_task;
+		TaskHandle_t led_task=NULL;
 
 		/*unsigned char pattern_r[2] = {0, 0};
 		unsigned char pattern_g[2] = {0, 255};

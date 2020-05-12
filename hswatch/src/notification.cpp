@@ -4,7 +4,7 @@
 #include <map>
 
 std::map<std::string, std::vector<unsigned char>> notification_color = {
-    { "SMS", {200,100,0} },
+    { "SMS", {150,25,0} },
 	{ "EMA", {100,0,0} },
 	{ "FAC", {0,0,100} },
 	{ "INS", {100,0,100} },
