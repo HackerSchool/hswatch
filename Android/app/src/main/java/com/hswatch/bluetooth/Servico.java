@@ -21,8 +21,6 @@ import com.hswatch.definicoes;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -60,8 +58,8 @@ public class Servico extends Service {
     ThreadConectado threadConectado;
 
 //    Inicialização de variáveis
-    Character[] caracteres;
-    StringBuilder mensagemRecebida;
+    char[] caracteres = new char[3];
+    String mensagemRecebida;
     String dispositivoEscolhido;
 
 //    Perfile do dispositivo
@@ -97,7 +95,11 @@ public class Servico extends Service {
         intentFilterServico.addAction(definicoes.ACAO_DEFINICOES_SERVICO);
         registerReceiver(recetor, intentFilterServico);
 
-        dispositivoEscolhido = intent.getStringExtra(getResources().getString(R.string.ServicoDisp));
+        try{
+            dispositivoEscolhido = intent.getStringExtra(getResources().getString(R.string.ServicoDisp));
+        } catch (NullPointerException e){
+            Log.e(TAG, "Erro: " + e.toString());
+        }
 
         Intent notificacaoIntent = new Intent(this, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificacaoIntent, 0);
@@ -288,17 +290,6 @@ public class Servico extends Service {
         }
     }
 
-    private void writeToFile(String data,Context context) {
-        try {
-            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput("registos.txt", Context.MODE_PRIVATE));
-            outputStreamWriter.write(data);
-            outputStreamWriter.close();
-        }
-        catch (IOException e) {
-            Log.e("Exception", "File write failed: " + e.toString());
-        }
-    }
-
     class ThreadConectado extends Thread{
 
         private final BluetoothSocket bluetoothSocket;
@@ -342,28 +333,40 @@ public class Servico extends Service {
                         }
                         for (int i=0; i<bytesavailable; i++){
                             bytes = buffer[i];
-                            if (bufferposition == 7) {
-                                for (Character caracteres : caracteres) {
-                                    if (caracteres != null && !caracteres.toString().equals(Arrays
-                                            .toString(NotificationListener.delimitador))) {
-                                        mensagemRecebida.append(caracteres.toString());
-                                    }
-                                }
+                            if (NotificationListener.delimitador[0] == bytes) {
+                                mensagemRecebida = new String(caracteres);
                                 bufferposition = 0;
                             } else {
-                                caracteres[bufferposition++] = (char) bytes;
+                                try {
+                                    caracteres[bufferposition++] = (char) bytes;
+                                } catch (Exception e){
+                                    Log.e(TAG, "Erro: " + e.toString());
+                                }
                             }
                         }
-                        if (mensagemRecebida.toString().equals(INDICADOR_CLIMA)) {
-                            List<String> mensagemTemperatura = profileDispositivo.jsonParserTempo();
-                            if (mensagemTemperatura != null) {
-                                threadConectado.escrever(INDICADOR_CLIMA.getBytes());
-                                for (int i = 0; i < mensagemTemperatura.size(); i++) {
-                                    threadConectado.escrever(NotificationListener.separador);
-                                    threadConectado.escrever(mensagemTemperatura.get(i).getBytes());
-                                }
-                                threadConectado.escrever(NotificationListener.delimitador);
+                        try{
+                            if (mensagemRecebida != null) {
+                                Log.v(TAG, mensagemRecebida);
+                            } else {
+                                continue;
                             }
+                        } catch (NullPointerException e) {
+                            Log.e(TAG, "Erro: " + e.toString());
+                        }
+                        if (mensagemRecebida.equals(INDICADOR_CLIMA)) {
+                            profileDispositivo.jsonParserTempo(new Profile.VolleyCallBack() {
+                                @Override
+                                public void returnoSucedido(List<String> respostaLimpa) {
+                                    threadConectado.escrever(INDICADOR_CLIMA.getBytes());
+                                    for (int i = 0; i < respostaLimpa.size(); i++) {
+                                        threadConectado.escrever(NotificationListener.separador);
+                                        threadConectado.escrever(respostaLimpa.get(i).getBytes());
+                                    }
+                                    threadConectado.escrever(NotificationListener.delimitador);
+                                    caracteres = new char[3];
+                                    mensagemRecebida = "";
+                                }
+                            });
                         }
                     }
                 } catch (IOException e){

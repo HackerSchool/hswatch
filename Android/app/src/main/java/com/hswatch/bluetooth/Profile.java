@@ -2,6 +2,7 @@ package com.hswatch.bluetooth;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -26,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 
 import static android.content.Context.MODE_PRIVATE;
+import static com.hswatch.bluetooth.Servico.TAG;
 
 public class Profile {
 
@@ -40,9 +42,14 @@ public class Profile {
     private Map<String, Integer> idCidade = new HashMap<>();
 
     private long hora_inicial_tempo, hora_inicial_clima;
-    private String cidade = "Lisbon";
+    private String cidade = "Lisboa";
     private Context context;
     private boolean obter_API = true;
+
+    public interface VolleyCallBack {
+        void returnoSucedido(List<String> respostaLimpa);
+    }
+
 
     public Profile (Context context, String nome) {
 //        Iniciar contador
@@ -60,11 +67,12 @@ public class Profile {
         }
     }
 
-    public List<String> jsonParserTempo() {
-        if (!obter_API) { return null; }
-        String url = "http://api.weatherbit.io/v2.0/forecast/daily?city="+ this.idCidade.get(this.cidade) +"&key=e2cd4478289c4b5ab5ac602203922b80&days=6";
+    public void jsonParserTempo(final VolleyCallBack callBack) {
+//        if (!obter_API) { return null; }
         final List<String> mensagemClima = new ArrayList<>();
         mensagemClima.add(this.cidade);
+        Log.v(TAG, this.requestQueue.toString());
+        String url = "https://api.weatherbit.io/v2.0/forecast/daily?city=Lisbon&key=e2cd4478289c4b5ab5ac602203922b80&days=6";
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -73,13 +81,15 @@ public class Profile {
                             JSONArray jsonArray = response.getJSONArray("data");
                             for (int j = 0; j < jsonArray.length(); j ++) {
                                 JSONObject condicoes = jsonArray.getJSONObject(j);
-                                JSONObject icon = condicoes.getJSONArray("weather").getJSONObject(0);
+                                String icon = condicoes.getJSONObject("weather").
+                                        getString("icon");
 
-                                mensagemClima.add(icon.toString());
+                                mensagemClima.add(icon);
                                 mensagemClima.add(String.valueOf(conversorTempo(condicoes.getInt("max_temp"))));
                                 mensagemClima.add(String.valueOf(condicoes.getInt("min_temp")));
                                 mensagemClima.add(String.valueOf(condicoes.getInt("pop")));
                             }
+                            callBack.returnoSucedido(mensagemClima);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -93,7 +103,6 @@ public class Profile {
         this.requestQueue.add(request);
         obter_API = false;
         hora_inicial_clima = System.nanoTime();
-        return mensagemClima;
     }
 
     public void alterarCidade() {
