@@ -81,8 +81,8 @@ public class Profile {
                             JSONArray jsonArray = response.getJSONArray("data");
                             for (int j = 0; j < jsonArray.length(); j ++) {
                                 JSONObject condicoes = jsonArray.getJSONObject(j);
-                                String icon = condicoes.getJSONObject("weather").
-                                        getString("icon");
+                                String icon = String.valueOf(condicoes.getJSONObject("weather").
+                                        getString("code"));
 
                                 mensagemClima.add(icon);
                                 mensagemClima.add(String.valueOf(conversorTempo(condicoes.getInt("max_temp"))));
