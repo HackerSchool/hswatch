@@ -50,7 +50,7 @@ public class NotificationListener extends NotificationListenerService {
         NotificacaoRecebida(sbn.getNotification().extras.getString("android.title"),
                 sbn.getNotification().extras.getString("android.text"),
                 sbn.getNotification().category);
-        Toast.makeText(getApplicationContext(), "Recebida mensagem: " + sbn.getNotification().extras.getString("android.text"), Toast.LENGTH_LONG).show();
+//        Toast.makeText(getApplicationContext(), "Recebida mensagem: " + sbn.getNotification().extras.getString("android.text"), Toast.LENGTH_LONG).show();
     }
 
     private void NotificacaoRecebida(String titulo, String texto, String category) {
@@ -97,7 +97,7 @@ public class NotificationListener extends NotificationListenerService {
     @Override
     public void onListenerConnected() {
         super.onListenerConnected();
-        Toast.makeText(getApplicationContext(), "Conectado! Serviço de Notificações está ligado!", Toast.LENGTH_LONG).show();
+//        Toast.makeText(getApplicationContext(), "Conectado! Serviço de Notificações está ligado!", Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -109,7 +109,7 @@ public class NotificationListener extends NotificationListenerService {
         {
             requestRebind(ComponentName.createRelative(this.getApplicationContext().getPackageName(), "ListenerNotificationTest"));
         }
-        Toast.makeText(getApplicationContext(), "Desconectado! Serviço de Notificações está desligado!", Toast.LENGTH_LONG).show();
+//        Toast.makeText(getApplicationContext(), "Desconectado! Serviço de Notificações está desligado!", Toast.LENGTH_LONG).show();
     }
 
     public static class NotificationListenerRecetor extends BroadcastReceiver {
