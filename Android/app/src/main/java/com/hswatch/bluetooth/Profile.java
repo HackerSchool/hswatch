@@ -85,8 +85,8 @@ public class Profile {
                                         getString("code"));
 
                                 mensagemClima.add(icon);
-                                mensagemClima.add(String.valueOf(conversorTempo(condicoes.getInt("max_temp"))));
-                                mensagemClima.add(String.valueOf(condicoes.getInt("min_temp")));
+                                mensagemClima.add(String.valueOf(conversorTempo(condicoes.getDouble("max_temp"))));
+                                mensagemClima.add(String.valueOf(condicoes.getDouble("min_temp")));
                                 mensagemClima.add(String.valueOf(condicoes.getInt("pop")));
                             }
                             callBack.returnoSucedido(mensagemClima);
@@ -114,7 +114,7 @@ public class Profile {
         return idCidade;
     }
 
-    private int conversorTempo(int valor) {
+    private double conversorTempo(double valor) {
         SharedPreferences sharedPreferences = this.context.getSharedPreferences(DEFINICOES, MODE_PRIVATE);
         String unidade = sharedPreferences.getString(DEFINICOES_UNIDADE_TEMPO, "ºC");
 //        unidade = (unidade != null) ? unidade : "Celsius";
@@ -122,7 +122,7 @@ public class Profile {
             case "ºC":
                 return valor;
             case "ºF":
-                return (int) ((valor-276)*1.8 + 32);
+                return (valor-276)*1.8 + 32;
             default:
                 return valor + 276;
         }
