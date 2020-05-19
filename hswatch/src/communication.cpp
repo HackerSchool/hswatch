@@ -17,3 +17,7 @@ void send_bt(char * buffer, int size){
 		while(size>0)
 			size = size - bt.write((uint8_t *)buffer, size);
 }
+
+bool connected_bluetooth(){
+	return bt.hasClient();
+}

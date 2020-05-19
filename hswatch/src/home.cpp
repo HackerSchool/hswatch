@@ -15,6 +15,9 @@ void Home::display(){
 
 	String s="", s2="", s3="", s4="";
 	bool en_alarm=false;
+	int h_top=0;
+	
+	int bat_level = status_battery();
 
 	if(alarm1_en){
 		s4=s4+"1 ";
@@ -86,13 +89,31 @@ void Home::display(){
 	if(frame_n==0){
 		Display::clear();
 
+		if(connected_bluetooth()){
+			Display::drawXbm(0,0,BT_ICON_W,BT_ICON_H,bt_logo);
+			h_top=11;
+		}
+
 		if(en_alarm){
 			Display::setFont(arial_10);
 			Display::setTextAlignment(left);
-			Display::drawString(10, 0, s4);
-			Display::drawXbm(0,0,ALARM_ICON_W,ALARM_ICON_H,alarm_icon);
+			Display::drawString(h_top+10, 0, s4);
+			Display::drawXbm(h_top,0,ALARM_ICON_W,ALARM_ICON_H,alarm_icon);
 
 		}
+
+		if(charging_battery()){
+			Display::drawXbm(109,0,BATTERY_ICON_W,BATTERY_ICON_H,bat_charge);
+		}else if(bat_level==0){
+			Display::drawXbm(109,0,BATTERY_ICON_W,BATTERY_ICON_H,bat_0);
+		}else if(bat_level==1){
+			Display::drawXbm(109,0,BATTERY_ICON_W,BATTERY_ICON_H,bat_1);
+		}else if(bat_level==2){
+			Display::drawXbm(109,0,BATTERY_ICON_W,BATTERY_ICON_H,bat_2);
+		}else{
+			Display::drawXbm(109,0,BATTERY_ICON_W,BATTERY_ICON_H,bat_3);
+		}
+
 		Display::drawHorizontalLine(0,12,128);
 
 		Display::setFont(arial_24);
@@ -120,13 +141,31 @@ void Home::display(){
 	}else{
 		Display::clear();
 
+		if(connected_bluetooth()){
+			Display::drawXbm(0,0,BT_ICON_W,BT_ICON_H,bt_logo);
+			h_top=11;
+		}
+
 		if(en_alarm){
 			Display::setFont(arial_10);
 			Display::setTextAlignment(left);
-			Display::drawString(10, 0, s4);
-			Display::drawXbm(0,0,ALARM_ICON_W,ALARM_ICON_H,alarm_icon);
+			Display::drawString(h_top+10, 0, s4);
+			Display::drawXbm(h_top,0,ALARM_ICON_W,ALARM_ICON_H,alarm_icon);
 
 		}
+
+		if(charging_battery()){
+			Display::drawXbm(109,0,BATTERY_ICON_W,BATTERY_ICON_H,bat_charge);
+		}else if(bat_level==0){
+			Display::drawXbm(109,0,BATTERY_ICON_W,BATTERY_ICON_H,bat_0);
+		}else if(bat_level==1){
+			Display::drawXbm(109,0,BATTERY_ICON_W,BATTERY_ICON_H,bat_1);
+		}else if(bat_level==2){
+			Display::drawXbm(109,0,BATTERY_ICON_W,BATTERY_ICON_H,bat_2);
+		}else{
+			Display::drawXbm(109,0,BATTERY_ICON_W,BATTERY_ICON_H,bat_3);
+		}
+
 		Display::drawHorizontalLine(0,12,128);
 
 		Display::setFont(arial_24);

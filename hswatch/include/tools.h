@@ -6,6 +6,7 @@
 #include "vibrator.h"
 #include "buzzer.h"
 #include "led.h"
+#include "battery.h"
 
 typedef struct timestamp{
 	unsigned char hour,minute,second,day,month,week_day;

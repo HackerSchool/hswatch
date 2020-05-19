@@ -13,6 +13,7 @@
 #include "buzzer.h"
 #include "led.h"
 #include "app.h"
+#include "battery.h"
 
 //Include App go here
 #include "timer.h"
@@ -66,10 +67,11 @@ void setup() {
 	pinMode(B_RIGHT_DOWN, INPUT_PULLUP);
 
 	init_bluetooth("HSWatch");
+	init_led();
 	init_display();
 	init_vibrator();
 	init_buzzer();
-	init_led();
+	init_battery();
 	App::init_app();
 
 	queue_display = new QueueHandle_t();
@@ -240,6 +242,7 @@ void timer_task(void*){
 	{
 		ulTaskNotifyTake(pdFALSE, portMAX_DELAY);
 		App::call_timer();
+		check_level_timer();
 	}
 }
 
