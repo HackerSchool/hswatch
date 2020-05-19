@@ -35,6 +35,13 @@ class Notification: public App {
 
 		TaskHandle_t led_task=NULL;
 
+		unsigned char vibration_pattern_power[3] = {255,0,255};
+		unsigned int vibration_pattern_time[3] = {500,500,500};
+		unsigned char vibration_pattern_size = 3;
+		unsigned char vibration_pattern_repeat = 1;
+
+		TaskHandle_t vibrator_task=NULL;
+
 		/*unsigned char pattern_r[2] = {0, 0};
 		unsigned char pattern_g[2] = {0, 255};
 		unsigned char pattern_b[2] = {255,255};

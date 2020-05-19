@@ -278,6 +278,8 @@ void Notification::bt_receive(char* message){
 
 	home->notify(*(new_not.title), *(new_not.text), *(new_not.logo));
 
+	vibrate(vibration_pattern_power, vibration_pattern_time,vibration_pattern_size,vibration_pattern_repeat,&vibrator_task);
+
 	if(App::curr_app()!=this){
 		App::run_app("Notification");
 	}else{
