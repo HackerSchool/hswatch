@@ -5,9 +5,9 @@
 #define PWM_CHANNEL_G 4
 #define PWM_CHANNEL_B 5
 #define PWM_RESOLUTION 8
-#define PWM_GPIO_R 14
-#define PWM_GPIO_G 13
-#define PWM_GPIO_B 12
+#define PWM_GPIO_R 25
+#define PWM_GPIO_G 27
+#define PWM_GPIO_B 26
 
 SemaphoreHandle_t mutex_led;
 
