@@ -24,28 +24,16 @@ import androidx.work.WorkManager;
 
 import com.hswatch.MainActivity;
 import com.hswatch.R;
-<<<<<<< Updated upstream
-import com.hswatch.definicoes;
-=======
 import com.hswatch.worker.HoraWorker;
->>>>>>> Stashed changes
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
-<<<<<<< Updated upstream
-import java.util.UUID;
-
-import androidx.annotation.Nullable;
-import androidx.core.app.NotificationCompat;
-
-=======
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
->>>>>>> Stashed changes
 import static com.hswatch.App.CANAL_SERVICO;
 import static com.hswatch.Constantes.ACAO_DEFINICOES_SERVICO;
 import static com.hswatch.Constantes.ACAO_NOTIFICACOES_SERVICO;
@@ -81,9 +69,6 @@ public class Servico extends Service {
 
 //    Perfile do dispositivo
     private Profile profileDispositivo;
-
-<<<<<<< Updated upstream
-=======
 //    WorkManagers
     private WorkInfo horaWorker;
 
@@ -112,8 +97,6 @@ public class Servico extends Service {
  * pontos ou simplificar operações. Se for feita esta lista, considera-se a aplicação acabada por FIM!!!
  *
  * */
-
->>>>>>> Stashed changes
     @Override
     public void onCreate() {
         super.onCreate();
@@ -223,10 +206,6 @@ public class Servico extends Service {
             stopSelf();
         }
     }
-
-<<<<<<< Updated upstream
-    void tempo (Profile profile) {
-=======
 //    private void tempo () {
 //        if (horaWorker == null) { return; }
 //        String[] mensagem = horaWorker.getOutputData().getStringArray("its_time_to_stop");
@@ -244,15 +223,10 @@ public class Servico extends Service {
 //    }
 
     private void tempo (Profile profile) {
->>>>>>> Stashed changes
         String[] mensagem = profile.recetorTempo();
         if (threadConectado != null) {
             threadConectado.escrever("TIM".getBytes());
             for (String msg : mensagem) {
-<<<<<<< Updated upstream
-                threadConectado.escrever(NotificationListener.separador);
-                threadConectado.escrever(msg.getBytes());
-=======
                 threadConectado.escrever(separador);
                 threadConectado.escrever(msg.getBytes());
             }
@@ -270,7 +244,6 @@ public class Servico extends Service {
                 if (running)
                     horaWorker = workInfo;
                 break;
->>>>>>> Stashed changes
             }
             return running;
         } catch (ExecutionException | InterruptedException e) {
@@ -385,41 +358,6 @@ public class Servico extends Service {
                 case BluetoothDevice.ACTION_ACL_DISCONNECTED:
                     conexaoPerdida();
                     break;
-<<<<<<< Updated upstream
-                case ACAO_SERVICO_NOT:
-                    if (threadConectado != null) {
-                        try{
-                            Toast.makeText(getApplicationContext(), "Recebida mensagem!", Toast.LENGTH_LONG).show();
-                            threadConectado.escrever(intent.getByteArrayExtra(ELEMENTO_SERVICO_NOT));
-                        } catch (Exception e){
-                            Log.e(TAG, "Chatice pah...", e);
-                        }
-                    }
-                    break;
-                case definicoes.ACAO_DEFINICOES_SERVICO:
-                    if (profileDispositivo != null && threadConectado != null) {
-                        if (intent.getStringExtra(definicoes.DIRETIVA).equals("alterar")) {
-                            profileDispositivo.alterarCidade();
-                        } else {
-                            Intent requesitoLimpar = new Intent(ACAO_SERVICO_DEFINICOES)
-                                    .putExtra(definicoes.DIRETIVA, "limpar");
-                            sendBroadcast(requesitoLimpar);
-                            for (String cidade : profileDispositivo.getIdCidade().keySet()) {
-                                Log.v(TAG, "Mandar cidade para o spinner");
-                                Intent requesitoCidade = new Intent(ACAO_SERVICO_DEFINICOES)
-                                        .putExtra(definicoes.DIRETIVA, cidade);
-                                sendBroadcast(requesitoCidade);
-                            }
-                            sendBroadcast(new Intent(ACAO_SERVICO_DEFINICOES).
-                                    putExtra(definicoes.DIRETIVA, "ativar"));
-                        }
-                    } else {
-                        Intent requesitoLimpar = new Intent(ACAO_SERVICO_DEFINICOES)
-                                .putExtra(definicoes.DIRETIVA, "Erro");
-                        sendBroadcast(requesitoLimpar);
-                    }
-                    break;
-=======
 
                 // Chave da comunicação entre o NotificationListener para o Serviço
 //                case ACAO_NOTIFICACOES_SERVICO:
@@ -435,7 +373,6 @@ public class Servico extends Service {
 //                case TelephonyManager.ACTION_PHONE_STATE_CHANGED:
 //                    obterNumeroEstado(context, intent);
 //                    break;
->>>>>>> Stashed changes
                 default:break;
             }
         }
@@ -536,8 +473,6 @@ public class Servico extends Service {
             sinalVerde.putExtra(getResources().getString(R.string.NOME), dispositivoEscolhido);
             sendBroadcast(sinalVerde);
             profileDispositivo = new Profile(getApplicationContext(), dispositivoBluetooth.getName());
-<<<<<<< Updated upstream
-=======
             int periodo = Integer.parseInt(Objects.requireNonNull(PreferenceManager
                     .getDefaultSharedPreferences(getApplicationContext())
                     .getString("horas", "15")));
@@ -547,7 +482,6 @@ public class Servico extends Service {
             WorkManager.getInstance(getApplicationContext()).enqueueUniquePeriodicWork(
                     "tag_horas", ExistingPeriodicWorkPolicy.REPLACE, periodicWorkRequest);
             ativoServico = true;
->>>>>>> Stashed changes
         }
 
         @Override
@@ -598,15 +532,8 @@ public class Servico extends Service {
                     conexaoPerdida();
                     break;
                 }
-<<<<<<< Updated upstream
-                if (profileDispositivo.passagem_de_hora()) {
-                    tempo(profileDispositivo);
-                }
-
-=======
 //                if (recebeuTempo())
 //                    tempo();
->>>>>>> Stashed changes
             }
         }
 
@@ -624,11 +551,5 @@ public class Servico extends Service {
                 Log.e(TAG, "Não foi possivel fechar socket na conexão", e);
             }
         }
-<<<<<<< Updated upstream
     }
 }
-=======
-
-    }
-}
->>>>>>> Stashed changes

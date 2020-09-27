@@ -37,7 +37,7 @@ public class Profile {
 
     public Profile (Context context, String nome) {
 //        Iniciar contador
-        hora_inicial_tempo = System.nanoTime();
+//        hora_inicial_tempo = System.nanoTime();
 
         this.context = context;
         this.requestQueue = Volley.newRequestQueue(this.context);
@@ -96,55 +96,6 @@ public class Profile {
         this.requestQueue.add(request);
     }
 
-<<<<<<< Updated upstream
-    boolean passagem_de_hora(){
-        long hora_passada = System.nanoTime();
-
-        if (!obter_API) {
-            boolean verificador_da_passagem_clima = hora_passada - this.hora_inicial_clima > 3*60*6e10;
-            if (verificador_da_passagem_clima) {
-                obter_API = true;
-            }
-        }
-
-//        6e10 = 1 minuto
-        boolean verificador_da_passagem_hora = hora_passada - this.hora_inicial_tempo > 6e10;
-        if (verificador_da_passagem_hora)
-            this.hora_inicial_tempo = hora_passada;
-
-        return verificador_da_passagem_hora;
-    }
-
-    private void criarMapCidade() {
-        JSONObject jsonObject = obterJSON();
-        if (jsonObject != null) {
-            try {
-                JSONArray jsonArray = jsonObject.getJSONArray("portugal");
-                for (int i = jsonArray.length()-1; i > 0; i--) {
-                    String cidadeNome = jsonArray.getJSONObject(i).getString("name");
-                    int cidadeID = jsonArray.getJSONObject(i).getInt("id");
-                    idCidade.put(cidadeNome, cidadeID);
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    private JSONObject obterJSON() {
-        try {
-            InputStream inputStream = this.context.getAssets().open("JSONPT_limpo.json");
-            byte[] buffer = new byte[inputStream.available()];
-            inputStream.read(buffer);
-            inputStream.close();
-            String json = new String(buffer, StandardCharsets.UTF_8);
-            return new JSONObject(json);
-        } catch (IOException | JSONException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-=======
 //    boolean passagem_de_hora(){
 //        long hora_passada = System.nanoTime();
 //
@@ -162,8 +113,6 @@ public class Profile {
 //
 //        return verificador_da_passagem_hora;
 //    }
->>>>>>> Stashed changes
-    
     String[] recetorTempo() {
         String[] hora = DateFormat.getTimeInstance().format(new Date()).split(":");
         String[] data = DateFormat.getDateInstance().format(new Date()).split("/");

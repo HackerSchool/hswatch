@@ -37,8 +37,6 @@ public class NotificationListener extends NotificationListenerService {
 //    BroadcastReceiver
     private NotificationListenerRecetor notificationListenerRecetor;
 
-<<<<<<< Updated upstream
-=======
     public static List<List<String>> notificacoesGuardadas = new ArrayList<>();
 
     public static HashMap<String, String> packagesFiltro = new HashMap<String, String>(){{
@@ -47,8 +45,6 @@ public class NotificationListener extends NotificationListenerService {
         put("messenger", "com.facebook.orca");
         put("facebook", "com.facebook.katana");
     }};
-
->>>>>>> Stashed changes
     @Override
     public void onCreate() {
         super.onCreate();
