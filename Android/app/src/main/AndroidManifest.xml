@@ -6,6 +6,11 @@
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_NUMBERS" />
+    <uses-permission android:name="android.permission.READ_CALL_LOG" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
 
     <application
         android:name=".App"
@@ -16,8 +21,16 @@
         android:roundIcon="@mipmap/ic_launcher_hs_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".definicoes"
-            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".SettingsActivity"
+            android:label="@string/title_activity_settings"
+            android:theme="@style/SettingsTheme"/>
+        <activity
+            android:name=".ChamadaActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".NotActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".atividade_splash"
             android:theme="@style/SplashScreen">
@@ -33,7 +46,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".MainActivity"
-            android:theme="@style/MenuLateral"/>
+            android:theme="@style/MenuLateral" />
 
         <service android:name=".bluetooth.Servico" />
         <service
@@ -43,6 +56,22 @@
                 <action android:name="android.service.notification.NotificationListenerService" />
             </intent-filter>
         </service>
+
+        <receiver
+            android:name=".bluetooth.PhoneCallReceiver"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="android.intent.action.PHONE_STATE" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name=".bluetooth.SMSReceiver"
+            android:enabled="true"
+            android:permission="android.permission.BROADCAST_SMS">
+            <intent-filter android:priority="999999">
+                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

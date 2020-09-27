@@ -1,0 +1,45 @@
+<resources>
+    <string-array name="nomes_semana">
+        <item>domingo</item>
+        <item>segunda-feira</item>
+        <item>terça-feira</item>
+        <item>quarta-feira</item>
+        <item>quinta-feira</item>
+        <item>sexta-feira</item>
+        <item>sábado</item>
+    </string-array>
+
+    <string-array name="unidades_entries">
+        <item>Métricas (Celsius, m/s, mm)</item>
+        <item>Cientifícas (Kelvin, m/s, mm)</item>
+        <item>Imperiais (F, mph, in)</item>
+    </string-array>
+
+    <string-array name="unidades_values">
+        <item>M</item>
+        <item>S</item>
+        <item>F</item>
+    </string-array>
+
+    <string-array name="cidades_values">
+        <item>Aveiro</item>
+        <item>Beja</item>
+        <item>Braga</item>
+        <item>Bragança</item>
+        <item>Castelo Branco</item>
+        <item>Coimbra</item>
+        <item>Évora</item>
+        <item>Faro</item>
+        <item>Guarda</item>
+        <item>Leiria</item>
+        <item>Lisbon</item>
+        <item>Portalegre</item>
+        <item>Porto</item>
+        <item>Santarém</item>
+        <item>Setúbal</item>
+        <item>Viana do Castelo</item>
+        <item>Vila Real</item>
+        <item>Viseu</item>
+    </string-array>
+
+</resources>

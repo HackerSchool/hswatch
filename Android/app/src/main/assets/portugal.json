@@ -1,0 +1,2472 @@
+{ "portugal":
+[
+  {
+    "city_name": "A dos Cunhados",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Aboim da Nóbrega",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Abrantes",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Abraveses",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Adaúfe",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Aguada de Cima",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Aguiar da Beira",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Aguçadoura",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Alagoa",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Alandroal",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Albergaria-a-Velha",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Albufeira",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Alcabideche",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Alcains",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Alcanede",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Alcanena",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Alcobaça",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Alcochete",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Alcoentre",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Alcoutim",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Alcácer do Sal",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Aldeia de Joanes",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Aldeia de Paio Pires",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Alegrete",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Alenquer",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Alfarelos",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Alfena",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Alferrarede",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Alfândega da Fé",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Algés",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Alhadas",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Alhandra",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Alhos Vedros",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Aljezur",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Aljubarrota",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Aljustrel",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Almada",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Almancil",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Almargem",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Almeirim",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Almodôvar",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Alpiarça",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Alter do Chão",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Alvaiázere",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Alvito",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Alvor",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Amadora",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Amarante",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Amares",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Amor",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Amora",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Anadia",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Angra do Heroísmo",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Ansião",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Anta",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Antas",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Apelação",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Apúlia",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Aradas",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Arazede",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Arco da Calheta",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Arcos",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Arcozelo",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Areosa",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Arganil",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Arganil",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Argoncilhe",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Armamar",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Armação de Pêra",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Arouca",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Arraiolos",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Arrentela",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Arrifana",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Arrifes",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Arronches",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Arruda dos Vinhos",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Arões",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Atouguia da Baleia",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Avanca",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Aveiras de Cima",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Aveiro",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Aver-o-Mar",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Aves",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Avintes",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Avis",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Azambuja",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Azenha",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Baguim do Monte",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Baião",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Baltar",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Barcarena",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Barcelos",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Barrancos",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Barreiro",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Barroca Grande",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Barrosas",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Batalha",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Beduido",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Beja",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Belas",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Belmonte",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Benavente",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Benedita",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Biscoitos",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Bobadela",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Boliqueime",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Bombarral",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Borba",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Boticas",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Bougado",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Braga",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Bragança",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Branca",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Brito",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Buarcos",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Bucelas",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Cabeceiras de Basto",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Cabo da Roca",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Cacilhas",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Cacém",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Cadaval",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Caldas da Rainha",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Caldas de Vizela",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Caldelas",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Calendário",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Calheta",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Camacha",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Camacha",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Camarate",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Campanário",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Campo",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Campo",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Campo Maior",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Candoso",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Canelas",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Caneças",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Canidelo",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Caniçal",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Caniço",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Cantanhede",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Caparica",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Caranguejeira",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Carcavelos",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Carnaxide",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Carrazeda de Anciães",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Carregado",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Carregal do Sal",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Cartaxo",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Carvalhosa",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Carvoeiro",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Carvoeiro",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Cascais",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Castanheira de Pêra",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Castanheira do Ribatejo",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Castelo Branco",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Castelo de Paiva",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Castelo de Vide",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Castelões de Cepeda",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Castro Daire",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Castro Marim",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Castro Verde",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Celorico da Beira",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Celorico de Basto",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Cercal",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Charneca",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Chaves",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Cinfães",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Coimbra",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Colares",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Condeixa-a-Nova",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Constância",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Corroios",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Cortegaça",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Coruche",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Costa de Caparica",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Covilhã",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Cuba",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Cucujães",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Curral das Freiras",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Custoias",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Câmara de Lobos",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Darque",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Eixo",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Elvas",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Entroncamento",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Ericeira",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Ermesinde",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Esmoriz",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Espinho",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Esposende",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Esposende",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Estarreja",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Estoril",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Estreito da Calheta",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Estremoz",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Estômbar",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Fafe",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Fajã da Ovelha",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Fajã de Baixo",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Famões",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Faro",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Fazendas de Almeirim",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Feira",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Felgueiras",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Ferreira",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Ferreira do Alentejo",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Ferreira do Zêzere",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Ferreiras",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Ferreiros",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Figueira da Foz",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Figueira de Castelo Rodrigo",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Figueira do Guincho",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Figueiró",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Figueiró dos Vinhos",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Fiães",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Fornos de Algodres",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Fortios",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Foz do Sousa",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Frazão",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Freamunde",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Freixo de Espada à Cinta",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Fronteira",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Funchal",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Fundão",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Furnas",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Fátima",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Fânzeres",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Gafanha da Encarnação",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Gafanha da Nazaré",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Galegos",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Gandra",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Gavião",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Gemunde",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Godim",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Golegã",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Gondomar",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Grijó",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Grândola",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Guarda",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Guia",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Guifões",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Guimarães",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Gulpilhares",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Góis",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Horta",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Idanha-a-Nova",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Jardim do Mar",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Joane",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Jovim",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Lagoa",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Lagoa",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Lagos",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Lajes das Flores",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Lamas",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Lamego",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Lamelas",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Laranjeiro",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Lavos",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Lavra",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Leiria",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Leça da Palmeira",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Leça do Bailio",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Linda-a-Velha",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Lisbon",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Lobão",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Lordelo",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Lordelo",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Lorvão",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Loulé",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Loures",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Lourinhã",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Louriçal",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Lourosa",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Lousada",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Lousã",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Lugar de Baixo",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Luso",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Lustosa",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Luz",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Macedo de Cavaleiros",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Maceira",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Machico",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Macieira de Cambra",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Madalena",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Madalena",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Mafra",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Maia",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Malveira",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Mangualde",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Manteigas",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Marco de Canavezes",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Margaride",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Marinha Grande",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Marinhais",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Marinhas",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Marvão",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Matosinhos",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Mação",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Meadela",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Mealhada",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Meinedo",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Melgaço",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Mesão Frio",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Milharado",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Milheirós",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Milheirós de Poiares",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Mira",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Miranda do Corvo",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Miranda do Douro",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Mirandela",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Mogadouro",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Moimenta da Beira",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Moita",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Moncarapacho",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Monchique",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Mondim de Basto",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Monsanto",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Montalegre",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Monte Estoril",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Monte Gordo",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Monte Redondo",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Montemor-o-Novo",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Montemor-o-Velho",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Montijo",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Monção",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Mora",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Moreira",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Moreira de Conegos",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Mortágua",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Moscavide",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Moura",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Mourão",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Mozelos",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Murtosa",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Murça",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Mértola",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Mêda",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Nazaré",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Negrelos",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Nelas",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Nisa",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Nogueira",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Nogueira da Regedoura",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Nossa Senhora do Monte",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Odemira",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Odivelas",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Oeiras",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Oiã",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Oleiros",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Olhão",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Olival",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Olival do Basto",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Oliveira",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Oliveira de Azemeis",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Oliveira de Frades",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Oliveira do Bairro",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Oliveira do Douro",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Oliveira do Hospital",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Oliveirinha",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Ourique",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Ourém",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Ovar",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Palmela",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Pampilhosa da Serra",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Pampilhosa do Botão",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Pardilhó",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Parede",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Paredes",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Paredes de Coura",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Pataias",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Paul do Mar",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Paço de Arcos",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Paços de Brandão",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Paços de Ferreira",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Pedroso",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Pedrouços",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Pedrógão Grande",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Penacova",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Penafiel",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Penamacor",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Penedono",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Penela",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Peniche",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Perafita",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Pero Pinheiro",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Perozinho",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Peso da Régua",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Piedade",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Pinhal Novo",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Pinhel",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Poceirão",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Poiares",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Pombal",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Ponta Delgada",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Ponta do Pargo",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Ponta do Sol",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Ponte",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Ponte da Barca",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Ponte de Lima",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Ponte de Sôr",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Pontinha",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Pontével",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Portalegre",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Portel",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Portimão",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Porto",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Porto Covo",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Porto Moniz",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Porto Salvo",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Porto de Mós",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Prado",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Pragal",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Praia da Vitória",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Prazeres",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Proença-a-Nova",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Póvoa da Raposeira",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Póvoa de Lanhoso",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Póvoa de Santa Iria",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Póvoa de Santo Adrião",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Póvoa de Varzim",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Póvoa e Meadas",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Quarteira",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Quejas",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Queluz",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Quinta da Mizarella",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Quinta do Anjo",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Rabo de Peixe",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Ramada",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Real",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Rebordosa",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Recarei",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Redondo",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Refojos de Basto",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Reguengo",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Reguengos de Monsaraz",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Resende",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Riachos",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Ribeira Brava",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Ribeira Grande",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Ribeira de Pena",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Ribeirão",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Rio Maior",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Rio Meão",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Rio Tinto",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Rio de Loba",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Rio de Mouro",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Ronfe",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Rosto de Cão",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Rubiãis",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Sabrosa",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Sabugal",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Sacavém",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Sagres",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Salreu",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Salvaterra de Magos",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Samora Correia",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Sande",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Sandim",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Sangalhos",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Santa Bárbara de Nexe",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Santa Catarina da Serra",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Santa Comba Dão",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Santa Cruz",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Santa Cruz do Bispo",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Santa Iria da Azóia",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Santa Marta de Penaguião",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Santana",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Santarém",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Santiago do Cacém",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Santo André",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Santo André",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Santo Antão do Tojal",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Santo António da Charneca",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Santo Tirso",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Seia",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Seixal",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Selho",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Senhora da Hora",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Sequeira",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Sernancelhe",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Seroa",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Serpa",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Sertã",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Serzedelo",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Serzedo",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Sesimbra",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Sete Cidades",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Sete Fontes",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Setúbal",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Sever do Vouga",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Silvalde",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Silveira",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Silves",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Sines",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Sintra",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Sobrado",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Sobral de Monte Agraço",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Sobralinho",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Sobreda",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Sobreira",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Soure",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Souto",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Souto da Carpalhosa",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Sátão",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "São Bartolomeu de Messines",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "São Brás de Alportel",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "São Domingos de Rana",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "São Félix da Marinha",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "São Jacinto",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "São Jorge da Beira",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "São João",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "São João da Madeira",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "São João da Pesqueira",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "São João da Talha",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "São João das Lampas",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "São João de Ver",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "São João dos Montes",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "São Julião",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "São Mamede de Infesta",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "São Martinho do Porto",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "São Miguel do Couto",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "São Pedro da Cadeira",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "São Pedro da Cova",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "São Pedro do Sul",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "São Romão do Coronado",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "São Roque",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "São Roque do Pico",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "São Simão / Pé da Serra",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "São Teotónio",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "São Vicente",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Tabuaço",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Tamera",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Tarouca",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Tavarede",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Tavira",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Teixoso",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Telões",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Terras de Bouro",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Terrugem",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Tomar",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Tondela",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Torre de Moncorvo",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Torres Novas",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Torres Vedras",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Trafaria",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Tramagal",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Trancoso",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Turquel",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Tábua",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Unhais-o-Velho",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Unhos",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Urgeses",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Urra",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Vagos",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Valadares",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Valbom",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Vale da Amoreira",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Vale de Cambra",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Valenza",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Valença",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Vales do Rio",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Valongo",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Valongo",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Valpaços",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Venda do Pinheiro",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Vendas Novas",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Ventosa",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Vialonga",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Viana do Alentejo",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Viana do Castelo",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Vidigueira",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Vieira de Leiria",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Vieira do Minho",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Vila",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Vila Chã",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Vila Flor",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Vila Franca de Xira",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Vila Franca do Campo",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Vila Frescainha",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Vila Nova da Barquinha",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Vila Nova da Telha",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Vila Nova de Cerveira",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Vila Nova de Famalicão",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Vila Nova de Foz Côa",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Vila Nova de Gaia",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Vila Nova de Milfontes",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Vila Nova de Paiva",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Vila Pouca de Aguiar",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Vila Praia de Âncora",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Vila Real",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Vila Real de Santo António",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Vila Verde",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Vila Viçosa",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Vila de Porto Santo",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Vila de Rei",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Vila do Bispo",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Vila do Conde",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Vila do Corvo",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Vilamoura",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Vilaninho",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Vilar de Andorinho",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Vilar do Paraíso",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Vilarinho",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Vilela",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Vimioso",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Vinhais",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Viseu",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Vizela",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Vizela",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Vouzela",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Válega",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Águas Santas",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Águeda",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Árvore",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Évora",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Ílhavo",
+    "country_full": "Portugal"
+  },
+  {
+    "city_name": "Óbidos",
+    "country_full": "Portugal"
+  }
+]
+}

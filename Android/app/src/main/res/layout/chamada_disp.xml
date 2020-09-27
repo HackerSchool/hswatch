@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/NOME"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textAlignment="viewEnd"
+            android:padding="6dp"
+            android:textColor="@android:color/black"
+            />
+
+        <TextView
+            android:id="@+id/item_chamada_nome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="@string/NOME"
+            android:textSize="16sp"
+            android:textAlignment="viewEnd"
+            android:padding="6dp"
+            android:textColor="@android:color/black"
+            />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/NUMERO"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:padding="6dp"
+            android:textColor="@android:color/black"
+            />
+        <TextView
+            android:id="@+id/item_chamada_numero"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="@string/NUMERO"
+            android:textSize="16sp"
+            android:padding="6dp"
+            android:textColor="@android:color/black"
+            />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/ESTADO"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:padding="6dp"
+            android:textColor="@android:color/black"/>
+        <TextView
+            android:id="@+id/item_chamada_estado"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="@string/ESTADO"
+            android:textSize="16sp"
+            android:padding="6dp"
+            android:textColor="@android:color/black"/>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <TextView
+        android:id="@+id/item_chamada_hora"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/DATA"
+        android:textSize="14sp"
+        android:textAlignment="viewEnd"
+        android:padding="6dp"
+        android:textColor="@android:color/black"/>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

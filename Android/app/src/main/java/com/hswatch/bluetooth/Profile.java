@@ -1,13 +1,11 @@
 package com.hswatch.bluetooth;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.util.Log;
+
+import androidx.preference.PreferenceManager;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.hswatch.R;
@@ -16,35 +14,21 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static android.content.Context.MODE_PRIVATE;
-import static com.hswatch.bluetooth.Servico.TAG;
+import java.util.Objects;
 
 public class Profile {
-
-    public static final String DEFINICOES = "definicoes_hswatch";
-    public static final String DEFINICOES_UNIDADE_TEMPO = "definicoes_unidade_tempo";
-    public static final String DEFINICOES_CIDADE = "definicoes_cidade";
 
     private RequestQueue requestQueue;
 
     private Map<String, String> semanaNumeroMap = new HashMap<>();
 
-    private Map<String, Integer> idCidade = new HashMap<>();
-
-    private long hora_inicial_tempo, hora_inicial_clima;
-    private String cidade = "Lisboa";
     private Context context;
-    private boolean obter_API = true;
 
     public interface VolleyCallBack {
         void returnoSucedido(List<String> respostaLimpa);
@@ -58,8 +42,6 @@ public class Profile {
         this.context = context;
         this.requestQueue = Volley.newRequestQueue(this.context);
 
-        criarMapCidade();
-
 //        Criar Mapa de conversão de dias de semana para um numero
         String[] semanaArray = context.getResources().getStringArray(R.array.nomes_semana);
         for (int i = 1; i <= semanaArray.length; i++) {
@@ -68,66 +50,53 @@ public class Profile {
     }
 
     public void jsonParserTempo(final VolleyCallBack callBack) {
-//        if (!obter_API) { return null; }
-        final List<String> mensagemClima = new ArrayList<>();
-        mensagemClima.add(this.cidade);
-        Log.v(TAG, this.requestQueue.toString());
-        String url = "https://api.weatherbit.io/v2.0/forecast/daily?city=Lisbon&key=e2cd4478289c4b5ab5ac602203922b80&days=6";
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            JSONArray jsonArray = response.getJSONArray("data");
-                            for (int j = 0; j < jsonArray.length(); j ++) {
-                                JSONObject condicoes = jsonArray.getJSONObject(j);
-                                String icon = String.valueOf(condicoes.getJSONObject("weather").
-                                        getString("code"));
-
-                                mensagemClima.add(icon);
-                                mensagemClima.add(String.valueOf(conversorTempo(condicoes.getDouble("max_temp"))));
-                                mensagemClima.add(String.valueOf(condicoes.getDouble("min_temp")));
-                                mensagemClima.add(String.valueOf(condicoes.getInt("pop")));
-                            }
-                            callBack.returnoSucedido(mensagemClima);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
-            }
-        });
-        this.requestQueue.add(request);
-        obter_API = false;
-        hora_inicial_clima = System.nanoTime();
-    }
-
-    public void alterarCidade() {
-        SharedPreferences sharedPreferences = this.context.getSharedPreferences(DEFINICOES, MODE_PRIVATE);
-        this.cidade = sharedPreferences.getString(DEFINICOES_CIDADE, "Lisboa");
-    }
-
-    public Map<String, Integer> getIdCidade() {
-        return idCidade;
-    }
-
-    private double conversorTempo(double valor) {
-        SharedPreferences sharedPreferences = this.context.getSharedPreferences(DEFINICOES, MODE_PRIVATE);
-        String unidade = sharedPreferences.getString(DEFINICOES_UNIDADE_TEMPO, "ºC");
-//        unidade = (unidade != null) ? unidade : "Celsius";
-        switch (unidade) {
-            case "ºC":
-                return valor;
-            case "ºF":
-                return (valor-276)*1.8 + 32;
-            default:
-                return valor + 276;
+        String cidade = PreferenceManager.getDefaultSharedPreferences(context).getString("cidades", "Lisbon");
+        String unidade = PreferenceManager.getDefaultSharedPreferences(context).getString("unidades", "M");
+        if (cidade == null || unidade == null) {
+            return;
         }
+        final List<String> mensagemClima = new ArrayList<>();
+        mensagemClima.add((Objects.equals("Lisbon", cidade) ? "Lisboa" : cidade));
+//        final byte[][] mensagem = new byte[53][];
+//        mensagem[0] = INDICADOR_CLIMA.getBytes();
+//        mensagem[1] = separador;
+//        mensagem[2] = (Objects.equals("Lisbon", cidade) ? "Lisboa" : cidade).getBytes();
+//        final int[] index = {3};
+        String url = "https://api.weatherbit.io/v2.0/forecast/daily?city=" + cidade +
+                "&country_full=Portugal&units=" + unidade + "&key=e2cd4478289c4b5ab5ac602203922b80&days=6";
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
+                response -> {
+                    try {
+                        JSONArray jsonArray = response.getJSONArray("data");
+                        for (int j = 0; j < jsonArray.length(); j++) {
+                            JSONObject condicoes = jsonArray.getJSONObject(j);
+                            String icon = condicoes.getJSONObject("weather").getString("code");
+
+//                            mensagem[index[0]] = separador;
+//                            mensagem[index[0] + 1] = icon.getBytes();
+//                            mensagem[index[0] + 2] = separador;
+//                            mensagem[index[0] + 3] = String.valueOf(condicoes.getDouble("max_temp")).getBytes();
+//                            mensagem[index[0] + 4] = separador;
+//                            mensagem[index[0] + 5] = String.valueOf(condicoes.getDouble("min_temp")).getBytes();
+//                            mensagem[index[0] + 6] = separador;
+//                            mensagem[index[0] + 7] = String.valueOf(condicoes.getInt("pop")).getBytes();
+//                            index[0] = index[0] + 8;
+
+                            mensagemClima.add(icon);
+                            mensagemClima.add(String.valueOf(condicoes.getDouble("max_temp")));
+                            mensagemClima.add(String.valueOf(condicoes.getDouble("min_temp")));
+                            mensagemClima.add(String.valueOf(condicoes.getInt("pop")));
+                        }
+//                        mensagem[index[0]] = delimitador;
+                        callBack.returnoSucedido(mensagemClima);
+                    } catch (JSONException | NullPointerException e) {
+                        e.printStackTrace();
+                    }
+                }, Throwable::printStackTrace);
+        this.requestQueue.add(request);
     }
 
+<<<<<<< Updated upstream
     boolean passagem_de_hora(){
         long hora_passada = System.nanoTime();
 
@@ -175,6 +144,25 @@ public class Profile {
         }
         return null;
     }
+=======
+//    boolean passagem_de_hora(){
+//        long hora_passada = System.nanoTime();
+//
+//        if (!obter_API) {
+//            boolean verificador_da_passagem_clima = hora_passada - this.hora_inicial_clima > 3*60*6e10;
+//            if (verificador_da_passagem_clima) {
+//                obter_API = true;
+//            }
+//        }
+//
+////        6e10 = 1 minuto
+//        boolean verificador_da_passagem_hora = hora_passada - this.hora_inicial_tempo > 6e10;
+//        if (verificador_da_passagem_hora)
+//            this.hora_inicial_tempo = hora_passada;
+//
+//        return verificador_da_passagem_hora;
+//    }
+>>>>>>> Stashed changes
     
     String[] recetorTempo() {
         String[] hora = DateFormat.getTimeInstance().format(new Date()).split(":");

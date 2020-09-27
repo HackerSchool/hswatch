@@ -1,0 +1,32 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory app:title="@string/HORARIO">
+        <EditTextPreference
+            app:key="horas"
+            app:title="@string/TITULO_HORAS"
+            app:useSimpleSummaryProvider="true"
+            android:inputType="numberDecimal"
+            android:digits="0123456789"
+            app:defaultValue="15"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/API_TITULO">
+
+        <DropDownPreference
+            app:key="unidades"
+            app:title="@string/UNIDADES"
+            app:entries="@array/unidades_entries"
+            app:entryValues="@array/unidades_values"
+            app:useSimpleSummaryProvider="true" />
+
+        <DropDownPreference
+            app:key="cidades"
+            app:title="@string/DEF_CIDADE"
+            app:entries="@array/cidades_values"
+            app:entryValues="@array/cidades_values"
+            app:useSimpleSummaryProvider="true"/>
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

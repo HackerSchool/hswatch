@@ -1,7 +1,5 @@
 package com.hswatch;
 
-import android.graphics.drawable.Icon;
-
 public class opcoesItem {
 
     public int opImagem;

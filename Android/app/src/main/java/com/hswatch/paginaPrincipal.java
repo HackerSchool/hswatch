@@ -1,18 +1,22 @@
 package com.hswatch;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
+
+import static com.hswatch.Constantes.CHAMADAS;
+import static com.hswatch.Constantes.NOTIFICACOES;
 
 public class paginaPrincipal extends Fragment {
 
@@ -21,9 +25,10 @@ public class paginaPrincipal extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        opcoesItems.add(new opcoesItem(R.drawable.ic_bluetooth_black_24dp, "Configurações de conexão"));
-        opcoesItems.add(new opcoesItem(R.drawable.ic_access_alarm_black_24dp, "Alarme"));
-        opcoesItems.add(new opcoesItem(R.drawable.ic_notifications_black_24dp, "Notificações"));
+//        opcoesItems.add(new opcoesItem(R.drawable.ic_bluetooth_black_24dp, "Configurações de conexão"));
+//        opcoesItems.add(new opcoesItem(R.drawable.ic_access_alarm_black_24dp, "Alarme"));
+        opcoesItems.add(new opcoesItem(R.drawable.ic_notificacoes_recebidas, "Notificações Recebidas"));
+        opcoesItems.add(new opcoesItem(R.drawable.ic_chamadas_recebidas, "Chamadas Recebidas"));
         return inflater.inflate(R.layout.fragment_disp, container, false);
     }
 
@@ -35,32 +40,39 @@ public class paginaPrincipal extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        opcoesAdapter OpcoesAdapter = new opcoesAdapter(opcoesItems);
+        final opcoesAdapter OpcoesAdapter = new opcoesAdapter(opcoesItems);
         recyclerView.setAdapter(OpcoesAdapter);
-        OpcoesAdapter.setOnitemclicklistener(new opcoesAdapter.onItemClickListener() {
-            @Override
-            public void onItemClick(int position) {
-                acaoItem(position);
-//                começar atividade
-            }
-        });
+        OpcoesAdapter.setOnitemclicklistener(this::acaoItem);
     }
 
     private void acaoItem(int position) {
         switch (position) {
             case 0:
-                Toast.makeText(getContext(), "Ativar configurações da conexão - Tempo de refresh", Toast.LENGTH_LONG).show();
+                iniciarAtividade(NOTIFICACOES);
                 break;
             case 1:
-                Toast.makeText(getContext(), "Ativar Alarme - configurações dos alarmes e mais", Toast.LENGTH_LONG).show();
+                iniciarAtividade(CHAMADAS);
                 break;
-            case 2:
-                Toast.makeText(getContext(), "Ativar Notificações - Verificar para quais aplicações o relógio mostra e história do que foi mandado", Toast.LENGTH_LONG).show();
-                break;
+//            case 0:
+//                Toast.makeText(getContext(), "Ativar configurações da conexão - Tempo de refresh", Toast.LENGTH_LONG).show();
+//                break;
+//            case 1:
+//                Toast.makeText(getContext(), "Ativar Alarme - configurações dos alarmes e mais", Toast.LENGTH_LONG).show();
+//                break;
             default:
-                Toast.makeText(getContext(), "Fora de alcance" + position, Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "Fora de alcance " + position, Toast.LENGTH_LONG).show();
                 break;
         }
     }
 
+    private void iniciarAtividade(String chave) {
+        switch (chave) {
+            case NOTIFICACOES:
+                startActivity(new Intent(getActivity(), NotActivity.class));
+                break;
+            case CHAMADAS:
+                startActivity(new Intent(getActivity(), ChamadaActivity.class));
+                break;
+        }
+    }
 }

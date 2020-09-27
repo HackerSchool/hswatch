@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="raio_pagina_principal_toolbar">40dp</dimen>
+    <color name="Texto_Opcao">#555555</color>
 </resources>

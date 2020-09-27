@@ -1,18 +1,15 @@
 package com.hswatch.bluetooth;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.RelativeLayout;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.hswatch.R;
-import com.hswatch.fragments.atividade_config;
 
 public class sem_bt extends AppCompatActivity {
 

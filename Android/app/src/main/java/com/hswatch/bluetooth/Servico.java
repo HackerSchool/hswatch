@@ -11,60 +11,109 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.IBinder;
+import android.telephony.TelephonyManager;
 import android.util.Log;
-import android.widget.Toast;
+
+import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
+import androidx.preference.PreferenceManager;
+import androidx.work.ExistingPeriodicWorkPolicy;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkInfo;
+import androidx.work.WorkManager;
 
 import com.hswatch.MainActivity;
 import com.hswatch.R;
+<<<<<<< Updated upstream
 import com.hswatch.definicoes;
+=======
+import com.hswatch.worker.HoraWorker;
+>>>>>>> Stashed changes
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
+<<<<<<< Updated upstream
 import java.util.UUID;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
+=======
+import java.util.Objects;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+
+>>>>>>> Stashed changes
 import static com.hswatch.App.CANAL_SERVICO;
+import static com.hswatch.Constantes.ACAO_DEFINICOES_SERVICO;
+import static com.hswatch.Constantes.ACAO_NOTIFICACOES_SERVICO;
+import static com.hswatch.Constantes.ACAO_SERVICO_TEMPO_API;
+import static com.hswatch.Constantes.INDICADOR_CLIMA;
+import static com.hswatch.Constantes.INDICADOR_TEL;
+import static com.hswatch.Constantes.delimitador;
+import static com.hswatch.Constantes.separador;
+import static com.hswatch.Constantes.uid;
 
 public class Servico extends Service {
 
 //    TAG
     public static final String TAG = "hswatch.service.Servico";
 
-//    UUID
-    public static final UUID uid = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
-    private static final String INDICADOR_CLIMA = "WEA";
-
-    //    Estado
+//    Estado
     private int estadoAtual;
 
 //    Bluetooth
-    BluetoothDevice dispositivoBluetooth;
+    private BluetoothDevice dispositivoBluetooth;
 
 //    BroadcastReceiver
     private Recetor recetor;
 
-//    Chaves do Recetor
-    public static final String ACAO_SERVICO_NOT = "sinal.notificacao.servico";
-    public static final String ELEMENTO_SERVICO_NOT = "sinal.elemento.not";
-    public static final String ACAO_SERVICO_TEMPO_API = "sinal.api_tempo.servico";
-    public static final String  ACAO_SERVICO_DEFINICOES = "sinal.servico.definicoes";
-
 //    Thread's
-    ThreadConexao threadConexao;
-    ThreadConectado threadConectado;
+    private ThreadConexao threadConexao;
+    private static ThreadConectado threadConectado;
 
 //    Inicialização de variáveis
-    char[] caracteres = new char[3];
-    String mensagemRecebida;
-    String dispositivoEscolhido;
+    private char[] caracteres = new char[3];
+    private String mensagemRecebida;
+    private String dispositivoEscolhido;
 
 //    Perfile do dispositivo
     private Profile profileDispositivo;
 
+<<<<<<< Updated upstream
+=======
+//    WorkManagers
+    private WorkInfo horaWorker;
+
+//    Chamadas
+    private static byte[][] mensagemChamada = {
+            "NOT".getBytes(),                                                           // 0
+            separador,                                                                  // 1
+            INDICADOR_TEL.getBytes(),                                                   // 2
+            separador,                                                                  // 3
+            "hora".getBytes(),                                                          // 4
+            separador,                                                                  // 5
+            "min".getBytes(),                                                           // 6
+            separador,                                                                  // 7
+            "nome".getBytes(),                                                          // 8
+            separador,                                                                  // 9
+            "estado".getBytes(),                                                        // 10
+            delimitador                                                                 // 11
+    };
+
+//    Verificar se o Serviço está a correr
+    public static boolean ativoServico = false;
+
+/*
+ *
+ * Com isto tudo implementado, rever o código feito na totalidade e ver se se pode eliminar alguns
+ * pontos ou simplificar operações. Se for feita esta lista, considera-se a aplicação acabada por FIM!!!
+ *
+ * */
+
+>>>>>>> Stashed changes
     @Override
     public void onCreate() {
         super.onCreate();
@@ -80,6 +129,7 @@ public class Servico extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        ativoServico = false;
         unregisterReceiver(recetor);
     }
 
@@ -90,9 +140,10 @@ public class Servico extends Service {
         IntentFilter intentFilterServico = new IntentFilter();
         intentFilterServico.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
         intentFilterServico.addAction(BluetoothDevice.ACTION_ACL_CONNECTED);
-        intentFilterServico.addAction(ACAO_SERVICO_NOT);
+        intentFilterServico.addAction(ACAO_NOTIFICACOES_SERVICO);
         intentFilterServico.addAction(ACAO_SERVICO_TEMPO_API);
-        intentFilterServico.addAction(definicoes.ACAO_DEFINICOES_SERVICO);
+        intentFilterServico.addAction(ACAO_DEFINICOES_SERVICO);
+        intentFilterServico.addAction(TelephonyManager.ACTION_PHONE_STATE_CHANGED);
         registerReceiver(recetor, intentFilterServico);
 
         try{
@@ -173,17 +224,148 @@ public class Servico extends Service {
         }
     }
 
+<<<<<<< Updated upstream
     void tempo (Profile profile) {
+=======
+//    private void tempo () {
+//        if (horaWorker == null) { return; }
+//        String[] mensagem = horaWorker.getOutputData().getStringArray("its_time_to_stop");
+//        if (mensagem == null) {
+//            return;
+//        }
+//        if (threadConectado != null) {
+//            threadConectado.escrever("TIM".getBytes());
+//            for (String msg : mensagem) {
+//                threadConectado.escrever(separador);
+//                threadConectado.escrever(msg.getBytes());
+//            }
+//            threadConectado.escrever(delimitador);
+//        }
+//    }
+
+    private void tempo (Profile profile) {
+>>>>>>> Stashed changes
         String[] mensagem = profile.recetorTempo();
         if (threadConectado != null) {
             threadConectado.escrever("TIM".getBytes());
             for (String msg : mensagem) {
+<<<<<<< Updated upstream
                 threadConectado.escrever(NotificationListener.separador);
                 threadConectado.escrever(msg.getBytes());
+=======
+                threadConectado.escrever(separador);
+                threadConectado.escrever(msg.getBytes());
             }
-            threadConectado.escrever(NotificationListener.delimitador);
+            threadConectado.escrever(delimitador);
         }
     }
+
+    private boolean recebeuTempo() {
+        boolean running = false;
+        try {
+            List<WorkInfo> workInfoList = WorkManager.getInstance(getApplicationContext()).
+                    getWorkInfosByTag("tag_horas").get();
+            for (WorkInfo workInfo : workInfoList) {
+                running = workInfo.getState() == WorkInfo.State.RUNNING | workInfo.getState() == WorkInfo.State.ENQUEUED;
+                if (running)
+                    horaWorker = workInfo;
+                break;
+>>>>>>> Stashed changes
+            }
+            return running;
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
+    // Funções das chamadas
+//    private void obterNumeroEstado(Context context, Intent intent) {
+//        String number = Objects.requireNonNull(intent.getExtras())
+//                .getString(TelephonyManager.EXTRA_INCOMING_NUMBER);
+//        String stateStr = intent.getExtras().getString(TelephonyManager.EXTRA_STATE);
+//        if (number != null) {
+//            number = obterNomePorNumero(context, number);
+//            int estado = 10;
+//            if (Objects.equals(stateStr, TelephonyManager.EXTRA_STATE_IDLE)) {
+//                estado = TelephonyManager.CALL_STATE_IDLE;
+//            } else if (Objects.equals(stateStr, TelephonyManager.EXTRA_STATE_OFFHOOK)) {
+//                estado = TelephonyManager.CALL_STATE_OFFHOOK;
+//            }
+//            else if(Objects.equals(stateStr, TelephonyManager.EXTRA_STATE_RINGING)){
+//                estado = TelephonyManager.CALL_STATE_RINGING;
+//            }
+//
+//            verificadorEstado(context, estado, number);
+//        }
+//    }
+//
+//    private String obterNomePorNumero(Context context, String number) {
+//        Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI,
+//                Uri.encode(number));
+//
+//        String[] projecao = new String[]{ContactsContract.PhoneLookup.DISPLAY_NAME};
+//
+//        Cursor cursor = context.getContentResolver().query(uri, projecao, null, null);
+//
+//        if (cursor != null) {
+//            if (cursor.moveToFirst()) {
+//                return cursor.getString(0);
+//            }
+//            cursor.close();
+//        }
+//        return number;
+//    }
+//
+//    public void verificadorEstado(Context context, int estado, String number) {
+//        if (estadoAnterior != estado) {
+//            /*
+//             * Estado 0: Não há chamada - IDLE
+//             * Estado 1: Receber a chamada - RINGING
+//             * Estado 2: Chamada a decorrer - OFFHOOK
+//             */
+//            switch (estado) {
+//                case TelephonyManager.CALL_STATE_RINGING:
+//                    estaReceber = true;
+//                    comecoChamada = new Date();
+////                    onIncomingCallStarted(context, number, comecoChamada);
+//                    break;
+//                case TelephonyManager.CALL_STATE_OFFHOOK:
+//                    if (estadoAnterior != TelephonyManager.CALL_STATE_RINGING) {
+//                        estaReceber = false;
+//                    }
+//                case TelephonyManager.CALL_STATE_IDLE:
+//                    if (estadoAnterior == TelephonyManager.CALL_STATE_RINGING) {
+////                        onMissedCall(context, number, comecoChamada);
+//                    } else if (estaReceber) {
+////                        onCallEnded(context, number, comecoChamada, new Date());
+//                    }
+//                    break;
+//                default:break;
+//            }
+//            estadoAnterior = estado;
+//        }
+//    }
+    public static void receberChamada(String numero, String nome, String hora) {
+        mensagemChamada[4] = hora.split(":")[0].getBytes();
+        mensagemChamada[6] = hora.split(":")[0].getBytes();
+        mensagemChamada[8] = (nome + " @ " + numero).getBytes();
+        mensagemChamada[10] = "receber".getBytes();
+
+        enviarMensagensRelogio(mensagemChamada);
+    }
+
+    public static void perdidaChamada(String numero, String nome,  String hora) {
+        mensagemChamada[4] = hora.split(":")[0].getBytes();
+        mensagemChamada[6] = hora.split(":")[0].getBytes();
+        mensagemChamada[8] = (nome + " @ " + numero).getBytes();
+        mensagemChamada[10] = "perdida".getBytes();
+
+        enviarMensagensRelogio(mensagemChamada);
+    }
+    // Fim das Funções das chamadas
+
 
     public class Recetor extends BroadcastReceiver {
         @Override
@@ -193,6 +375,7 @@ public class Servico extends Service {
                 return;
             }
             switch (acao) {
+                // Chaves do Bluetooth
                 case BluetoothAdapter.ACTION_STATE_CHANGED:
                     if (intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR) ==
                             BluetoothAdapter.STATE_OFF) {
@@ -200,9 +383,9 @@ public class Servico extends Service {
                     }
                     break;
                 case BluetoothDevice.ACTION_ACL_DISCONNECTED:
-                    Toast.makeText(getApplicationContext(), "Perdida a conexão Bluetooth", Toast.LENGTH_SHORT).show();
                     conexaoPerdida();
                     break;
+<<<<<<< Updated upstream
                 case ACAO_SERVICO_NOT:
                     if (threadConectado != null) {
                         try{
@@ -236,12 +419,49 @@ public class Servico extends Service {
                         sendBroadcast(requesitoLimpar);
                     }
                     break;
+=======
+
+                // Chave da comunicação entre o NotificationListener para o Serviço
+//                case ACAO_NOTIFICACOES_SERVICO:
+//                    if (threadConectado != null) {
+//                        try{
+//                            threadConectado.escrever(intent.getByteArrayExtra(ELEMENTO_SERVICO_NOT));
+//                        } catch (Exception e){
+//                            stopSelf();
+//                            Log.e(TAG, "Serviço: Erro ao escrever!", e);
+//                        }
+//                    }
+//                    break;
+//                case TelephonyManager.ACTION_PHONE_STATE_CHANGED:
+//                    obterNumeroEstado(context, intent);
+//                    break;
+>>>>>>> Stashed changes
                 default:break;
             }
         }
     }
 
+    public static void enviarMensagensRelogio(byte[][] mensagem) {
+        if (threadConectado != null) {
+            for (byte[] bytes : mensagem) {
+                threadConectado.escrever(bytes);
+            }
+        }
+    }
+
+    public static void enviarMeteorologiaRelogio(List<String> mensagem) {
+        if (threadConectado != null) {
+            threadConectado.escrever(INDICADOR_CLIMA.getBytes());
+            for (String conteudo : mensagem) {
+                threadConectado.escrever(separador);
+                threadConectado.escrever(conteudo.getBytes());
+            }
+            threadConectado.escrever(delimitador);
+        }
+    }
+
     class ThreadConexao extends Thread {
+
         private final BluetoothSocket bluetoothSocket;
 
         ThreadConexao(BluetoothDevice dispositivo) {
@@ -280,7 +500,6 @@ public class Servico extends Service {
 
             estabelecerConexao(bluetoothSocket);
         }
-
         void cancel() {
             try{
                 bluetoothSocket.close();
@@ -288,12 +507,14 @@ public class Servico extends Service {
                 Log.e(TAG, "Algo deu mal...", e);
             }
         }
+
     }
 
     class ThreadConectado extends Thread{
 
         private final BluetoothSocket bluetoothSocket;
         private final InputStream inputStream;
+
         private final OutputStream outputStream;
 
         ThreadConectado(BluetoothSocket bluetoothsocket) {
@@ -304,7 +525,7 @@ public class Servico extends Service {
                 inputStreamL = bluetoothsocket.getInputStream();
                 outputStreamL = bluetoothsocket.getOutputStream();
             } catch (IOException e) {
-                Log.e(TAG, "Falha ao obter bluetooth streams.", e);
+                e.printStackTrace();
                 conexaoPerdida();
             }
             inputStream = inputStreamL;
@@ -314,8 +535,19 @@ public class Servico extends Service {
             sinalVerde.putExtra(getResources().getString(R.string.SINAL_VERDE), true);
             sinalVerde.putExtra(getResources().getString(R.string.NOME), dispositivoEscolhido);
             sendBroadcast(sinalVerde);
-            Log.v(TAG, "Foi mandado o sinal verde!");
             profileDispositivo = new Profile(getApplicationContext(), dispositivoBluetooth.getName());
+<<<<<<< Updated upstream
+=======
+            int periodo = Integer.parseInt(Objects.requireNonNull(PreferenceManager
+                    .getDefaultSharedPreferences(getApplicationContext())
+                    .getString("horas", "15")));
+            periodo = Math.max(periodo, 15);
+            PeriodicWorkRequest periodicWorkRequest = new PeriodicWorkRequest.Builder(HoraWorker.class,
+                    periodo, TimeUnit.MINUTES).build();
+            WorkManager.getInstance(getApplicationContext()).enqueueUniquePeriodicWork(
+                    "tag_horas", ExistingPeriodicWorkPolicy.REPLACE, periodicWorkRequest);
+            ativoServico = true;
+>>>>>>> Stashed changes
         }
 
         @Override
@@ -333,7 +565,7 @@ public class Servico extends Service {
                         }
                         for (int i=0; i<bytesavailable; i++){
                             bytes = buffer[i];
-                            if (NotificationListener.delimitador[0] == bytes) {
+                            if (delimitador[0] == bytes) {
                                 mensagemRecebida = new String(caracteres);
                                 bufferposition = 0;
                             } else {
@@ -353,19 +585,11 @@ public class Servico extends Service {
                         } catch (NullPointerException e) {
                             Log.e(TAG, "Erro: " + e.toString());
                         }
-                        if (mensagemRecebida.equals(INDICADOR_CLIMA)) {
-                            profileDispositivo.jsonParserTempo(new Profile.VolleyCallBack() {
-                                @Override
-                                public void returnoSucedido(List<String> respostaLimpa) {
-                                    threadConectado.escrever(INDICADOR_CLIMA.getBytes());
-                                    for (int i = 0; i < respostaLimpa.size(); i++) {
-                                        threadConectado.escrever(NotificationListener.separador);
-                                        threadConectado.escrever(respostaLimpa.get(i).getBytes());
-                                    }
-                                    threadConectado.escrever(NotificationListener.delimitador);
-                                    caracteres = new char[3];
-                                    mensagemRecebida = "";
-                                }
+                        if (Objects.equals(mensagemRecebida, INDICADOR_CLIMA)) {
+                            profileDispositivo.jsonParserTempo(respostaLimpa -> {
+                                enviarMeteorologiaRelogio(respostaLimpa);
+                                caracteres = new char[3];
+                                mensagemRecebida = "";
                             });
                         }
                     }
@@ -374,10 +598,15 @@ public class Servico extends Service {
                     conexaoPerdida();
                     break;
                 }
+<<<<<<< Updated upstream
                 if (profileDispositivo.passagem_de_hora()) {
                     tempo(profileDispositivo);
                 }
 
+=======
+//                if (recebeuTempo())
+//                    tempo();
+>>>>>>> Stashed changes
             }
         }
 
@@ -388,7 +617,6 @@ public class Servico extends Service {
                 Log.e(TAG, "Não foi possível escrever para o dispositivo", e);
             }
         }
-
         void cancel (){
             try{
                 bluetoothSocket.close();
@@ -396,5 +624,11 @@ public class Servico extends Service {
                 Log.e(TAG, "Não foi possivel fechar socket na conexão", e);
             }
         }
+<<<<<<< Updated upstream
     }
 }
+=======
+
+    }
+}
+>>>>>>> Stashed changes

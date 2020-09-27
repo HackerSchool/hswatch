@@ -1,0 +1,125 @@
+21/8/20
+2020-08-21 16:07:47.442 10651-10651/com.hswatch E/AndroidRuntime: FATAL EXCEPTION: main
+    Process: com.hswatch, PID: 10651
+    java.lang.NullPointerException: Attempt to invoke virtual method 'void androidx.recyclerview.widget.RecyclerView.setHasFixedSize(boolean)' on a null object reference
+        at com.hswatch.paginaPrincipal.onViewCreated(paginaPrincipal.java:46)
+        at androidx.fragment.app.FragmentStateManager.createView(FragmentStateManager.java:322)
+        at androidx.fragment.app.FragmentManager.moveToState(FragmentManager.java:1185)
+        at androidx.fragment.app.FragmentManager.moveToState(FragmentManager.java:1354)
+        at androidx.fragment.app.FragmentManager.moveFragmentToExpectedState(FragmentManager.java:1432)
+        at androidx.fragment.app.FragmentManager.moveToState(FragmentManager.java:1495)
+        at androidx.fragment.app.BackStackRecord.executeOps(BackStackRecord.java:447)
+        at androidx.fragment.app.FragmentManager.executeOps(FragmentManager.java:2167)
+        at androidx.fragment.app.FragmentManager.executeOpsTogether(FragmentManager.java:1990)
+        at androidx.fragment.app.FragmentManager.removeRedundantOperationsAndExecute(FragmentManager.java:1945)
+        at androidx.fragment.app.FragmentManager.execPendingActions(FragmentManager.java:1847)
+        at androidx.fragment.app.FragmentManager.dispatchStateChange(FragmentManager.java:2621)
+        at androidx.fragment.app.FragmentManager.dispatchActivityCreated(FragmentManager.java:2569)
+        at androidx.fragment.app.FragmentController.dispatchActivityCreated(FragmentController.java:247)
+        at androidx.fragment.app.FragmentActivity.onStart(FragmentActivity.java:541)
+        at androidx.appcompat.app.AppCompatActivity.onStart(AppCompatActivity.java:210)
+        at android.app.Instrumentation.callActivityOnStart(Instrumentation.java:1433)
+        at android.app.Activity.performStart(Activity.java:7978)
+        at android.app.ActivityThread.handleStartActivity(ActivityThread.java:3472)
+        at android.app.servertransaction.TransactionExecutor.performLifecycleSequence(TransactionExecutor.java:221)
+        at android.app.servertransaction.TransactionExecutor.cycleToPath(TransactionExecutor.java:201)
+        at android.app.servertransaction.TransactionExecutor.executeLifecycleState(TransactionExecutor.java:173)
+        at android.app.servertransaction.TransactionExecutor.execute(TransactionExecutor.java:97)
+        at android.app.ActivityThread$H.handleMessage(ActivityThread.java:2147)
+        at android.os.Handler.dispatchMessage(Handler.java:107)
+        at android.os.Looper.loop(Looper.java:237)
+        at android.app.ActivityThread.main(ActivityThread.java:7814)
+        at java.lang.reflect.Method.invoke(Native Method)
+        at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:493)
+        at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:1075)
+
+
+2020-08-25 22:35:30.490 12910-12910/com.hswatch E/AndroidRuntime: FATAL EXCEPTION: main
+    Process: com.hswatch, PID: 12910
+    java.lang.NullPointerException: Attempt to invoke virtual method 'void com.hswatch.database.NotViewModel.inserir(com.hswatch.database.Notificacao)' on a null object reference
+        at com.hswatch.bluetooth.NotificationListener.adicionarNot(NotificationListener.java:91)
+        at com.hswatch.bluetooth.NotificationListener.guardarNot(NotificationListener.java:74)
+        at com.hswatch.bluetooth.NotificationListener.onNotificationPosted(NotificationListener.java:65)
+        at android.service.notification.NotificationListenerService.onNotificationPosted(NotificationListenerService.java:347)
+        at android.service.notification.NotificationListenerService$MyHandler.handleMessage(NotificationListenerService.java:2062)
+        at android.os.Handler.dispatchMessage(Handler.java:107)
+        at android.os.Looper.loop(Looper.java:237)
+        at android.app.ActivityThread.main(ActivityThread.java:7814)
+        at java.lang.reflect.Method.invoke(Native Method)
+        at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:493)
+        at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:1075)
+
+2020-08-25 22:41:08.461 15784-15784/com.hswatch E/AndroidRuntime: FATAL EXCEPTION: main
+    Process: com.hswatch, PID: 15784
+    java.lang.RuntimeException: Unable to create service com.hswatch.bluetooth.NotificationListener: java.lang.ClassCastException: com.hswatch.bluetooth.NotificationListener cannot be cast to androidx.lifecycle.ViewModelStoreOwner
+        at android.app.ActivityThread.handleCreateService(ActivityThread.java:4166)
+        at android.app.ActivityThread.access$1500(ActivityThread.java:268)
+        at android.app.ActivityThread$H.handleMessage(ActivityThread.java:1998)
+        at android.os.Handler.dispatchMessage(Handler.java:107)
+        at android.os.Looper.loop(Looper.java:237)
+        at android.app.ActivityThread.main(ActivityThread.java:7814)
+        at java.lang.reflect.Method.invoke(Native Method)
+        at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:493)
+        at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:1075)
+     Caused by: java.lang.ClassCastException: com.hswatch.bluetooth.NotificationListener cannot be cast to androidx.lifecycle.ViewModelStoreOwner
+        at com.hswatch.bluetooth.NotificationListener.onCreate(NotificationListener.java:49)
+        at android.app.ActivityThread.handleCreateService(ActivityThread.java:4154)
+        at android.app.ActivityThread.access$1500(ActivityThread.java:268) 
+        at android.app.ActivityThread$H.handleMessage(ActivityThread.java:1998) 
+        at android.os.Handler.dispatchMessage(Handler.java:107) 
+        at android.os.Looper.loop(Looper.java:237) 
+        at android.app.ActivityThread.main(ActivityThread.java:7814) 
+        at java.lang.reflect.Method.invoke(Native Method) 
+        at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:493) 
+        at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:1075) 
+
+
+2020-08-28 21:48:45.440 17464-17464/com.hswatch W/Bundle: Attempt to cast generated internal exception:
+    java.lang.ClassCastException: android.text.SpannableString cannot be cast to java.lang.String
+        at android.os.BaseBundle.getString(BaseBundle.java:1199)
+        at com.hswatch.bluetooth.NotificationListener$1.<init>(NotificationListener.java:91)
+        at com.hswatch.bluetooth.NotificationListener.guardarNot(NotificationListener.java:80)
+        at com.hswatch.bluetooth.NotificationListener.onNotificationPosted(NotificationListener.java:70)
+        at android.service.notification.NotificationListenerService.onNotificationPosted(NotificationListenerService.java:374)
+        at android.service.notification.NotificationListenerService$MyHandler.handleMessage(NotificationListenerService.java:2131)
+        at android.os.Handler.dispatchMessage(Handler.java:106)
+        at android.os.Looper.loop(Looper.java:223)
+        at android.app.ActivityThread.main(ActivityThread.java:7656)
+        at java.lang.reflect.Method.invoke(Native Method)
+        at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:592)
+        at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:947)
+2020-08-28 21:48:45.440 17464-17464/com.hswatch V/hswatch.service.NOT: Atividade ativa? false
+2020-08-28 21:48:45.440 17464-17464/com.hswatch W/Bundle: Key android.title expected String but value was a android.text.SpannableString.  The default value <null> was returned.
+2020-08-28 21:48:45.441 17464-17464/com.hswatch W/Bundle: Attempt to cast generated internal exception:
+    java.lang.ClassCastException: android.text.SpannableString cannot be cast to java.lang.String
+        at android.os.BaseBundle.getString(BaseBundle.java:1199)
+        at com.hswatch.bluetooth.NotificationListener.onNotificationPosted(NotificationListener.java:71)
+        at android.service.notification.NotificationListenerService.onNotificationPosted(NotificationListenerService.java:374)
+        at android.service.notification.NotificationListenerService$MyHandler.handleMessage(NotificationListenerService.java:2131)
+        at android.os.Handler.dispatchMessage(Handler.java:106)
+        at android.os.Looper.loop(Looper.java:223)
+        at android.app.ActivityThread.main(ActivityThread.java:7656)
+        at java.lang.reflect.Method.invoke(Native Method)
+        at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:592)
+        at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:947)
+
+
+2020-09-13 23:46:23.716 7883-7883/com.hswatch E/AndroidRuntime: FATAL EXCEPTION: main
+    Process: com.hswatch, PID: 7883
+    java.lang.NullPointerException: Attempt to get length of null array
+        at java.io.OutputStream.write(OutputStream.java:75)
+        at com.hswatch.bluetooth.Servico$ThreadConectado.escrever(Servico.java:534)
+        at com.hswatch.bluetooth.Servico.enviarMensagensRelogio(Servico.java:387)
+        at com.hswatch.bluetooth.Servico$ThreadConectado.lambda$run$0$Servico$ThreadConectado(Servico.java:516)
+        at com.hswatch.bluetooth.-$$Lambda$Servico$ThreadConectado$nEN-jJ6EtP8OsJEJWb45VNIWxT0.returnoSucedido(Unknown Source:2)
+        at com.hswatch.bluetooth.Profile.lambda$jsonParserTempo$0(Profile.java:93)
+        at com.hswatch.bluetooth.-$$Lambda$Profile$hafN1OHj7HNM0_5Ye200m6N0ZM4.onResponse(Unknown Source:8)
+        at com.android.volley.toolbox.JsonRequest.deliverResponse(JsonRequest.java:90)
+        at com.android.volley.ExecutorDelivery$ResponseDeliveryRunnable.run(ExecutorDelivery.java:102)
+        at android.os.Handler.handleCallback(Handler.java:883)
+        at android.os.Handler.dispatchMessage(Handler.java:100)
+        at android.os.Looper.loop(Looper.java:237)
+        at android.app.ActivityThread.main(ActivityThread.java:7814)
+        at java.lang.reflect.Method.invoke(Native Method)
+        at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:493)
+        at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:1075)

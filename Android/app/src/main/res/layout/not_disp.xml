@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:orientation="vertical"    android:layout_marginEnd="12dp"
+    android:layout_marginStart="12dp"   android:layout_marginBottom="12dp"
+    android:elevation="10dp"
+    >
+
+    <TextView
+        android:id="@+id/item_not_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/HEADER"
+        android:padding="4dp"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:textColor="@android:color/black"
+        />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/PACKAGE"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:padding="6dp"
+            android:textColor="@android:color/black"
+            />
+
+        <TextView
+            android:id="@+id/item_not_package"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="@string/PACKAGE"
+            android:textSize="16sp"
+            android:textAlignment="viewEnd"
+            android:padding="6dp"
+            android:textColor="@android:color/black"
+            />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/CATEGORY"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:padding="6dp"
+            android:textColor="@android:color/black"
+            />
+        <TextView
+            android:id="@+id/item_not_category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="@string/CATEGORY"
+            android:textSize="16sp"
+            android:padding="6dp"
+            android:textColor="@android:color/black"
+            />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/TITULO"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:padding="6dp"
+            android:textColor="@android:color/black"/>
+        <TextView
+            android:id="@+id/item_not_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="@string/TITULO"
+            android:textSize="16sp"
+            android:padding="6dp"
+            android:textColor="@android:color/black"/>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/TEXTO"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:padding="6dp"
+            android:textColor="@android:color/black"/>
+        <TextView
+            android:id="@+id/item_not_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="@string/TEXTO"
+            android:textSize="16sp"
+            android:padding="6dp"
+            android:textColor="@android:color/black"/>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <TextView
+        android:id="@+id/item_not_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/DATA"
+        android:textSize="14sp"
+        android:textAlignment="viewEnd"
+        android:padding="6dp"
+        android:textColor="@android:color/black"/>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

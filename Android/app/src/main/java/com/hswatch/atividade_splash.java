@@ -1,32 +1,40 @@
 package com.hswatch;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.hswatch.bluetooth.sem_bt;
 import com.hswatch.fragments.atividade_config;
+
+import static com.hswatch.Constantes.DEFINICOES_HISTORIA;
+import static com.hswatch.Constantes.NOME;
+import static com.hswatch.Constantes.VERIFICADOR;
 
 public class atividade_splash extends AppCompatActivity {
 
     public static final String TAG = "hswatch.ativ.splash";
 
-    public static final String HISTORIA_PREFS = "historia_dispositivos_conectados";
-    public static final String VERIFICADOR = "verificador_conexao";
-    public static final String NOME = "historia_nome_dispositivo";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+
         startActivity(new Intent(this, MainActivity.class));
-//        verificacao_Inicial();
-//        startActivityForResult(new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE), getResources().getInteger(R.integer.ATIVAR_BT));
+        finish();
+
+//        if (ativoServico) {
+//            startActivity(new Intent(this, MainActivity.class));
+//            finish();
+//        } else {
+//            verificacao_Inicial();
+//            startActivityForResult(new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE), getResources().getInteger(R.integer.ATIVAR_BT));
+//        }
     }
 
     private void verificacao_Inicial() {
@@ -45,12 +53,14 @@ public class atividade_splash extends AppCompatActivity {
             startActivity(new Intent(this, sem_bt.class));
             Toast.makeText(getApplicationContext(), "O HSWatch necessita de o bluetooth ligado para poder operar.", Toast.LENGTH_LONG).show();
         } else if (requestCode == getResources().getInteger(R.integer.ATIVAR_BT) && resultCode == RESULT_OK) {
+            startActivity(new Intent(this, MainActivity.class));
+            finish();
             verificarHistoriaDispositivos();
         }
     }
 
     private void verificarHistoriaDispositivos() {
-        SharedPreferences sharedPreferences = getSharedPreferences(HISTORIA_PREFS, MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences(DEFINICOES_HISTORIA, MODE_PRIVATE);
         if (sharedPreferences.getBoolean(VERIFICADOR, false)) {
             Toast.makeText(getApplicationContext(), "Está conectado ao dispositivo: " +
                     sharedPreferences.getString(NOME, "Erro"), Toast.LENGTH_LONG).show();

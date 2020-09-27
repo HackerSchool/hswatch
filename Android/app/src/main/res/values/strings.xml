@@ -12,29 +12,40 @@
     <string name="FINALIZAR_FRAG">hswatch.fragment.finalizador</string>
     <string name="semBTTitulo">Tem o Bluetooth desligado!</string>
     <string name="semBTTexto">Ative o Bluetooth e depois carregue neste ecrã para começar a sua experiência com o HSWatch!</string>
-    <string name="domingo">DOMINGO</string>
     <string name="AVISO_NOT_LIST">O HSWatch necessita do acesso às notificações para o seu funcionamento e de efeitos de demonstragem.\nDeseja ativar a leitura das notificações?</string>
     <string name="finalizador_titulo">Conexão realizada com sucesso!</string>
     <string name="finalizador_texto">Agora tem o relógio conectado com a aplicação HSWatch! Carregue no botão para começar a personalizar e definir os seus novos parâmetros.</string>
     <string name="finalizador_sub_texto">Esperemos que desfrute ao máximo da sua aplicação daqui para a frente!</string>
-    <string name="NOME">sinal.nome</string>
+    <string name="NOME">Nome</string>
     <string name="MENU_CASA">Página Principal</string>
     <string name="MENU_DISPOSITIVOS">Dispositivos</string>
     <string name="MENU_ADICIONAR">Adicionar novo dispositivo</string>
     <string name="MENU_DEFINICOES">Definições</string>
-    <string name="DEF_UNIDADE">Unidade de temperatura</string>
-    <string name="DEF_TEMPO_TITULO">Meteorologia</string>
     <string name="DEF_CIDADE">Cidade escolhida</string>
     <string name="DEF_APAGAR_DADOS">Repor dados</string>
     <string name="MENU_NOTIFICAOES">Notificações</string>
+    <string name="NOT_TITULO">Notificações Recebidas</string>
+    <string name="CHA_TITULO">Chamadas Recebidas</string>
+    <string name="apagar">APAGAR</string>
+    <string name="TITULO">Titulo</string>
+    <string name="PACKAGE">Package</string>
+    <string name="TEXTO">Texto</string>
+    <string name="CATEGORY">Category</string>
+    <string name="HEADER">Header</string>
+    <string name="DATA">DATA</string>
+    <string name="NUMERO">Numero</string>
+    <string name="ESTADO">Estado</string>
+    <string name="ADICIONAR">ADICIONAR</string>
 
-    <string-array name="nomes_semana">
-        <item>domingo</item>
-        <item>segunda-feira</item>
-        <item>terça-feira</item>
-        <item>quarta-feira</item>
-        <item>quinta-feira</item>
-        <item>sexta-feira</item>
-        <item>sábado</item>
-    </string-array>
+    <string name="title_activity_settings">SettingsActivity</string>
+
+    <!-- Preference Titles -->
+
+    <!-- Messages Preferences -->
+
+    <!-- Sync Preferences -->
+    <string name="UNIDADES">Unidades</string>
+    <string name="API_TITULO">Clima API</string>
+    <string name="HORARIO">Horário</string>
+    <string name="TITULO_HORAS">Definir o intervalo de tempo (em min) para mandar as horas</string>
 </resources>
