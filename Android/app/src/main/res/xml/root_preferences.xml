@@ -20,8 +20,14 @@
             app:entryValues="@array/unidades_values"
             app:useSimpleSummaryProvider="true" />
 
+        <SwitchPreferenceCompat
+            app:key="gps_switch"
+            app:title="@string/LOC_USE"/>
+
         <DropDownPreference
             app:key="cidades"
+            app:summaryOff="@string/SUM_OFF"
+            app:summaryOn="ON"
             app:title="@string/DEF_CIDADE"
             app:entries="@array/cidades_values"
             app:entryValues="@array/cidades_values"

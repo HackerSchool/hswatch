@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -22,7 +21,6 @@ import com.hswatch.bluetooth.Servico;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 
 public class listar_fragment extends Fragment {
@@ -45,18 +43,15 @@ public class listar_fragment extends Fragment {
 
         listView = view.findViewById(R.id.listarLista);
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String nome = (String) listView.getItemAtPosition(position);
-                Toast.makeText(view.getContext(), "Tentar conexão no dispositivo " + nome,
-                        Toast.LENGTH_LONG).show();
+        listView.setOnItemClickListener((parent, view1, position, id) -> {
+            String nome = (String) listView.getItemAtPosition(position);
+            Toast.makeText(view1.getContext(), "Tentar conexão no dispositivo " + nome,
+                    Toast.LENGTH_LONG).show();
 
-                Intent iniciarServico = new Intent(view.getContext(), Servico.class);
-                iniciarServico.putExtra(getResources().getString(R.string.ServicoDisp), nome);
+            Intent iniciarServico = new Intent(view1.getContext(), Servico.class);
+            iniciarServico.putExtra(getResources().getString(R.string.ServicoDisp), nome);
 
-                ContextCompat.startForegroundService(view.getContext(), iniciarServico);
-            }
+            ContextCompat.startForegroundService(view1.getContext(), iniciarServico);
         });
     }
 
@@ -71,7 +66,7 @@ public class listar_fragment extends Fragment {
             for (BluetoothDevice disp : setBT){
                 nomes.add(disp.getName());
             }
-            ArrayAdapter<String> listaNomes = new ArrayAdapter<>(Objects.requireNonNull(getContext()),
+            ArrayAdapter<String> listaNomes = new ArrayAdapter<>(requireContext(),
                     R.layout.lista_emparelhados_layout, nomes);
             listView.setAdapter(listaNomes);
         }

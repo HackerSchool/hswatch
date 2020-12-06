@@ -50,20 +50,56 @@ public class Profile {
     }
 
     public void jsonParserTempo(final VolleyCallBack callBack) {
-        String cidade = PreferenceManager.getDefaultSharedPreferences(context).getString("cidades", "Lisbon");
+
+        boolean gpsOn = PreferenceManager.getDefaultSharedPreferences(context).getBoolean("gps_switch", false);
+
+        String localization = "Current Localization";
         String unidade = PreferenceManager.getDefaultSharedPreferences(context).getString("unidades", "M");
-        if (cidade == null || unidade == null) {
+        String city = PreferenceManager.getDefaultSharedPreferences(context).getString("cidades", "Lisbon");
+        String url = "";
+        final List<String> mensagemClima = new ArrayList<>();
+
+        if (unidade == null) {
             return;
         }
-        final List<String> mensagemClima = new ArrayList<>();
-        mensagemClima.add((Objects.equals("Lisbon", cidade) ? "Lisboa" : cidade));
+
+        if (!gpsOn) {
+            if (city != null) {
+                localization = (Objects.equals("Lisbon", city) ? "Lisboa" : city);
+                url = "https://api.weatherbit.io/v2.0/forecast/daily?city=" + localization +
+                        "&country_full=Portugal&units=" + unidade + "&key=e2cd4478289c4b5ab5ac602203922b80&days=6";
+            }
+            else {
+                return;
+            }
+        } else {
+            /*
+            * Fazer aqui o recolhimento da última localização conhecida. Não precisa de ser periódico
+            * mas pelo menos tem que recolher a informação necessária para mandar para a API.
+            *
+            * Aqui temos que ter a lat e lon do GPS.
+            *
+            * Evitar consumir bateria
+            *
+            * Verificar se é preciso uma localização exata.
+            *
+            * Adicionar listener no switchpreference para ativar a permissão caso não tenha sido aceite
+            * ou que o gps esteja desligado.
+            * */
+
+
+
+//            SensorManager sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
+//            Sensor gpsSensor = sensorManager.getDefaultSensor()
+//            localization =
+        }
+
 //        final byte[][] mensagem = new byte[53][];
 //        mensagem[0] = INDICADOR_CLIMA.getBytes();
 //        mensagem[1] = separador;
 //        mensagem[2] = (Objects.equals("Lisbon", cidade) ? "Lisboa" : cidade).getBytes();
 //        final int[] index = {3};
-        String url = "https://api.weatherbit.io/v2.0/forecast/daily?city=" + cidade +
-                "&country_full=Portugal&units=" + unidade + "&key=e2cd4478289c4b5ab5ac602203922b80&days=6";
+        mensagemClima.add(localization);
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                 response -> {
                     try {

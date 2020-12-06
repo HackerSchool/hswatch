@@ -48,4 +48,7 @@
     <string name="API_TITULO">Clima API</string>
     <string name="HORARIO">Horário</string>
     <string name="TITULO_HORAS">Definir o intervalo de tempo (em min) para mandar as horas</string>
+    <string name="LOC_USE">Usar localização do telemóvel</string>
+    <string name="SUM_OFF">É usada a localização atual do telemóvel.</string>
+    <string name="DUMMY_TEXT">Dummy Text</string>
 </resources>

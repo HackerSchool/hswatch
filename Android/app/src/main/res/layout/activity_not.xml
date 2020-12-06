@@ -33,6 +33,16 @@
                 android:layout_below="@id/not_toolbar"
                 android:layout_margin="12dp"/>
 
+            <Button
+                android:id="@+id/not_btn_dummy"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/DUMMY_TEXT"
+                android:textSize="18sp"
+                android:textAlignment="center"
+                android:layout_below="@id/not_btn_apagar"
+                android:layout_margin="12dp"/>
+
             <EditText
                 android:id="@+id/not_edit_search"
                 android:layout_width="match_parent"
@@ -42,7 +52,7 @@
                 android:textColorHint="@android:color/darker_gray"
                 android:drawableStart="@drawable/ic_procurar"
                 android:drawableTint="@android:color/black"
-                android:layout_below="@+id/not_btn_apagar"
+                android:layout_below="@+id/not_btn_dummy"
                 android:layout_marginStart="12dp"
                 android:layout_marginEnd="12dp"
                 android:layout_marginBottom="6dp"

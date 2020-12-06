@@ -13,8 +13,6 @@ import androidx.fragment.app.Fragment;
 
 import com.hswatch.R;
 
-import java.util.Objects;
-
 import static android.app.Activity.RESULT_OK;
 
 public class apresentador_fragment extends Fragment {
@@ -35,16 +33,13 @@ public class apresentador_fragment extends Fragment {
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        view.findViewById(R.id.apresentadorBtn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (verificador) {
-                    ((atividade_config) Objects.requireNonNull(getActivity())).seguir_fragment();
-                    ((atividade_config) Objects.requireNonNull(getActivity())).listaBluetooth(true);
-                    verificador = false;
-                } else {
-                    startActivityForResult(new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE), getResources().getInteger(R.integer.ATIVAR_BT));
-                }
+        view.findViewById(R.id.apresentadorBtn).setOnClickListener(v -> {
+            if (verificador) {
+                ((atividade_config) requireActivity()).seguir_fragment();
+                ((atividade_config) requireActivity()).listaBluetooth(true);
+                verificador = false;
+            } else {
+                startActivityForResult(new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE), getResources().getInteger(R.integer.ATIVAR_BT));
             }
         });
     }
@@ -54,8 +49,8 @@ public class apresentador_fragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == getResources().getInteger(R.integer.ATIVAR_BT) && resultCode == RESULT_OK){
             verificador = true;
-            ((atividade_config) Objects.requireNonNull(getActivity())).seguir_fragment();
-            ((atividade_config) Objects.requireNonNull(getActivity())).listaBluetooth(true);
+            ((atividade_config) requireActivity()).seguir_fragment();
+            ((atividade_config) requireActivity()).listaBluetooth(true);
         }
     }
 

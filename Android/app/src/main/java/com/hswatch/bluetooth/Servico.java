@@ -156,6 +156,8 @@ public class Servico extends Service {
             }
         }
 
+//        Start GPSListener
+
 //        Iniciar Thread de conexão
         criarConexao(dispositivoBluetooth);
 
