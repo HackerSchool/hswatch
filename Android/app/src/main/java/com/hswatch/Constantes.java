@@ -32,6 +32,7 @@ public class Constantes {
     public static final String INDICADOR_EMAIL = "EMA";
     public static final String INDICADOR_SMS = "SMS";
     public static final String INDICADOR_TEL = "TEL";
+    public static final String INDICADOR_HSW = "HSW";
     public static HashMap<String, String> packagesNotFiltro = new HashMap<String, String>(){{
         put("com.whatsapp", INDICADOR_WHATS);
         put("com.instagram.android", INDICADOR_INSTA);
@@ -39,6 +40,7 @@ public class Constantes {
         put("com.facebook.katana", INDICADOR_FACEB);
         put("com.google.android.gm", INDICADOR_EMAIL);
         put("sms", INDICADOR_SMS);
+        put("com.hswatch", INDICADOR_HSW);
     }};
 
 //    Chaves do protocolo
