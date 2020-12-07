@@ -102,9 +102,7 @@ void Home::display(){
 
 		}
 
-		if(charging_battery()){
-			Display::drawXbm(109,0,BATTERY_ICON_W,BATTERY_ICON_H,bat_charge);
-		}else if(bat_level==0){
+		if(bat_level==0){
 			Display::drawXbm(109,0,BATTERY_ICON_W,BATTERY_ICON_H,bat_0);
 		}else if(bat_level==1){
 			Display::drawXbm(109,0,BATTERY_ICON_W,BATTERY_ICON_H,bat_1);
@@ -154,9 +152,7 @@ void Home::display(){
 
 		}
 
-		if(charging_battery()){
-			Display::drawXbm(109,0,BATTERY_ICON_W,BATTERY_ICON_H,bat_charge);
-		}else if(bat_level==0){
+		if(bat_level==0){
 			Display::drawXbm(109,0,BATTERY_ICON_W,BATTERY_ICON_H,bat_0);
 		}else if(bat_level==1){
 			Display::drawXbm(109,0,BATTERY_ICON_W,BATTERY_ICON_H,bat_1);
