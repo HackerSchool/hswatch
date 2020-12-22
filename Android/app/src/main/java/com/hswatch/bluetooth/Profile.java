@@ -24,10 +24,10 @@ import java.util.Objects;
 
 public class Profile {
 
+    public static double[] coordenadasGPS = {0, 0};
+
     private RequestQueue requestQueue;
-
     private Map<String, String> semanaNumeroMap = new HashMap<>();
-
     private Context context;
 
     public interface VolleyCallBack {
@@ -47,16 +47,18 @@ public class Profile {
         for (int i = 1; i <= semanaArray.length; i++) {
             semanaNumeroMap.put(semanaArray[i - 1], String.valueOf(i));
         }
+
+
     }
 
     public void jsonParserTempo(final VolleyCallBack callBack) {
 
         boolean gpsOn = PreferenceManager.getDefaultSharedPreferences(context).getBoolean("gps_switch", false);
 
-        String localization = "Current Localization";
+        String location;
         String unidade = PreferenceManager.getDefaultSharedPreferences(context).getString("unidades", "M");
         String city = PreferenceManager.getDefaultSharedPreferences(context).getString("cidades", "Lisbon");
-        String url = "";
+        String url;
         final List<String> mensagemClima = new ArrayList<>();
 
         if (unidade == null) {
@@ -65,14 +67,19 @@ public class Profile {
 
         if (!gpsOn) {
             if (city != null) {
-                localization = (Objects.equals("Lisbon", city) ? "Lisboa" : city);
-                url = "https://api.weatherbit.io/v2.0/forecast/daily?city=" + localization +
+                location = (Objects.equals("Lisbon", city) ? "Lisboa" : city);
+                url = "https://api.weatherbit.io/v2.0/forecast/daily?city=" + location +
                         "&country_full=Portugal&units=" + unidade + "&key=e2cd4478289c4b5ab5ac602203922b80&days=6";
             }
             else {
                 return;
             }
         } else {
+            float roundedlat = (float) Math.round(coordenadasGPS[0] * 10) / 10;
+            float roundedlon = (float) Math.round(coordenadasGPS[1] * 10) / 10;
+            location = "GPS: (" + roundedlat + ", " + roundedlon + ")";
+            url = "https://api.weatherbit.io/v2.0/forecast/daily?lat=" + coordenadasGPS[0] +
+                    "&lon=" + coordenadasGPS[1] + "&key=e2cd4478289c4b5ab5ac602203922b80&days=6";
             /*
             * Fazer aqui o recolhimento da última localização conhecida. Não precisa de ser periódico
             * mas pelo menos tem que recolher a informação necessária para mandar para a API.
@@ -85,13 +92,11 @@ public class Profile {
             *
             * Adicionar listener no switchpreference para ativar a permissão caso não tenha sido aceite
             * ou que o gps esteja desligado.
-            * */
-
-
-
+            *
 //            SensorManager sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
 //            Sensor gpsSensor = sensorManager.getDefaultSensor()
-//            localization =
+//            location =
+            */
         }
 
 //        final byte[][] mensagem = new byte[53][];
@@ -99,7 +104,7 @@ public class Profile {
 //        mensagem[1] = separador;
 //        mensagem[2] = (Objects.equals("Lisbon", cidade) ? "Lisboa" : cidade).getBytes();
 //        final int[] index = {3};
-        mensagemClima.add(localization);
+        mensagemClima.add(location);
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                 response -> {
                     try {

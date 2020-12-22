@@ -7,7 +7,9 @@ import android.view.LayoutInflater;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.EditTextPreference;
 import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.SwitchPreferenceCompat;
 
+import com.hswatch.bluetooth.GPSListener;
 import com.hswatch.databinding.SettingsActivityBinding;
 
 import java.util.Objects;
@@ -51,6 +53,16 @@ public class SettingsActivity extends AppCompatActivity {
                 editTextPreference.setOnBindEditTextListener(editText -> editText
                         .setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_SIGNED));
 
+            }
+
+            SwitchPreferenceCompat switchPreferenceCompat = findPreference("gps_switch");
+            GPSListener gpsListener = new GPSListener(getContext());
+            if (switchPreferenceCompat != null) {
+                if (switchPreferenceCompat.isChecked()) {
+                    gpsListener.GPSStart();
+                } else {
+                    gpsListener.GPSStop();
+                }
             }
         }
 

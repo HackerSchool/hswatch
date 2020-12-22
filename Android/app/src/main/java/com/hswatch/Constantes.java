@@ -53,7 +53,8 @@ public class Constantes {
             Manifest.permission.READ_PHONE_NUMBERS,
             Manifest.permission.READ_CALL_LOG,
             Manifest.permission.READ_CONTACTS,
-            Manifest.permission.RECEIVE_SMS
+            Manifest.permission.RECEIVE_SMS,
+            Manifest.permission.ACCESS_FINE_LOCATION
     };
 
     //    Constantes internas
