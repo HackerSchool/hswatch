@@ -22,9 +22,11 @@
 
         <SwitchPreferenceCompat
             app:key="gps_switch"
-            app:title="@string/LOC_USE"/>
+            app:title="@string/LOC_USE"
+            android:disableDependentsState="true"/>
 
         <DropDownPreference
+            app:dependency="gps_switch"
             app:key="cidades"
             app:summaryOff="@string/SUM_OFF"
             app:summaryOn="ON"
