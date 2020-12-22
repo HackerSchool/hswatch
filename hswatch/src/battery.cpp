@@ -3,13 +3,11 @@
 #define N_SAMPLES 5
 #define SAMPLING_PERIOD 5
 #define BATTERY_V_RANGE 900
+#define FULL_LEVEL 3900
 #define CHANGER 5
 
 #define BATTERY_PIN 34
-#define STANDBY_PIN 4
-#define CHARGING_PIN 15
 
-int full_level = 3900;
 int level[N_SAMPLES] = {0};
 int percentage = 100;
 int status = 3;
@@ -19,10 +17,7 @@ int changer=CHANGER;
 int availble_samples=0;
 
 void init_battery(){
-	pinMode(STANDBY_PIN, INPUT_PULLUP);
-	pinMode(CHARGING_PIN, INPUT_PULLUP);
 
-	attachInterrupt(STANDBY_PIN, reset_battery, FALLING);
 }
 
 void check_level_timer(){
@@ -43,7 +38,7 @@ void check_level_timer(){
 
 		l = l/availble_samples;
 		
-		percentage = (l-full_level+BATTERY_V_RANGE)*100/BATTERY_V_RANGE;
+		percentage = (l-FULL_LEVEL+BATTERY_V_RANGE)*100/BATTERY_V_RANGE;
 
 		Serial.println(percentage);
 
@@ -85,20 +80,10 @@ void check_level_timer(){
 	}
 }
 
-void reset_battery(){
-	full_level = analogRead(BATTERY_PIN);
-	Serial.print("change");
-	Serial.println(full_level);
-}
-
 int percentage_battery(){
 	return percentage;
 }
 
 int status_battery(){
 	return status;
-}
-
-bool charging_battery(){
-	return !digitalRead(CHARGING_PIN);
 }
