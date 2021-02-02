@@ -1,6 +1,6 @@
 # HSWatch
 
-![HSWatch](https://github.com/HackerSchool/hswatch/hswatch.png)
+![HSWatch](https://github.com/HackerSchool/hswatch/blob/master/hswatch.png)
 
 ## Objective
 
