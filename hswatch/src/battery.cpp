@@ -2,8 +2,8 @@
 
 #define N_SAMPLES 5
 #define SAMPLING_PERIOD 5
-#define BATTERY_V_RANGE 900
-#define FULL_LEVEL 3900
+#define BATTERY_V_RANGE 515
+#define FULL_LEVEL 2515
 #define CHANGER 5
 
 #define BATTERY_PIN 34
@@ -37,10 +37,13 @@ void check_level_timer(){
 			l = l + level[i];
 
 		l = l/availble_samples;
+
+		//Serial.println(analogRead(BATTERY_PIN));
 		
 		percentage = (l-FULL_LEVEL+BATTERY_V_RANGE)*100/BATTERY_V_RANGE;
 
-		Serial.println(percentage);
+		//Serial.println(percentage);
+		//Serial.println("--");
 
 		if(percentage>100){
 			percentage=100;
