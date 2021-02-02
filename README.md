@@ -1,5 +1,7 @@
 # HSWatch
 
+![HSWatch](https://github.com/HackerSchool/hswatch/hswatch.png)
+
 ## Objective
 
 This project aims to create a _diy_ smartwatch, open-source and programable using Arduino code style, so that hobbyists, students and hackers can contribute to this project and design their own smartwatch according to their tastes. Besides the watch it self this project also contains an Android companion app source code, that is also extendable so that the watch can accomodate more features.
