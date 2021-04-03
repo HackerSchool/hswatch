@@ -15,8 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-import static com.hswatch.Constantes.CHAMADAS;
-import static com.hswatch.Constantes.NOTIFICACOES;
+import static com.hswatch.Utils.CHAMADAS;
+import static com.hswatch.Utils.NOTIFICACOES;
 
 public class paginaPrincipal extends Fragment {
 
@@ -71,7 +71,7 @@ public class paginaPrincipal extends Fragment {
                 startActivity(new Intent(getActivity(), NotActivity.class));
                 break;
             case CHAMADAS:
-                startActivity(new Intent(getActivity(), ChamadaActivity.class));
+                startActivity(new Intent(getActivity(), CallActivity.class));
                 break;
         }
     }

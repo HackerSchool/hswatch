@@ -20,7 +20,7 @@ import java.util.Objects;
 
 import static com.hswatch.bluetooth.PhoneCallReceiver.chamadasRegistadas;
 
-public class ChamadaActivity extends AppCompatActivity {
+public class CallActivity extends AppCompatActivity {
 
     private ActivityChamadaBinding binding;
     private ChamadaListAdapter chamadaListAdapter;

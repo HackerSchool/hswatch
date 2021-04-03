@@ -21,11 +21,11 @@ import com.hswatch.databinding.ActivityConfigBinding;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.hswatch.Constantes.DEFINICOES_HISTORIA;
-import static com.hswatch.Constantes.NOME;
-import static com.hswatch.Constantes.VERIFICADOR;
+import static com.hswatch.Utils.HISTORY_SHARED_PREFERENCES;
+import static com.hswatch.Utils.NAME;
+import static com.hswatch.Utils.CHECKER;
 
-public class atividade_config extends AppCompatActivity {
+public class ConfigDeviceActivity extends AppCompatActivity {
 
     public static final String TAG = "hswatch.config";
 
@@ -74,11 +74,11 @@ public class atividade_config extends AppCompatActivity {
 
     public void guardarDispositivo() {
 //        Utilizar o sharedpreferences para guardar o nome e dizer que está em conexão
-        SharedPreferences sharedPreferences = getSharedPreferences(DEFINICOES_HISTORIA, MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences(HISTORY_SHARED_PREFERENCES, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
-        editor.putString(NOME, nome);
-        editor.putBoolean(VERIFICADOR, true);
+        editor.putString(NAME, nome);
+        editor.putBoolean(CHECKER, true);
 
         editor.apply();
     }

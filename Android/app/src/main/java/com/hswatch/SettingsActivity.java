@@ -56,15 +56,13 @@ public class SettingsActivity extends AppCompatActivity {
             }
 
             SwitchPreferenceCompat switchPreferenceCompat = findPreference("gps_switch");
-            GPSListener gpsListener = new GPSListener(getContext());
             if (switchPreferenceCompat != null) {
                 if (switchPreferenceCompat.isChecked()) {
-                    gpsListener.GPSStart();
+                    GPSListener.getInstance(getContext()).start();
                 } else {
-                    gpsListener.GPSStop();
+                    GPSListener.getInstance(getContext()).stop();
                 }
             }
         }
-
     }
 }

@@ -19,12 +19,12 @@ import androidx.core.view.GravityCompat;
 
 import com.google.android.material.navigation.NavigationView;
 import com.hswatch.databinding.ActivityMainBinding;
-import com.hswatch.fragments.atividade_config;
+import com.hswatch.fragments.ConfigDeviceActivity;
 
-import static com.hswatch.Constantes.DEFINICOES_HISTORIA;
-import static com.hswatch.Constantes.NOME;
-import static com.hswatch.Constantes.PERMISSOES;
-import static com.hswatch.Constantes.VERIFICADOR;
+import static com.hswatch.Utils.HISTORY_SHARED_PREFERENCES;
+import static com.hswatch.Utils.NAME;
+import static com.hswatch.Utils.PERMISSOES;
+import static com.hswatch.Utils.CHECKER;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private boolean temPermissao(Context context) {
-        if (context != null && PERMISSOES != null) {
+        if (context != null) {
             for (String permissao : PERMISSOES) {
                 if (ContextCompat.checkSelfPermission(context, permissao) != PackageManager.PERMISSION_GRANTED) {
                     return false;
@@ -131,7 +131,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 //            Iniciar uma nova conexão
             case R.id.novo:
-                startActivity(new Intent(getApplicationContext(), atividade_config.class));
+                startActivity(new Intent(getApplicationContext(), ConfigDeviceActivity.class));
                 break;
 
 //                Definições
@@ -139,10 +139,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
                 break;
             case R.id.apagar:
-                SharedPreferences sharedPreferences = getSharedPreferences(DEFINICOES_HISTORIA, MODE_PRIVATE);
+                SharedPreferences sharedPreferences = getSharedPreferences(HISTORY_SHARED_PREFERENCES, MODE_PRIVATE);
                 sharedPreferences.edit()
-                        .putString(NOME, "Erro")
-                        .putBoolean(VERIFICADOR, false)
+                        .putString(NAME, "Erro")
+                        .putBoolean(CHECKER, false)
                         .apply();
                 finishAffinity();
 

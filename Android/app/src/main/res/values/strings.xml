@@ -1,5 +1,11 @@
 <resources>
     <string name="app_name">HSWatch</string>
+
+<!--    SplashActivity-->
+    <string name="BT_Unavailable">Bluetooth Indisponível!</string>
+    <string name="BT_Device_Conected">Está conectado ao dispositivo: </string>
+    <string name="NoBT_Toast">O HSWatch necessita de o bluetooth ligado para poder operar.</string>
+
     <string name="navigation_abrir">Abrir menu lateral</string>
     <string name="navigation_fechar">Fechar menu lateral</string>
     <string name="apresentadorTitulo">CONFIGURAÇÃO DO RELÓGIO</string>
@@ -10,8 +16,14 @@
     <string name="SINAL_VERDE">sinal.verde.bt</string>
     <string name="LISTAR_FRAG">hswatch.fragment.listar</string>
     <string name="FINALIZAR_FRAG">hswatch.fragment.finalizador</string>
-    <string name="semBTTitulo">Tem o Bluetooth desligado!</string>
-    <string name="semBTTexto">Ative o Bluetooth e depois carregue neste ecrã para começar a sua experiência com o HSWatch!</string>
+
+    <!--    NoBTActivity-->
+    <string name="NoBT_Title">Tem o Bluetooth desligado!</string>
+    <string name="NoBT_Text">Ative o Bluetooth e depois carregue neste ecrã para começar a sua experiência com o HSWatch!</string>
+
+<!--    Servico-->
+    <string name="ServiceBT_Title">Estás agora conectado a %s!</string>
+
     <string name="AVISO_NOT_LIST">O HSWatch necessita do acesso às notificações para o seu funcionamento e de efeitos de demonstragem.\nDeseja ativar a leitura das notificações?</string>
     <string name="finalizador_titulo">Conexão realizada com sucesso!</string>
     <string name="finalizador_texto">Agora tem o relógio conectado com a aplicação HSWatch! Carregue no botão para começar a personalizar e definir os seus novos parâmetros.</string>
@@ -51,4 +63,5 @@
     <string name="LOC_USE">Usar localização do telemóvel</string>
     <string name="SUM_OFF">É usada a localização atual do telemóvel.</string>
     <string name="DUMMY_TEXT">Dummy Text</string>
+    <string name="ServiceBT_Text">Carrega para alterar ou afetar outra conexão nova.</string>
 </resources>

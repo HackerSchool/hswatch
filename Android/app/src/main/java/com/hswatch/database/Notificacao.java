@@ -61,5 +61,9 @@ public class Notificacao {
         return time_received;
     }
 
-
+    @Override
+    public String toString() {
+        return  id + ";" + nome + ";" + package_name + ";" + time_received + ";" + category + ";" +
+                title + ";" + message.replace("\n", " ");
+    }
 }

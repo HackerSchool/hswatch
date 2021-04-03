@@ -16,8 +16,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
-import static com.hswatch.Constantes.delimitador;
-import static com.hswatch.Constantes.separador;
+import static com.hswatch.Utils.delimitador;
+import static com.hswatch.Utils.separador;
 import static com.hswatch.bluetooth.Servico.enviarMensagensRelogio;
 
 public class HoraWorker extends Worker {

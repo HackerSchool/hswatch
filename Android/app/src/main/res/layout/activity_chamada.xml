@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ChamadaActivity"
+    tools:context=".CallActivity"
     android:background="@color/HS_Circ_5"
     android:scrollbars="vertical">
 

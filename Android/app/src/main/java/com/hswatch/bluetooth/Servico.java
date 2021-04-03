@@ -14,6 +14,7 @@ import android.os.IBinder;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.preference.PreferenceManager;
@@ -35,14 +36,14 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 import static com.hswatch.App.CANAL_SERVICO;
-import static com.hswatch.Constantes.ACAO_DEFINICOES_SERVICO;
-import static com.hswatch.Constantes.ACAO_NOTIFICACOES_SERVICO;
-import static com.hswatch.Constantes.ACAO_SERVICO_TEMPO_API;
-import static com.hswatch.Constantes.INDICADOR_CLIMA;
-import static com.hswatch.Constantes.INDICADOR_TEL;
-import static com.hswatch.Constantes.delimitador;
-import static com.hswatch.Constantes.separador;
-import static com.hswatch.Constantes.uid;
+import static com.hswatch.Utils.ACAO_DEFINICOES_SERVICO;
+import static com.hswatch.Utils.ACAO_NOTIFICACOES_SERVICO;
+import static com.hswatch.Utils.ACAO_SERVICO_TEMPO_API;
+import static com.hswatch.Utils.WEATHER_INDICATOR;
+import static com.hswatch.Utils.INDICADOR_TEL;
+import static com.hswatch.Utils.delimitador;
+import static com.hswatch.Utils.separador;
+import static com.hswatch.Utils.uid;
 
 public class Servico extends Service {
 
@@ -136,7 +137,8 @@ public class Servico extends Service {
         }
 
         Intent notificacaoIntent = new Intent(this, MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificacaoIntent, 0);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,
+                notificacaoIntent, 0);
         Notification notification = new NotificationCompat.Builder(this, CANAL_SERVICO)
                 .setContentTitle("Está agora conectado a " + dispositivoEscolhido + "!")
                 .setContentText("Carregue para alterar as definições ou efetuar outra conexão nova.")
@@ -161,7 +163,7 @@ public class Servico extends Service {
 //        Iniciar Thread de conexão
         criarConexao(dispositivoBluetooth);
 
-        return START_STICKY;
+        return START_REDELIVER_INTENT;
     }
 
     private void criarConexao(BluetoothDevice dispositivoEscolhido) {
@@ -208,6 +210,7 @@ public class Servico extends Service {
             stopSelf();
         }
     }
+
 //    private void tempo () {
 //        if (horaWorker == null) { return; }
 //        String[] mensagem = horaWorker.getOutputData().getStringArray("its_time_to_stop");
@@ -237,16 +240,20 @@ public class Servico extends Service {
     }
 
     private boolean recebeuTempo() {
-        boolean running = false;
+//        boolean running = false;
         try {
-            List<WorkInfo> workInfoList = WorkManager.getInstance(getApplicationContext()).
-                    getWorkInfosByTag("tag_horas").get();
-            for (WorkInfo workInfo : workInfoList) {
-                running = workInfo.getState() == WorkInfo.State.RUNNING | workInfo.getState() == WorkInfo.State.ENQUEUED;
-                if (running)
-                    horaWorker = workInfo;
-                break;
+            WorkInfo workInfo = WorkManager.getInstance(getApplicationContext()).
+                    getWorkInfosByTag("tag_horas").get().get(0);
+            boolean running = workInfo.getState() ==  WorkInfo.State.RUNNING | workInfo.getState() == WorkInfo.State.ENQUEUED;
+            if (running) {
+                horaWorker = workInfo;
             }
+//            for (WorkInfo workInfo : workInfoList) {
+//                running = workInfo.getState() == WorkInfo.State.RUNNING | workInfo.getState() == WorkInfo.State.ENQUEUED;
+//                if (running)
+//                    horaWorker = workInfo;
+//                break;
+//            }
             return running;
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
@@ -322,7 +329,9 @@ public class Servico extends Service {
 //            estadoAnterior = estado;
 //        }
 //    }
-    public static void receberChamada(String numero, String nome, String hora) {
+
+
+    public static void receberChamada(String numero, String nome, @NonNull String hora) {
         mensagemChamada[4] = hora.split(":")[0].getBytes();
         mensagemChamada[6] = hora.split(":")[0].getBytes();
         mensagemChamada[8] = (nome + " @ " + numero).getBytes();
@@ -331,7 +340,7 @@ public class Servico extends Service {
         enviarMensagensRelogio(mensagemChamada);
     }
 
-    public static void perdidaChamada(String numero, String nome,  String hora) {
+    public static void perdidaChamada(String numero, String nome, @NonNull String hora) {
         mensagemChamada[4] = hora.split(":")[0].getBytes();
         mensagemChamada[6] = hora.split(":")[0].getBytes();
         mensagemChamada[8] = (nome + " @ " + numero).getBytes();
@@ -344,7 +353,7 @@ public class Servico extends Service {
 
     public class Recetor extends BroadcastReceiver {
         @Override
-        public void onReceive(Context context, Intent intent) {
+        public void onReceive(Context context, @NonNull Intent intent) {
             final String acao = intent.getAction();
             if (acao == null) {
                 return;
@@ -390,7 +399,7 @@ public class Servico extends Service {
 
     public static void enviarMeteorologiaRelogio(List<String> mensagem) {
         if (threadConectado != null) {
-            threadConectado.escrever(INDICADOR_CLIMA.getBytes());
+            threadConectado.escrever(WEATHER_INDICATOR.getBytes());
             for (String conteudo : mensagem) {
                 threadConectado.escrever(separador);
                 threadConectado.escrever(conteudo.getBytes());
@@ -453,7 +462,6 @@ public class Servico extends Service {
 
         private final BluetoothSocket bluetoothSocket;
         private final InputStream inputStream;
-
         private final OutputStream outputStream;
 
         ThreadConectado(BluetoothSocket bluetoothsocket) {
@@ -491,7 +499,7 @@ public class Servico extends Service {
             byte bytes;
             int bufferposition = 0;
             tempo(profileDispositivo);
-            while (estadoAtual == getResources().getInteger(R.integer.ESTADO_CONECTADO)){
+            while (estadoAtual == getResources().getInteger(R.integer.ESTADO_CONECTADO) || bluetoothSocket.isConnected()){
                 try{
                     int bytesavailable = inputStream.available();
                     if (bytesavailable > 0){
@@ -499,7 +507,7 @@ public class Servico extends Service {
                         if (inputStream.read(buffer) == -1) {
                             return;
                         }
-                        for (int i=0; i<bytesavailable; i++){
+                        for (int i=0; i < bytesavailable; i++){
                             bytes = buffer[i];
                             if (delimitador[0] == bytes) {
                                 mensagemRecebida = new String(caracteres);
@@ -512,16 +520,11 @@ public class Servico extends Service {
                                 }
                             }
                         }
-                        try{
-                            if (mensagemRecebida != null) {
-                                Log.v(TAG, mensagemRecebida);
-                            } else {
-                                continue;
-                            }
-                        } catch (NullPointerException e) {
-                            Log.e(TAG, "Erro: " + e.toString());
-                        }
-                        if (Objects.equals(mensagemRecebida, INDICADOR_CLIMA)) {
+
+                        if (mensagemRecebida == null)
+                            continue;
+
+                        if (Objects.equals(mensagemRecebida, WEATHER_INDICATOR)) {
                             profileDispositivo.jsonParserTempo(respostaLimpa -> {
                                 enviarMeteorologiaRelogio(respostaLimpa);
                                 caracteres = new char[3];

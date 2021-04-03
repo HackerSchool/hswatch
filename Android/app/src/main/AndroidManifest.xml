@@ -27,13 +27,13 @@
             android:label="@string/title_activity_settings"
             android:theme="@style/SettingsTheme"/>
         <activity
-            android:name=".ChamadaActivity"
+            android:name=".CallActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".NotActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".atividade_splash"
+            android:name=".SplashActivity"
             android:theme="@style/SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -41,9 +41,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".bluetooth.sem_bt" />
+        <activity android:name=".bluetooth.NoBTActivity" />
         <activity
-            android:name=".fragments.atividade_config"
+            android:name=".fragments.ConfigDeviceActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".MainActivity"

@@ -15,8 +15,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
-import static com.hswatch.ChamadaActivity.chamadaAtividadeAtiva;
-import static com.hswatch.ChamadaActivity.recetorChamada;
+import static com.hswatch.CallActivity.chamadaAtividadeAtiva;
+import static com.hswatch.CallActivity.recetorChamada;
 
 public class PhoneCallReceiver extends BroadcastReceiver {
 

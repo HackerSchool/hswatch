@@ -29,7 +29,7 @@ public class finalizador_fragment extends Fragment {
         view.findViewById(R.id.finalizadorBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((atividade_config) Objects.requireNonNull(getActivity())).guardarDispositivo();
+                ((ConfigDeviceActivity) Objects.requireNonNull(getActivity())).guardarDispositivo();
                 startActivity(new Intent(getContext(), MainActivity.class));
                 getActivity().finish();
             }
