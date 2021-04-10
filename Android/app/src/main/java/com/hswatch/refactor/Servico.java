@@ -79,7 +79,7 @@ public class Servico extends Service {
 //        setupGPSListener();
 
         //TODO(adicionar broadcast receiver para saber da ligação bt: bt on e off e se está fora de
-        // alcance)
+        // alcance: https://developer.android.com/reference/android/bluetooth/BluetoothAdapter.html#ACTION_CONNECTION_STATE_CHANGED)
 
         createConection(this.bluetoothDevice);
 

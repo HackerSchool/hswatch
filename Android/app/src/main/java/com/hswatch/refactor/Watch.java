@@ -62,9 +62,6 @@ public class Watch {
                 }, Throwable::printStackTrace);
         this.requestQueue.add(request);
 
-        //TODO(mensagemClima a partir daqui)
-
-
     }
 
     public interface VolleyCallBack {

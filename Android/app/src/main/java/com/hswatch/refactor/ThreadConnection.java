@@ -35,6 +35,8 @@ public class ThreadConnection extends Thread {
      */
     public ThreadConnection(@NonNull BluetoothDevice bluetoothDevice, Servico servico) {
 
+        // Try to get the BluetoothSocket from the BluetoothDevice and create a RFConnection using
+        // the UUID from the Utils
         BluetoothSocket bluetoothSocket = null;
         try {
             bluetoothSocket = bluetoothDevice
@@ -44,9 +46,11 @@ public class ThreadConnection extends Thread {
             servico.connectionFailed();
         }
 
+        // Initializes final variables
         this.bluetoothSocket = bluetoothSocket;
         this.servico = servico;
 
+        // Change the current state the connection to Connecting
         servico.setCurrentState(Servico.STATE_CONNECTING);
     }
 
