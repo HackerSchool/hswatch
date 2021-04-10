@@ -10,7 +10,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
@@ -153,11 +152,6 @@ public class MainServico extends Service {
             this.threadConnection.cancel();
             stopSelf();
         }
-    }
-
-    public void cancelDiscoveryFailed() {
-        Toast.makeText(this, getResources().getString(R.string.ERROR_DISCOVERY), Toast.LENGTH_SHORT).show();
-        connectionFailed();
     }
 
     public void lostConnection() {

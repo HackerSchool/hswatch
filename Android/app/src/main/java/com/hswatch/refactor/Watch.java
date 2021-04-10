@@ -120,7 +120,7 @@ public class Watch {
 
     @NonNull
     private String getLocationString(@NonNull SharedPreferences sharedPreferences) {
-        // Tells if the user choose to use the GPS location - gpsOn- and define that on the URL Link
+        // Tells if the user choose to use the GPS location - gpsOn - and define that on the URL Link
         // to the API
         //TODO(criar chave e default na Utils)
         boolean gpsOn = sharedPreferences.getBoolean("gps_switch", false);

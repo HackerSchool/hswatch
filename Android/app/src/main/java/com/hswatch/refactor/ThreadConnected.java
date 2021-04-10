@@ -1,7 +1,6 @@
 package com.hswatch.refactor;
 
 import android.bluetooth.BluetoothSocket;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.work.ExistingPeriodicWorkPolicy;
@@ -102,9 +101,6 @@ public class ThreadConnected extends Thread {
 
         // Send the first data to the Bluetooth Device: update the time that is shown on the watch
         sendTime();
-
-        //TODO(teste para verificar se está tudo bem)
-        Toast.makeText(this.mainServico.getCurrentContext(), "Ligado!!!", Toast.LENGTH_SHORT).show();
 
         // While there is connection between the phone and the Bluetooth Device
         while (this.mainServico.getCurrentState() == MainServico.STATE_CONNECTED
