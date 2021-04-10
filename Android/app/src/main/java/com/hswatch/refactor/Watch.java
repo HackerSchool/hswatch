@@ -71,6 +71,7 @@ public class Watch {
         void requestReturn(ArrayList<String> requestList);
     }
 
+    @NonNull
     private ArrayList<String> parseResponse(@NonNull JSONObject response) throws JSONException {
         ArrayList<String> weatherResponse = new ArrayList<>();
         weatherResponse.add(this.location);
