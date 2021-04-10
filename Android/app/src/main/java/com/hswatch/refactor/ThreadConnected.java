@@ -42,7 +42,7 @@ public class ThreadConnected extends Thread {
      * Main Service on which the thread is started and ended on and also where the thread gets the
      * current state of the connection and to connect to the other Java API frameworks
      */
-    private final Servico servico;
+    private final MainServico mainServico;
 
     /**
      * The ThreadConnected's constructor in which starts the connection and initializes the Socket,
@@ -50,12 +50,12 @@ public class ThreadConnected extends Thread {
      * interchange the data from and to the App.
      *
      * @param bluetoothSocket The socket needed to form the connection
-     * @param servico The main service where the connection will operate on and communicate with the
+     * @param mainServico The main service where the connection will operate on and communicate with the
      *                other Java API frameworks
      */
-    public ThreadConnected(BluetoothSocket bluetoothSocket, Servico servico) {
+    public ThreadConnected(BluetoothSocket bluetoothSocket, MainServico mainServico) {
         this.bluetoothSocket = bluetoothSocket;
-        this.servico = servico;
+        this.mainServico = mainServico;
 
         // Initializes the stream variables
         InputStream inputStream = null;
@@ -65,26 +65,26 @@ public class ThreadConnected extends Thread {
             outputStream = this.bluetoothSocket.getOutputStream();
         } catch (IOException e) {
             e.printStackTrace();
-            this.servico.lostConnectionAtInitialThread();
+            this.mainServico.lostConnectionAtInitialThread();
         }
         this.inputStream = inputStream;
         this.outputStream = outputStream;
 
         // Updates the connection state on the Service
-        servico.setCurrentState(Servico.STATE_CONNECTED);
+        mainServico.setCurrentState(MainServico.STATE_CONNECTED);
 
         //TODO(green signal with name)
 
         // Initializes the Watch object
-        this.currentWatch = new Watch(servico.getCurrentContext(),
-                servico.getBluetoothDevice());
+        this.currentWatch = new Watch(mainServico.getCurrentContext(),
+                mainServico.getBluetoothDevice());
 
         // Initializes the time update service with Schedule Jobs:
         // It updates time with the value from the settings, in minutes, but as 15 minutes as
         // default value
         PeriodicWorkRequest periodicWorkRequest = new PeriodicWorkRequest.Builder(HoraWorker.class,
                 this.currentWatch.getTimeInterval(), TimeUnit.MINUTES).build();
-        WorkManager.getInstance(servico.getCurrentContext()).enqueueUniquePeriodicWork(
+        WorkManager.getInstance(mainServico.getCurrentContext()).enqueueUniquePeriodicWork(
                 Utils.TAG_HOURS, ExistingPeriodicWorkPolicy.REPLACE, periodicWorkRequest
         );
     }
@@ -104,10 +104,10 @@ public class ThreadConnected extends Thread {
         sendTime();
 
         //TODO(teste para verificar se está tudo bem)
-        Toast.makeText(this.servico.getCurrentContext(), "Ligado!!!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this.mainServico.getCurrentContext(), "Ligado!!!", Toast.LENGTH_SHORT).show();
 
         // While there is connection between the phone and the Bluetooth Device
-        while (this.servico.getCurrentState() == Servico.STATE_CONNECTED
+        while (this.mainServico.getCurrentState() == MainServico.STATE_CONNECTED
                 || this.bluetoothSocket.isConnected()) {
             try {
                 // Verify if there is something to read
@@ -154,7 +154,7 @@ public class ThreadConnected extends Thread {
                 }
             } catch (IOException e) {
                 e.printStackTrace();
-                this.servico.lostConnection();
+                this.mainServico.lostConnection();
             }
         }
     }
@@ -218,7 +218,7 @@ public class ThreadConnected extends Thread {
             this.outputStream.write(buffer);
         } catch (IOException e) {
             e.printStackTrace();
-            this.servico.lostConnection();
+            this.mainServico.lostConnection();
         }
     }
 

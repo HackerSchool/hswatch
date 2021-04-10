@@ -91,7 +91,7 @@ public class Utils {
      */
     public static final int BT_REQUEST = 1;
     public static final int REQUEST_CODE_PENDING_INTENT = 2;
-    public static final int REQUEST_CODE_START_FOREGROUND = 3;
+    public static final int REQUEST_CODE_START_FOREGROUND = 4;
 
     @NonNull
     public static HashMap<String, String> getWeekArray(@NonNull Context context) {

@@ -17,7 +17,9 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.hswatch.R;
-import com.hswatch.refactor.Servico;
+import com.hswatch.Utils;
+import com.hswatch.bluetooth.Servico;
+import com.hswatch.refactor.MainServico;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,10 +50,10 @@ public class listar_fragment extends Fragment {
             Toast.makeText(view1.getContext(), "Tentar conexão no dispositivo " + nome,
                     Toast.LENGTH_LONG).show();
 
-            Intent iniciarServico = new Intent(view1.getContext(), Servico.class);
-            iniciarServico.putExtra(getResources().getString(R.string.ServicoDisp), nome);
+            Intent iniciarServico = new Intent(getContext(), MainServico.class);
+            iniciarServico.putExtra(Utils.BT_DEVICE_NAME, nome);
 
-            ContextCompat.startForegroundService(view1.getContext(), iniciarServico);
+            ContextCompat.startForegroundService(getContext(), iniciarServico);
         });
     }
 

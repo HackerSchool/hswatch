@@ -9,6 +9,7 @@ import android.bluetooth.BluetoothSocket;
 import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -22,7 +23,9 @@ import static com.hswatch.Utils.REQUEST_CODE_PENDING_INTENT;
 import static com.hswatch.Utils.REQUEST_CODE_START_FOREGROUND;
 
 //TODO(documentar)
-public class Servico extends Service {
+public class MainServico extends Service {
+
+    private static final String TAG = "Servico_tenta_dar_log";
 
     public static final int STATE_CONNECTING = 2;
     public static final int STATE_CONNECTED = 3;
@@ -54,19 +57,21 @@ public class Servico extends Service {
         } catch (Exception e) {
             e.printStackTrace();
             return START_STICKY;
-        } finally {
-            Intent notificationIntent = new Intent(this, MainActivity.class);
-            PendingIntent pendingIntent = PendingIntent.getActivity(this, REQUEST_CODE_PENDING_INTENT,
-                    notificationIntent, 0);
-            Notification notification = new Notification.Builder(this, CANAL_SERVICO)
-                    .setContentTitle(String.format(getResources().getString(R.string.ServiceBT_Title), deviceName))
-                    .setContentText(getResources().getString(R.string.ServiceBT_Text))
-                    .setStyle(new Notification.BigTextStyle().bigText(getResources().getString(R.string.ServiceBT_Text)))
-                    .setSmallIcon(R.drawable.ic_bluetooth_connected_green_24dp)
-                    .setContentIntent(pendingIntent)
-                    .build();
-            startForeground(REQUEST_CODE_START_FOREGROUND, notification);
         }
+
+        Intent notificationIntent = new Intent(this, MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, REQUEST_CODE_PENDING_INTENT,
+                notificationIntent, 0);
+        Notification notification = new Notification.Builder(this, CANAL_SERVICO)
+                .setContentTitle(String.format(getResources().getString(R.string.ServiceBT_Title), deviceName))
+                .setContentText(getResources().getString(R.string.ServiceBT_Text))
+                .setStyle(new Notification.BigTextStyle().bigText(getResources().getString(R.string.ServiceBT_Text)))
+                .setSmallIcon(R.drawable.ic_bluetooth_connected_green_24dp)
+                .setContentIntent(pendingIntent)
+                .build();
+        startForeground(REQUEST_CODE_START_FOREGROUND, notification);
+
+        Log.d(TAG, "onStartCommand: " + this.deviceName);
 
         for (BluetoothDevice device : BluetoothAdapter.getDefaultAdapter().getBondedDevices()) {
             if (device.getName().equals(this.deviceName)) {
