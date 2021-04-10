@@ -8,47 +8,75 @@ import com.hswatch.Utils;
 
 import java.io.IOException;
 
+import androidx.annotation.NonNull;
+
 //TODO(documentar)
 public class ThreadConnection extends Thread {
 
+    /**
+     * Current BluetoothSocket to connect the app to the BluetoothDevice
+     */
     private final BluetoothSocket bluetoothSocket;
 
+    /**
+     * Main Service on which the thread is started and ended on and also where the thread gets the
+     * current state of the connection and to connect to the other Java API frameworks
+     */
     private final Servico servico;
 
-    public ThreadConnection(BluetoothDevice bluetoothDevice, Servico servico) {
+    /**
+     * The ThreadConnection's Constructor in which the connection is started with the Bluetooth
+     * Socket from the Device. Besides that, it close any discovery that is happening on the phone,
+     * because we found a device to connects to and we didn't need to discover any other new device.
+     *
+     * @param bluetoothDevice The BluetoothDevice which the user wants to connect to
+     * @param servico The main service where the connection will operate on and communicate with the
+     *                other Java API frameworks
+     */
+    public ThreadConnection(@NonNull BluetoothDevice bluetoothDevice, Servico servico) {
+
         BluetoothSocket bluetoothSocket = null;
         try {
             bluetoothSocket = bluetoothDevice
                     .createRfcommSocketToServiceRecord(Utils.uid);
         } catch (IOException e) {
             e.printStackTrace();
+            servico.connectionFailed();
         }
+
         this.bluetoothSocket = bluetoothSocket;
-        servico.setCurrentState(Servico.STATE_CONNECTING);
         this.servico = servico;
+
+        servico.setCurrentState(Servico.STATE_CONNECTING);
     }
 
     @Override
     public void run() {
-        BluetoothAdapter.getDefaultAdapter().cancelDiscovery();
-        try {
-            bluetoothSocket.connect();
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (BluetoothAdapter.getDefaultAdapter().cancelDiscovery()) {
             try {
-                bluetoothSocket.close();
-                // TODO(red signal to the setup phase)
-                // TODO(connectionFailed();)
-            } catch (IOException ioException) {
-                ioException.printStackTrace();
+                this.bluetoothSocket.connect();
+            } catch (IOException e) {
+                e.printStackTrace();
+                try {
+                    this.bluetoothSocket.close();
+
+                    // TODO(red signal to the setup phase)
+
+                    this.servico.connectionFailed();
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
             }
+            this.servico.establishConnection();
+        } else {
+            // Some error occur on the cancelling the Discovery
+            this.servico.cancelDiscoveryFailed();
         }
-        servico.establishConnection();
     }
 
     public void cancel() {
         try {
-            bluetoothSocket.close();
+            this.bluetoothSocket.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

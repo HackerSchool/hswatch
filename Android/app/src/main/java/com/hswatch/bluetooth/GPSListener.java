@@ -13,19 +13,17 @@ import static com.hswatch.bluetooth.Profile.coordenadasGPS;
 
 public class GPSListener implements LocationListener {
 
-    private final Context context;
-
     private final LocationManager locationManager;
 
     private boolean isUpdating = false;
 
+    // FIXME
     private static GPSListener INSTANCE = null;
 
     private double[] gpsCoordinates = new double[2];
 
     private GPSListener(Context context) {
-        this.context = context;
-        this.locationManager = (LocationManager) this.context.getSystemService(LOCATION_SERVICE);
+        this.locationManager = (LocationManager) context.getSystemService(LOCATION_SERVICE);
     }
 
     public static synchronized GPSListener getInstance(Context context) {

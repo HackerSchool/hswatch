@@ -1,6 +1,7 @@
 package com.hswatch.refactor;
 
 import android.bluetooth.BluetoothSocket;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.work.ExistingPeriodicWorkPolicy;
@@ -13,6 +14,7 @@ import com.hswatch.worker.HoraWorker;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 import static com.hswatch.Utils.TIME_INDICATOR;
@@ -37,7 +39,7 @@ public class ThreadConnected extends Thread {
     private final Watch currentWatch;
 
     /**
-     * Service on which the thread is started and ended on and also where the thread gets the
+     * Main Service on which the thread is started and ended on and also where the thread gets the
      * current state of the connection and to connect to the other Java API frameworks
      */
     private final Servico servico;
@@ -48,7 +50,7 @@ public class ThreadConnected extends Thread {
      * interchange the data from and to the App.
      *
      * @param bluetoothSocket The socket needed to form the connection
-     * @param servico The service where the connection will operate on and communicate with the
+     * @param servico The main service where the connection will operate on and communicate with the
      *                other Java API frameworks
      */
     public ThreadConnected(BluetoothSocket bluetoothSocket, Servico servico) {
@@ -64,18 +66,22 @@ public class ThreadConnected extends Thread {
         } catch (IOException e) {
             e.printStackTrace();
             this.servico.lostConnectionAtInitialThread();
-            //TODO(conectionLost();
         }
         this.inputStream = inputStream;
         this.outputStream = outputStream;
 
-
+        // Updates the connection state on the Service
         servico.setCurrentState(Servico.STATE_CONNECTED);
+
         //TODO(green signal with name)
 
+        // Initializes the Watch object
         this.currentWatch = new Watch(servico.getCurrentContext(),
                 servico.getBluetoothDevice());
 
+        // Initializes the time update service with Schedule Jobs:
+        // It updates time with the value from the settings, in minutes, but as 15 minutes as
+        // default value
         PeriodicWorkRequest periodicWorkRequest = new PeriodicWorkRequest.Builder(HoraWorker.class,
                 this.currentWatch.getTimeInterval(), TimeUnit.MINUTES).build();
         WorkManager.getInstance(servico.getCurrentContext()).enqueueUniquePeriodicWork(
@@ -96,6 +102,9 @@ public class ThreadConnected extends Thread {
 
         // Send the first data to the Bluetooth Device: update the time that is shown on the watch
         sendTime();
+
+        //TODO(teste para verificar se está tudo bem)
+        Toast.makeText(this.servico.getCurrentContext(), "Ligado!!!", Toast.LENGTH_SHORT).show();
 
         // While there is connection between the phone and the Bluetooth Device
         while (this.servico.getCurrentState() == Servico.STATE_CONNECTED
@@ -144,8 +153,8 @@ public class ThreadConnected extends Thread {
                     }
                 }
             } catch (IOException e) {
-                // TODO(do something when there is an error)
                 e.printStackTrace();
+                this.servico.lostConnection();
             }
         }
     }
@@ -153,7 +162,8 @@ public class ThreadConnected extends Thread {
     /**
      * Interprets the messageReceived to find some indicator pre-established by the programmer.
      * Currently, there is only one indicator: WEATHER_INDICATOR = "WEA" - in which tell to the
-     * app to send the current weather status and for the next 6 days.
+     * app to send the current weather status and for the next 6 days - but the idea here is to
+     * use the switch for more indicators which can be added later on the project.
      *
      * @param messageReceived The message received through the Bluetooth Connection and to be
      *                        verified.
@@ -163,13 +173,26 @@ public class ThreadConnected extends Thread {
     private boolean interpretMessageReceived(@NonNull String messageReceived) {
         switch (messageReceived) {
             case WEATHER_INDICATOR:
-                this.currentWatch.getWeatherStatus(requestList -> {
-                    //TODO(adicionar funcao que trata de mandar o clima para o relógio)
-                });
+                this.currentWatch.getWeatherStatus(this::sendWeatherStatus);
                 return true;
             default:
                 return false;
         }
+    }
+
+    /**
+     * Write the weather status received from the API to the Bluetooth device through the request
+     * was received.
+     *
+     * @param requestList The list with weather status in strings to be sent to the bluetooth Device
+     */
+    private void sendWeatherStatus(@NonNull ArrayList<String> requestList) {
+        this.write(WEATHER_INDICATOR.getBytes());
+        for (String element : requestList) {
+            this.write(separador);
+            this.write(element.getBytes());
+        }
+        this.write(delimitador);
     }
 
     /**
@@ -195,7 +218,7 @@ public class ThreadConnected extends Thread {
             this.outputStream.write(buffer);
         } catch (IOException e) {
             e.printStackTrace();
-            // TODO(lost connection)
+            this.servico.lostConnection();
         }
     }
 

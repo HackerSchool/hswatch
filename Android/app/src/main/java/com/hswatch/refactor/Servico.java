@@ -9,6 +9,7 @@ import android.bluetooth.BluetoothSocket;
 import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
@@ -49,7 +50,7 @@ public class Servico extends Service {
 //        Trying to get a name to the device and then show a notification
 //        TODO(Melhorar este código)
         try {
-            deviceName = intent.getStringExtra(BT_DEVICE_NAME);
+            this.deviceName = intent.getStringExtra(BT_DEVICE_NAME);
         } catch (Exception e) {
             e.printStackTrace();
             return START_STICKY;
@@ -68,8 +69,8 @@ public class Servico extends Service {
         }
 
         for (BluetoothDevice device : BluetoothAdapter.getDefaultAdapter().getBondedDevices()) {
-            if (device.getName().equals(deviceName)) {
-                bluetoothDevice = device;
+            if (device.getName().equals(this.deviceName)) {
+                this.bluetoothDevice = device;
                 break;
             }
         }
@@ -77,25 +78,31 @@ public class Servico extends Service {
 //        // Setup GPS Listener so the Weather API could work with GPS
 //        setupGPSListener();
 
-//        TODO (finish this -> createConection(bluetoothDevice);)
+        //TODO(adicionar broadcast receiver para saber da ligação bt: bt on e off e se está fora de
+        // alcance)
 
-        createConection(bluetoothDevice);
+        createConection(this.bluetoothDevice);
 
         return START_REDELIVER_INTENT;
     }
 
     private void createConection(BluetoothDevice bluetoothDevice) {
-        if (getCurrentState() == STATE_CONNECTING && threadConnection != null) {
-            threadConnection.cancel();
-            threadConnection = null;
+        if (getCurrentState() == STATE_CONNECTING && this.threadConnection != null) {
+            this.threadConnection.cancel();
+            this.threadConnection = null;
         }
 
-        threadConnection = new ThreadConnection(bluetoothDevice, this);
-        threadConnection.start();
+        if (this.threadConnected != null) {
+            this.threadConnected.cancel();
+            this.threadConnected = null;
+        }
+
+        this.threadConnection = new ThreadConnection(bluetoothDevice, this);
+        this.threadConnection.start();
     }
 
     public int getCurrentState() {
-        return currentState;
+        return this.currentState;
     }
 
     public void setCurrentState(int currentState) {
@@ -103,17 +110,17 @@ public class Servico extends Service {
     }
 
     public void establishConnection() {
-        if (threadConnection != null) {
+        if (this.threadConnection != null) {
 
-            BluetoothSocket bluetoothSocket = threadConnection.getBluetoothSocket();
+            BluetoothSocket bluetoothSocket = this.threadConnection.getBluetoothSocket();
 
-            threadConnection.cancel();
-            threadConnection = null;
+            this.threadConnection.cancel();
+            this.threadConnection = null;
 
-            if (threadConnected != null) {
-                threadConnected.cancel();
-                threadConnected = new ThreadConnected(bluetoothSocket, this);
-                threadConnected.start();
+            if (this.threadConnected != null) {
+                this.threadConnected.cancel();
+                this.threadConnected = new ThreadConnected(bluetoothSocket, this);
+                this.threadConnected.start();
             }
         }
     }
@@ -123,12 +130,34 @@ public class Servico extends Service {
     }
 
     public BluetoothDevice getBluetoothDevice() {
-        return bluetoothDevice;
+        return this.bluetoothDevice;
     }
 
     public void lostConnectionAtInitialThread() {
-        if (threadConnection != null) {
-            threadConnection.cancel();
+        if (this.threadConnection != null) {
+            this.threadConnection.cancel();
+            this.threadConnection = null;
+            setCurrentState(NULL_STATE);
+            stopSelf();
+        }
+    }
+
+    public void connectionFailed() {
+        if (this.threadConnection != null && getCurrentState() == STATE_CONNECTING) {
+            setCurrentState(NULL_STATE);
+            this.threadConnection.cancel();
+            stopSelf();
+        }
+    }
+
+    public void cancelDiscoveryFailed() {
+        Toast.makeText(this, getResources().getString(R.string.ERROR_DISCOVERY), Toast.LENGTH_SHORT).show();
+        connectionFailed();
+    }
+
+    public void lostConnection() {
+        if (this.threadConnected != null) {
+            threadConnected.cancel();
             threadConnection = null;
             setCurrentState(NULL_STATE);
             stopSelf();
