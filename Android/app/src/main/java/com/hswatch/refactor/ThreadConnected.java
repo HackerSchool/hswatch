@@ -1,6 +1,7 @@
 package com.hswatch.refactor;
 
 import android.bluetooth.BluetoothSocket;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.work.ExistingPeriodicWorkPolicy;
@@ -14,6 +15,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
 import static com.hswatch.Utils.TIME_INDICATOR;
@@ -23,6 +25,8 @@ import static com.hswatch.Utils.separador;
 
 //TODO(documentar)
 public class ThreadConnected extends Thread {
+
+    private static final String TAG = "ThreadConnected_Funciona_TAG";
 
     /**
      * The variables to operate the Bluetooth device: Socket and the Input and Output streams
@@ -210,6 +214,7 @@ public class ThreadConnected extends Thread {
      * @param buffer The data in byte array to be sent via Bluetooth connection
      */
     public void write(byte[] buffer) {
+        Log.d(TAG, "write() called with: buffer = [" + Arrays.toString(buffer) + "]");
         try {
             this.outputStream.write(buffer);
         } catch (IOException e) {

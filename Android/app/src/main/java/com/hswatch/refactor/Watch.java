@@ -27,17 +27,17 @@ public class Watch {
 
     private String name;
     private String address;
-
+    private final HashMap<String, String> weeksMap;
     private int timeInterval;
 
+
+    /**
+     * Ignored columns
+     */
     private double[] gpsCoordinates = {0, 0};
-
-    private Context context;
-
-    private HashMap<String, String> weeksMap;
-
-    private RequestQueue requestQueue;
     private String location;
+    private final Context context;
+    private final RequestQueue requestQueue;
 
     public Watch(Context context, @NonNull BluetoothDevice bluetoothDevice) {
         this.name = bluetoothDevice.getName();

@@ -34,8 +34,6 @@ public class MainServico extends Service {
 
     private BluetoothDevice bluetoothDevice;
 
-    private String deviceName;
-
     private ThreadConnection threadConnection;
     private ThreadConnected threadConnected;
 
@@ -51,8 +49,9 @@ public class MainServico extends Service {
 
 //        Trying to get a name to the device and then show a notification
 //        TODO(Melhorar este código)
+        String deviceName;
         try {
-            this.deviceName = intent.getStringExtra(BT_DEVICE_NAME);
+            deviceName = intent.getStringExtra(BT_DEVICE_NAME);
         } catch (Exception e) {
             e.printStackTrace();
             return START_STICKY;
@@ -70,10 +69,10 @@ public class MainServico extends Service {
                 .build();
         startForeground(REQUEST_CODE_START_FOREGROUND, notification);
 
-        Log.d(TAG, "onStartCommand: " + this.deviceName);
+        Log.d(TAG, "onStartCommand: " + deviceName);
 
         for (BluetoothDevice device : BluetoothAdapter.getDefaultAdapter().getBondedDevices()) {
-            if (device.getName().equals(this.deviceName)) {
+            if (device.getName().equals(deviceName)) {
                 this.bluetoothDevice = device;
                 break;
             }
