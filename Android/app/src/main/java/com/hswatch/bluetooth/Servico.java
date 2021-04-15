@@ -176,7 +176,7 @@ public class Servico extends Service {
             threadConectado = null;
         }
 
-        threadConexao = new ThreadConexao (dispositivoEscolhido);
+        threadConexao = new ThreadConexao(dispositivoEscolhido);
         threadConexao.start();
     }
 

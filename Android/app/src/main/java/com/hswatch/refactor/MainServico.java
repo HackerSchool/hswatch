@@ -33,6 +33,7 @@ public class MainServico extends Service {
     private int currentState = 0;
 
     private BluetoothDevice bluetoothDevice;
+    private BluetoothSocket bluetoothSocket;
 
     private ThreadConnection threadConnection;
     private ThreadConnected threadConnected;
@@ -91,7 +92,7 @@ public class MainServico extends Service {
 
     private void createConection(BluetoothDevice bluetoothDevice) {
         if (getCurrentState() == STATE_CONNECTING && this.threadConnection != null) {
-            this.threadConnection.cancel();
+//            this.threadConnection.cancel();
             this.threadConnection = null;
         }
 
@@ -102,6 +103,7 @@ public class MainServico extends Service {
 
         this.threadConnection = new ThreadConnection(bluetoothDevice, this);
         this.threadConnection.start();
+        this.bluetoothSocket = this.threadConnection.getBluetoothSocket();
     }
 
     public int getCurrentState() {
@@ -115,17 +117,17 @@ public class MainServico extends Service {
     public void establishConnection() {
         if (this.threadConnection != null) {
 
-            BluetoothSocket bluetoothSocket = this.threadConnection.getBluetoothSocket();
-
-            this.threadConnection.cancel();
+//          TODO mais eficaz -> this.threadConnection.cancel();
             this.threadConnection = null;
-
-            if (this.threadConnected != null) {
-                this.threadConnected.cancel();
-                this.threadConnected = new ThreadConnected(bluetoothSocket, this);
-                this.threadConnected.start();
-            }
         }
+
+        if (this.threadConnected != null) {
+            // TODO mais eficaz -> this.threadConnected.cancel();
+            this.threadConnected = null;
+        }
+
+        this.threadConnected = new ThreadConnected(this.bluetoothSocket, this);
+        this.threadConnected.start();
     }
 
     public Context getCurrentContext() {
@@ -138,7 +140,7 @@ public class MainServico extends Service {
 
     public void lostConnectionAtInitialThread() {
         if (this.threadConnection != null) {
-            this.threadConnection.cancel();
+//            this.threadConnection.cancel();
             this.threadConnection = null;
             setCurrentState(NULL_STATE);
             stopSelf();
@@ -148,7 +150,7 @@ public class MainServico extends Service {
     public void connectionFailed() {
         if (this.threadConnection != null && getCurrentState() == STATE_CONNECTING) {
             setCurrentState(NULL_STATE);
-            this.threadConnection.cancel();
+//          TODO -> mais eficaz this.threadConnection.cancel();
             stopSelf();
         }
     }
@@ -160,5 +162,9 @@ public class MainServico extends Service {
             setCurrentState(NULL_STATE);
             stopSelf();
         }
+    }
+
+    public void setThreadConnection(ThreadConnection threadConnection) {
+        this.threadConnection = threadConnection;
     }
 }

@@ -187,12 +187,17 @@ public class ThreadConnected extends Thread {
      * @param requestList The list with weather status in strings to be sent to the bluetooth Device
      */
     private void sendWeatherStatus(@NonNull ArrayList<String> requestList) {
-        this.write(WEATHER_INDICATOR.getBytes());
-        for (String element : requestList) {
-            this.write(separador);
-            this.write(element.getBytes());
+        try {
+            this.write(WEATHER_INDICATOR.getBytes());
+            for (String element : requestList) {
+                this.write(separador);
+                this.write(element.getBytes());
+            }
+            this.write(delimitador);
+        } catch (IOException e) {
+            e.printStackTrace();
+            this.mainServico.lostConnection();
         }
-        this.write(delimitador);
     }
 
     /**
@@ -200,27 +205,31 @@ public class ThreadConnected extends Thread {
      */
     private void sendTime() {
         String[] timeMessage = this.currentWatch.getCurrentTime();
-        this.write(TIME_INDICATOR.getBytes());
-        for (String msg : timeMessage) {
-            this.write(separador);
-            this.write(msg.getBytes());
+        try {
+            this.write(TIME_INDICATOR.getBytes());
+            for (String msg : timeMessage) {
+                this.write(separador);
+                this.write(msg.getBytes());
+            }
+            this.write(delimitador);
+        } catch (IOException e) {
+            e.printStackTrace();
+            this.mainServico.lostConnection();
         }
-        this.write(delimitador);
     }
 
     /**
      * This function send data to the bluetooth device in form of a byte array.
      *
      * @param buffer The data in byte array to be sent via Bluetooth connection
+     * @throws IOException An input-output error that can occur while sending data to the Bluetooth
+     * Device
      */
-    public void write(byte[] buffer) {
-        Log.d(TAG, "write() called with: buffer = [" + Arrays.toString(buffer) + "]");
-        try {
-            this.outputStream.write(buffer);
-        } catch (IOException e) {
-            e.printStackTrace();
-            this.mainServico.lostConnection();
-        }
+    public void write(byte[] buffer) throws IOException {
+        //TODO(descobrir porque o socket está fechado)
+        Log.d(TAG, "write() called with: buffer = [" + Arrays.toString(buffer) + "]\n" +
+                this.bluetoothSocket.toString());
+        this.outputStream.write(buffer);
     }
 
     /**
@@ -232,6 +241,5 @@ public class ThreadConnected extends Thread {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 }

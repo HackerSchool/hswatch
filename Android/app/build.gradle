@@ -25,6 +25,8 @@ android {
         viewBinding true
     }
 
+    sourceSets.main.res.filter.exclude '**/BluetoothConnector.java'
+
 }
 
 dependencies {

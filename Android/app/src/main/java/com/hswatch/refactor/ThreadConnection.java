@@ -5,6 +5,7 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 
 import com.hswatch.Utils;
+import com.hswatch.bluetooth.Servico;
 
 import java.io.IOException;
 
@@ -70,6 +71,11 @@ public class ThreadConnection extends Thread {
                 ioException.printStackTrace();
             }
         }
+
+        synchronized (this.mainServico) {
+            this.mainServico.setThreadConnection(null);
+        }
+
         this.mainServico.establishConnection();
     }
 
