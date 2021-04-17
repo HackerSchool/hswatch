@@ -52,12 +52,11 @@ public class ThreadConnected extends Thread {
      * Input and Output streams of the connection and initializes the current HSWatch in which
      * interchange the data from and to the App.
      *
-     * @param bluetoothSocket The socket needed to form the connection
-     * @param mainServico The main service where the connection will operate on and communicate with the
-     *                other Java API frameworks
+     * @param mainServico The main service where the connection will operate on and communicate with
+     *                    the other Java API frameworks and Connector Threads
      */
-    public ThreadConnected(BluetoothSocket bluetoothSocket, MainServico mainServico) {
-        this.bluetoothSocket = bluetoothSocket;
+    public ThreadConnected(MainServico mainServico) {
+        this.bluetoothSocket = mainServico.getBluetoothSocket();
         this.mainServico = mainServico;
 
         // Initializes the stream variables
@@ -107,8 +106,7 @@ public class ThreadConnected extends Thread {
         sendTime();
 
         // While there is connection between the phone and the Bluetooth Device
-        while (this.mainServico.getCurrentState() == MainServico.STATE_CONNECTED
-                || this.bluetoothSocket.isConnected()) {
+        while (this.mainServico.isConnected() || this.bluetoothSocket.isConnected()) {
             try {
                 // Verify if there is something to read
                 int bytesAvailable = this.inputStream.available();
@@ -155,6 +153,7 @@ public class ThreadConnected extends Thread {
             } catch (IOException e) {
                 e.printStackTrace();
                 this.mainServico.lostConnection();
+                break;
             }
         }
     }

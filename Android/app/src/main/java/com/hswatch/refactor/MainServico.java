@@ -6,8 +6,10 @@ import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.IBinder;
 import android.util.Log;
 
@@ -38,6 +40,14 @@ public class MainServico extends Service {
     private ThreadConnection threadConnection;
     private ThreadConnected threadConnected;
 
+//    private BroadcastReceiverMainServico broadcastReceiverMainServico;
+
+//    @Override
+//    public void onCreate() {
+//        super.onCreate();
+//        broadcastReceiverMainServico = new BroadcastReceiverMainServico();
+//    }
+
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -47,6 +57,14 @@ public class MainServico extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+
+        //region BroadcastReceiver Flags
+//        IntentFilter intentFilter = new IntentFilter();
+        // A flag to tell if we are still connected to a device or not
+//        intentFilter.addAction(BluetoothAdapter.ACTION_CONNECTION_STATE_CHANGED);
+        //
+//        intentFilter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
+        //endregion
 
 //        Trying to get a name to the device and then show a notification
 //        TODO(Melhorar este código)
@@ -90,20 +108,76 @@ public class MainServico extends Service {
         return START_REDELIVER_INTENT;
     }
 
+    //region BT Connections
+
     private void createConection(BluetoothDevice bluetoothDevice) {
         if (getCurrentState() == STATE_CONNECTING && this.threadConnection != null) {
-//            this.threadConnection.cancel();
-            this.threadConnection = null;
+            threadConnection.restart();
+            setThreadConnection(null);
         }
 
         if (this.threadConnected != null) {
             this.threadConnected.cancel();
-            this.threadConnected = null;
+            setThreadConnected(null);
         }
 
         this.threadConnection = new ThreadConnection(bluetoothDevice, this);
         this.threadConnection.start();
-        this.bluetoothSocket = this.threadConnection.getBluetoothSocket();
+    }
+
+    public void establishConnection() {
+        if (this.threadConnection != null) {
+            setThreadConnection(null);
+        }
+
+        this.threadConnected = new ThreadConnected(this);
+        this.threadConnected.start();
+    }
+
+    public void lostConnectionAtInitialThread() {
+        if (this.threadConnected != null) {
+            setThreadConnected(null);
+            setCurrentState(NULL_STATE);
+            stopSelf();
+        }
+    }
+
+    public void connectionFailed() {
+        if (this.threadConnection != null && getCurrentState() == STATE_CONNECTING) {
+            setCurrentState(NULL_STATE);
+            setThreadConnection(null);
+            stopSelf();
+        }
+    }
+
+    public void lostConnection() {
+        if (this.threadConnected != null) {
+            threadConnected.cancel();
+            setThreadConnected(null);
+            setCurrentState(NULL_STATE);
+            stopSelf();
+        }
+    }
+
+    //endregion
+
+//    public class BroadcastReceiverMainServico extends BroadcastReceiver {
+//
+//        @Override
+//        public void onReceive(Context context, Intent intent) {
+//
+//        }
+//
+//    }
+
+
+    //region Getters and Setters
+    public Context getCurrentContext() {
+        return getApplicationContext();
+    }
+
+    public BluetoothDevice getBluetoothDevice() {
+        return this.bluetoothDevice;
     }
 
     public int getCurrentState() {
@@ -114,57 +188,24 @@ public class MainServico extends Service {
         this.currentState = currentState;
     }
 
-    public void establishConnection() {
-        if (this.threadConnection != null) {
-
-//          TODO mais eficaz -> this.threadConnection.cancel();
-            this.threadConnection = null;
-        }
-
-        if (this.threadConnected != null) {
-            // TODO mais eficaz -> this.threadConnected.cancel();
-            this.threadConnected = null;
-        }
-
-        this.threadConnected = new ThreadConnected(this.bluetoothSocket, this);
-        this.threadConnected.start();
+    public boolean isConnected() {
+        return getCurrentState() == STATE_CONNECTED;
     }
 
-    public Context getCurrentContext() {
-        return getApplicationContext();
+    public BluetoothSocket getBluetoothSocket() {
+        return bluetoothSocket;
     }
 
-    public BluetoothDevice getBluetoothDevice() {
-        return this.bluetoothDevice;
-    }
-
-    public void lostConnectionAtInitialThread() {
-        if (this.threadConnection != null) {
-//            this.threadConnection.cancel();
-            this.threadConnection = null;
-            setCurrentState(NULL_STATE);
-            stopSelf();
-        }
-    }
-
-    public void connectionFailed() {
-        if (this.threadConnection != null && getCurrentState() == STATE_CONNECTING) {
-            setCurrentState(NULL_STATE);
-//          TODO -> mais eficaz this.threadConnection.cancel();
-            stopSelf();
-        }
-    }
-
-    public void lostConnection() {
-        if (this.threadConnected != null) {
-            threadConnected.cancel();
-            threadConnection = null;
-            setCurrentState(NULL_STATE);
-            stopSelf();
-        }
+    public void setBluetoothSocket(BluetoothSocket bluetoothSocket) {
+        this.bluetoothSocket = bluetoothSocket;
     }
 
     public void setThreadConnection(ThreadConnection threadConnection) {
         this.threadConnection = threadConnection;
     }
+
+    public void setThreadConnected(ThreadConnected threadConnected) {
+        this.threadConnected = threadConnected;
+    }
+    //endregion
 }

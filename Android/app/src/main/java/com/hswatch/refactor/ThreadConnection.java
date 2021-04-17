@@ -49,6 +49,7 @@ public class ThreadConnection extends Thread {
         // Initializes final variables
         this.bluetoothSocket = bluetoothSocket;
         this.mainServico = mainServico;
+        mainServico.setBluetoothSocket(this.bluetoothSocket);
 
         // Change the current state the connection to Connecting
         mainServico.setCurrentState(MainServico.STATE_CONNECTING);
@@ -61,25 +62,23 @@ public class ThreadConnection extends Thread {
             this.bluetoothSocket.connect();
         } catch (IOException e) {
             e.printStackTrace();
+            this.mainServico.setBluetoothSocket(null);
+
             try {
                 this.bluetoothSocket.close();
-
-                // TODO(red signal to the setup phase)
-
-                this.mainServico.connectionFailed();
             } catch (IOException ioException) {
                 ioException.printStackTrace();
             }
-        }
 
-        synchronized (this.mainServico) {
-            this.mainServico.setThreadConnection(null);
+            // TODO(red signal to the setup phase)
+
+            this.mainServico.connectionFailed();
         }
 
         this.mainServico.establishConnection();
     }
 
-    public void cancel() {
+    public void restart() {
         try {
             this.bluetoothSocket.close();
         } catch (IOException e) {
