@@ -159,4 +159,8 @@ public class Watch {
     public String[] getCurrentTime() {
         return Utils.getCurrentTime(this.weeksMap);
     }
+
+    public String getName() {
+        return name;
+    }
 }

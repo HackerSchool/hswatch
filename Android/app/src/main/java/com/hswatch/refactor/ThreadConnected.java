@@ -35,6 +35,7 @@ public class ThreadConnected extends Thread {
     private final InputStream inputStream;
     private final OutputStream outputStream;
 
+    public static ThreadConnected INSTANCE = null;
 
     /**
      * The current Watch (Bluetooth device) connected in this thread.
@@ -47,6 +48,18 @@ public class ThreadConnected extends Thread {
      */
     private final MainServico mainServico;
 
+    public synchronized static ThreadConnected getInstance(MainServico mainServico) {
+        if (INSTANCE == null) {
+            INSTANCE = new ThreadConnected(mainServico);
+        }
+        return INSTANCE;
+    }
+
+    public synchronized static void setINSTANCEToNull() {
+        INSTANCE = null;
+    }
+
+
     /**
      * The ThreadConnected's constructor in which starts the connection and initializes the Socket,
      * Input and Output streams of the connection and initializes the current HSWatch in which
@@ -55,7 +68,7 @@ public class ThreadConnected extends Thread {
      * @param mainServico The main service where the connection will operate on and communicate with
      *                    the other Java API frameworks and Connector Threads
      */
-    public ThreadConnected(MainServico mainServico) {
+    private ThreadConnected(MainServico mainServico) {
         this.bluetoothSocket = mainServico.getBluetoothSocket();
         this.mainServico = mainServico;
 
@@ -67,7 +80,7 @@ public class ThreadConnected extends Thread {
             outputStream = this.bluetoothSocket.getOutputStream();
         } catch (IOException e) {
             e.printStackTrace();
-            this.mainServico.lostConnectionAtInitialThread();
+            this.mainServico.connectionLostAtInitialThread();
         }
         this.inputStream = inputStream;
         this.outputStream = outputStream;
@@ -76,6 +89,9 @@ public class ThreadConnected extends Thread {
         mainServico.setCurrentState(MainServico.STATE_CONNECTED);
 
         //TODO(green signal with name)
+
+        // Tells the service that the connection was established
+        this.mainServico.setConnectionEstablished(true);
 
         // Initializes the Watch object
         this.currentWatch = new Watch(mainServico.getCurrentContext(),
@@ -152,7 +168,7 @@ public class ThreadConnected extends Thread {
                 }
             } catch (IOException e) {
                 e.printStackTrace();
-                this.mainServico.lostConnection();
+                this.mainServico.connectionLost();
                 break;
             }
         }
@@ -195,14 +211,19 @@ public class ThreadConnected extends Thread {
             this.write(delimitador);
         } catch (IOException e) {
             e.printStackTrace();
-            this.mainServico.lostConnection();
+            this.mainServico.connectionLost();
         }
     }
+
+    public static void sendTimeConnected() {
+
+    }
+
 
     /**
      * Send the current time of the phone to the Bluetooth Device
      */
-    private void sendTime() {
+    public void sendTime() {
         String[] timeMessage = this.currentWatch.getCurrentTime();
         try {
             this.write(TIME_INDICATOR.getBytes());
@@ -213,7 +234,7 @@ public class ThreadConnected extends Thread {
             this.write(delimitador);
         } catch (IOException e) {
             e.printStackTrace();
-            this.mainServico.lostConnection();
+            this.mainServico.connectionLost();
         }
     }
 
@@ -240,5 +261,13 @@ public class ThreadConnected extends Thread {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Get the name of the Watch that the Service is connected
+     * @return The device's name
+     */
+    public String getWatchName() {
+        return this.currentWatch.getName();
     }
 }

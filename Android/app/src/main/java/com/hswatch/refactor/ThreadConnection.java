@@ -5,7 +5,6 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 
 import com.hswatch.Utils;
-import com.hswatch.bluetooth.Servico;
 
 import java.io.IOException;
 
@@ -75,7 +74,7 @@ public class ThreadConnection extends Thread {
             this.mainServico.connectionFailed();
         }
 
-        this.mainServico.establishConnection();
+        this.mainServico.connectionEstablish();
     }
 
     public void restart() {

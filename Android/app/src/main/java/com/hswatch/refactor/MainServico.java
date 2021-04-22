@@ -28,9 +28,10 @@ public class MainServico extends Service {
 
     private static final String TAG = "Servico_tenta_dar_log";
 
+    private static final int NULL_STATE = 0;
     public static final int STATE_CONNECTING = 2;
     public static final int STATE_CONNECTED = 3;
-    private static final int NULL_STATE = 0;
+    private static final int ON_HOLD = 4;
 
     private int currentState = 0;
 
@@ -38,15 +39,17 @@ public class MainServico extends Service {
     private BluetoothSocket bluetoothSocket;
 
     private ThreadConnection threadConnection;
-    private ThreadConnected threadConnected;
+    private static ThreadConnected threadConnected;
 
-//    private BroadcastReceiverMainServico broadcastReceiverMainServico;
+    private boolean connectionEstablished = false;
 
-//    @Override
-//    public void onCreate() {
-//        super.onCreate();
-//        broadcastReceiverMainServico = new BroadcastReceiverMainServico();
-//    }
+    private BroadcastReceiverMainServico broadcastReceiverMainServico;
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        broadcastReceiverMainServico = new BroadcastReceiverMainServico();
+    }
 
     @Nullable
     @Override
@@ -59,11 +62,16 @@ public class MainServico extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
 
         //region BroadcastReceiver Flags
-//        IntentFilter intentFilter = new IntentFilter();
-        // A flag to tell if we are still connected to a device or not
+        IntentFilter intentFilter = new IntentFilter();
+//        // A flag to check if the service is still connected to a device or not
 //        intentFilter.addAction(BluetoothAdapter.ACTION_CONNECTION_STATE_CHANGED);
-        //
-//        intentFilter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
+        // A flag to check if the Bluetooth is On or Off
+        intentFilter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
+        // A flag to check if the Bluetooth Device is in or out of range
+        intentFilter.addAction(BluetoothDevice.ACTION_ACL_CONNECTED);
+        // Register BroadCastReceiverMainServico
+        registerReceiver(broadcastReceiverMainServico, intentFilter);
+
         //endregion
 
 //        Trying to get a name to the device and then show a notification
@@ -116,27 +124,27 @@ public class MainServico extends Service {
             setThreadConnection(null);
         }
 
-        if (this.threadConnected != null) {
-            this.threadConnected.cancel();
-            setThreadConnected(null);
+        if (threadConnected != null) {
+            threadConnected.cancel();
+            setThreadConnectedToNull();
         }
 
         this.threadConnection = new ThreadConnection(bluetoothDevice, this);
         this.threadConnection.start();
     }
 
-    public void establishConnection() {
+    public void connectionEstablish() {
         if (this.threadConnection != null) {
             setThreadConnection(null);
         }
 
-        this.threadConnected = new ThreadConnected(this);
-        this.threadConnected.start();
+        threadConnected = ThreadConnected.getInstance(this);
+        threadConnected.start();
     }
 
-    public void lostConnectionAtInitialThread() {
-        if (this.threadConnected != null) {
-            setThreadConnected(null);
+    public void connectionLostAtInitialThread() {
+        if (threadConnected != null) {
+            setThreadConnectedToNull();
             setCurrentState(NULL_STATE);
             stopSelf();
         }
@@ -150,25 +158,62 @@ public class MainServico extends Service {
         }
     }
 
-    public void lostConnection() {
-        if (this.threadConnected != null) {
+    public void connectionLost() {
+        if (threadConnected != null) {
             threadConnected.cancel();
-            setThreadConnected(null);
+            setThreadConnectedToNull();
             setCurrentState(NULL_STATE);
             stopSelf();
         }
     }
 
+    /**
+     * Stop the ThreadConnected because the connection is lost, but could be re-established and not
+     * end the service.
+     */
+    private void connectionStopped() {
+        if (threadConnected != null) {
+            threadConnected.cancel();
+            setThreadConnectedToNull();
+            setCurrentState(ON_HOLD);
+        }
+    }
+
     //endregion
 
-//    public class BroadcastReceiverMainServico extends BroadcastReceiver {
-//
-//        @Override
-//        public void onReceive(Context context, Intent intent) {
-//
-//        }
-//
-//    }
+    public class BroadcastReceiverMainServico extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            final String action = intent.getAction();
+            if (action != null) {
+                switch (action) {
+                    case BluetoothAdapter.ACTION_STATE_CHANGED:
+                        if (intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR)
+                                == BluetoothAdapter.STATE_OFF) {
+                            connectionLost();
+                        }
+                        break;
+                    case BluetoothDevice.ACTION_ACL_DISCONNECTED:
+                        if (isConnectionEstablished()) {
+                            BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                            if (device.getName().equals(threadConnected.getWatchName())) {
+                                connectionStopped();
+                                //todo(criar um workjobscheduler para criar uma nova conexão)
+//                                PeriodicWorkRequest periodicWorkRequest = new PeriodicWorkRequest().build();
+                            }
+                        }
+                    default:break;
+                }
+            }
+        }
+    }
+
+    public static void sendTime() {
+        if (threadConnected != null) {
+            threadConnected.sendTime();
+        }
+    }
 
 
     //region Getters and Setters
@@ -204,8 +249,17 @@ public class MainServico extends Service {
         this.threadConnection = threadConnection;
     }
 
-    public void setThreadConnected(ThreadConnected threadConnected) {
-        this.threadConnected = threadConnected;
+    public void setThreadConnectedToNull() {
+        ThreadConnected.setINSTANCEToNull();
     }
+
+    public boolean isConnectionEstablished() {
+        return connectionEstablished;
+    }
+
+    public void setConnectionEstablished(boolean connectionEstablished) {
+        this.connectionEstablished = connectionEstablished;
+    }
+
     //endregion
 }
