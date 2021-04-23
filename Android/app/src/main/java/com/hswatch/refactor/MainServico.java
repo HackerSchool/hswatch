@@ -1,6 +1,7 @@
 package com.hswatch.refactor;
 
 import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
@@ -11,37 +12,39 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.IBinder;
-import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import com.hswatch.MainActivity;
 import com.hswatch.R;
+import com.hswatch.SplashActivity;
 
-import static com.hswatch.App.CANAL_SERVICO;
+import static com.hswatch.App.SERVICO_CHANNEL;
 import static com.hswatch.Utils.BT_DEVICE_NAME;
+import static com.hswatch.Utils.NOTIFICATION_SERVICE_ID;
 import static com.hswatch.Utils.REQUEST_CODE_PENDING_INTENT;
-import static com.hswatch.Utils.REQUEST_CODE_START_FOREGROUND;
+import static com.hswatch.Utils.FOREGROUND_ID;
 
 //TODO(documentar)
 public class MainServico extends Service {
 
-    private static final String TAG = "Servico_tenta_dar_log";
-
-    private static final int NULL_STATE = 0;
+    public static final int NULL_STATE = 0;
     public static final int STATE_CONNECTING = 2;
     public static final int STATE_CONNECTED = 3;
-    private static final int ON_HOLD = 4;
+    public static final int OUT_OF_RANGE = 4;
 
     private int currentState = 0;
+
+    private String deviceName;
 
     private BluetoothDevice bluetoothDevice;
     private BluetoothSocket bluetoothSocket;
 
     private ThreadConnection threadConnection;
     private static ThreadConnected threadConnected;
-
-    private boolean connectionEstablished = false;
 
     private BroadcastReceiverMainServico broadcastReceiverMainServico;
 
@@ -75,8 +78,6 @@ public class MainServico extends Service {
         //endregion
 
 //        Trying to get a name to the device and then show a notification
-//        TODO(Melhorar este código)
-        String deviceName;
         try {
             deviceName = intent.getStringExtra(BT_DEVICE_NAME);
         } catch (Exception e) {
@@ -84,19 +85,11 @@ public class MainServico extends Service {
             return START_STICKY;
         }
 
-        Intent notificationIntent = new Intent(this, MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, REQUEST_CODE_PENDING_INTENT,
-                notificationIntent, 0);
-        Notification notification = new Notification.Builder(this, CANAL_SERVICO)
-                .setContentTitle(String.format(getResources().getString(R.string.ServiceBT_Title), deviceName))
-                .setContentText(getResources().getString(R.string.ServiceBT_Text))
-                .setStyle(new Notification.BigTextStyle().bigText(getResources().getString(R.string.ServiceBT_Text)))
-                .setSmallIcon(R.drawable.ic_bluetooth_connected_green_24dp)
-                .setContentIntent(pendingIntent)
-                .build();
-        startForeground(REQUEST_CODE_START_FOREGROUND, notification);
 
-        Log.d(TAG, "onStartCommand: " + deviceName);
+        startForeground(FOREGROUND_ID, createForegroundNotification(
+                String.format(getResources().getString(R.string.ServiceBT_Title), deviceName),
+                getResources().getString(R.string.ServiceBT_Text)
+        ));
 
         for (BluetoothDevice device : BluetoothAdapter.getDefaultAdapter().getBondedDevices()) {
             if (device.getName().equals(deviceName)) {
@@ -105,15 +98,56 @@ public class MainServico extends Service {
             }
         }
 
-//        // Setup GPS Listener so the Weather API could work with GPS
-//        setupGPSListener();
-
         //TODO(adicionar broadcast receiver para saber da ligação bt: bt on e off e se está fora de
         // alcance: https://developer.android.com/reference/android/bluetooth/BluetoothAdapter.html#ACTION_CONNECTION_STATE_CHANGED)
 
         createConection(this.bluetoothDevice);
 
         return START_REDELIVER_INTENT;
+    }
+
+
+    /**
+     * Returns a Foreground Notification with a title, contentText and linked to the MainActivity,
+     * where the connection can be managed with the user. The contentText is shown in two version,
+     * one for small text and another for a bigger one, so it can show the user more information if
+     * he or she wants it.
+     *
+     * @param title The Foreground Notification's title, shown at the top of the notification
+     * @param contentText The Foreground Notification's description, shown at the bottom and can be
+     *                    used to show more information about the connection
+     * @return The Foreground Notification used to show the MainServico running in the background
+     */
+    @NonNull
+    private Notification createForegroundNotification(String title, String contentText) {
+        Intent notificationIntent = new Intent(this, MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this,
+                REQUEST_CODE_PENDING_INTENT,
+                notificationIntent, 0);
+
+        return new Notification.Builder(this, SERVICO_CHANNEL)
+                .setContentTitle(title)
+                .setContentText(contentText)
+                .setStyle(new Notification.BigTextStyle().bigText(contentText))
+                .setSmallIcon(R.drawable.ic_bluetooth_connected_green_24dp)
+                .setContentIntent(pendingIntent)
+                .build();
+    }
+
+
+    private Notification createNotification(String title, String contentText) {
+        Intent notificationIntent = new Intent(this, SplashActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this,
+                REQUEST_CODE_PENDING_INTENT,
+                notificationIntent, 0);
+
+        return new NotificationCompat.Builder(this, SERVICO_CHANNEL)
+                .setContentTitle(title)
+                .setContentText(contentText)
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(contentText))
+                .setSmallIcon(R.drawable.ic_bluetooth_connected_green_24dp)
+                .setContentIntent(pendingIntent)
+                .build();
     }
 
     //region BT Connections
@@ -126,7 +160,7 @@ public class MainServico extends Service {
 
         if (threadConnected != null) {
             threadConnected.cancel();
-            setThreadConnectedToNull();
+            setThreadConnected(null);
         }
 
         this.threadConnection = new ThreadConnection(bluetoothDevice, this);
@@ -138,14 +172,15 @@ public class MainServico extends Service {
             setThreadConnection(null);
         }
 
-        threadConnected = ThreadConnected.getInstance(this);
+        threadConnected = new ThreadConnected(this);
         threadConnected.start();
     }
 
     public void connectionLostAtInitialThread() {
         if (threadConnected != null) {
-            setThreadConnectedToNull();
+            setThreadConnected(null);
             setCurrentState(NULL_STATE);
+            stopForeground(true);
             stopSelf();
         }
     }
@@ -154,6 +189,7 @@ public class MainServico extends Service {
         if (this.threadConnection != null && getCurrentState() == STATE_CONNECTING) {
             setCurrentState(NULL_STATE);
             setThreadConnection(null);
+            stopForeground(true);
             stopSelf();
         }
     }
@@ -161,8 +197,9 @@ public class MainServico extends Service {
     public void connectionLost() {
         if (threadConnected != null) {
             threadConnected.cancel();
-            setThreadConnectedToNull();
+            setThreadConnected(null);
             setCurrentState(NULL_STATE);
+            stopForeground(true);
             stopSelf();
         }
     }
@@ -171,38 +208,68 @@ public class MainServico extends Service {
      * Stop the ThreadConnected because the connection is lost, but could be re-established and not
      * end the service.
      */
-    private void connectionStopped() {
+    private void deviceOutOfRange() {
         if (threadConnected != null) {
             threadConnected.cancel();
-            setThreadConnectedToNull();
-            setCurrentState(ON_HOLD);
+            setThreadConnected(null);
+            setCurrentState(OUT_OF_RANGE);
         }
     }
 
     //endregion
 
     public class BroadcastReceiverMainServico extends BroadcastReceiver {
-
         @Override
-        public void onReceive(Context context, Intent intent) {
+        public void onReceive(Context context, @NonNull Intent intent) {
             final String action = intent.getAction();
             if (action != null) {
                 switch (action) {
+                    // Stop MainServico and ThreadConnected in case the Bluetooth is turn off
                     case BluetoothAdapter.ACTION_STATE_CHANGED:
                         if (intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR)
                                 == BluetoothAdapter.STATE_OFF) {
+                            Notification btOffNotification = createNotification(
+                                    getResources().getString(R.string.ServiceBT_BT_Off_Title),
+                                    getResources().getString(R.string.ServiceBT_BT_Off_ContextText)
+                            );
+
+                            NotificationManagerCompat notificationManager = NotificationManagerCompat
+                                    .from(getCurrentContext());
+                            notificationManager.notify(NOTIFICATION_SERVICE_ID, btOffNotification);
+
                             connectionLost();
                         }
                         break;
+
+                    // Stop ThreadConnected in case the Bluetooth Device is out of range and it was
+                    // connected to the application
                     case BluetoothDevice.ACTION_ACL_DISCONNECTED:
-                        if (isConnectionEstablished()) {
+                        if (getCurrentState() == STATE_CONNECTED) {
                             BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                            if (device.getName().equals(threadConnected.getWatchName())) {
-                                connectionStopped();
-                                //todo(criar um workjobscheduler para criar uma nova conexão)
-//                                PeriodicWorkRequest periodicWorkRequest = new PeriodicWorkRequest().build();
+                            if (device.getName().equals(deviceName)) {
+                                deviceOutOfRange();
+                                Notification updateNotification = createForegroundNotification(
+                                        getResources().getString(R.string.ServiceBT_Out_of_Range_Title),
+                                        getResources().getString(R.string.ServiceBT_Out_of_Range_ContextText)
+                                );
+                                NotificationManager notificationManager = (NotificationManager)
+                                        getSystemService(Context.NOTIFICATION_SERVICE);
+                                notificationManager.notify(FOREGROUND_ID, updateNotification);
+                             }
+                        }
+                        break;
+
+                    // In case the previous connected Bluetooth Device starts to be within range,
+                    // try to reconnect it to the application
+                    case BluetoothDevice.ACTION_ACL_CONNECTED:
+                        if (getCurrentState() == OUT_OF_RANGE) {
+                            BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                            if (device.getName().equals(deviceName)) {
+                                createConection(device);
                             }
                         }
+                        break;
+
                     default:break;
                 }
             }
@@ -214,7 +281,6 @@ public class MainServico extends Service {
             threadConnected.sendTime();
         }
     }
-
 
     //region Getters and Setters
     public Context getCurrentContext() {
@@ -249,17 +315,8 @@ public class MainServico extends Service {
         this.threadConnection = threadConnection;
     }
 
-    public void setThreadConnectedToNull() {
-        ThreadConnected.setINSTANCEToNull();
+    public static void setThreadConnected(ThreadConnected threadConnected) {
+        MainServico.threadConnected = threadConnected;
     }
-
-    public boolean isConnectionEstablished() {
-        return connectionEstablished;
-    }
-
-    public void setConnectionEstablished(boolean connectionEstablished) {
-        this.connectionEstablished = connectionEstablished;
-    }
-
     //endregion
 }

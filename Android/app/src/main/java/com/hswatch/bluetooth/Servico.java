@@ -35,7 +35,7 @@ import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
-import static com.hswatch.App.CANAL_SERVICO;
+import static com.hswatch.App.SERVICO_CHANNEL;
 import static com.hswatch.Utils.ACAO_DEFINICOES_SERVICO;
 import static com.hswatch.Utils.ACAO_NOTIFICACOES_SERVICO;
 import static com.hswatch.Utils.ACAO_SERVICO_TEMPO_API;
@@ -139,7 +139,7 @@ public class Servico extends Service {
         Intent notificacaoIntent = new Intent(this, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,
                 notificacaoIntent, 0);
-        Notification notification = new NotificationCompat.Builder(this, CANAL_SERVICO)
+        Notification notification = new NotificationCompat.Builder(this, SERVICO_CHANNEL)
                 .setContentTitle("Está agora conectado a " + dispositivoEscolhido + "!")
                 .setContentText("Carregue para alterar as definições ou efetuar outra conexão nova.")
                 .setStyle(new NotificationCompat.BigTextStyle().bigText("Carregue para alterar as definições ou efetuar outra conexão nova."))

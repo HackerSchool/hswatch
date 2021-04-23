@@ -19,9 +19,7 @@ public class HoraWorker extends Worker {
     @Override
     public Result doWork() {
         try{
-
             MainServico.sendTime();
-
             return Result.success();
         } catch (Throwable throwable){
             throwable.printStackTrace();

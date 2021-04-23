@@ -38,6 +38,9 @@ public class Utils {
      */
     public static final String BT_DEVICE_NAME = "device_name";
     public static final UUID uid = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
+    public static final int REQUEST_CODE_PENDING_INTENT = 2;
+    public static final int FOREGROUND_ID = 4;
+    public static final int NOTIFICATION_SERVICE_ID = 5;
 
     /**
      * Messages indicators
@@ -90,8 +93,6 @@ public class Utils {
      * Key's for Activity's Response
      */
     public static final int BT_REQUEST = 1;
-    public static final int REQUEST_CODE_PENDING_INTENT = 2;
-    public static final int REQUEST_CODE_START_FOREGROUND = 4;
 
     @NonNull
     public static HashMap<String, String> getWeekArray(@NonNull Context context) {

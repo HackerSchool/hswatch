@@ -5,7 +5,7 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 
 public class App extends Application {
-    public static final String CANAL_SERVICO = "canalServico";
+    public static final String SERVICO_CHANNEL = "canalServico";
     public static final String CANAL_NOTIFACAO = "canalNotificacao";
 
     @Override
@@ -16,7 +16,7 @@ public class App extends Application {
     }
 
     private void CanaisNoticacao() {
-        NotificationChannel canalServico = new NotificationChannel(CANAL_SERVICO,
+        NotificationChannel canalServico = new NotificationChannel(SERVICO_CHANNEL,
                 "Canal do Servico",
                 NotificationManager.IMPORTANCE_DEFAULT);
         NotificationChannel canalNotificacoes = new NotificationChannel(CANAL_NOTIFACAO,"Canal de Notificacoes",
