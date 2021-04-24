@@ -23,7 +23,7 @@
 
 <!--    Servico-->
     <string name="ServiceBT_Title">Estás agora conectado a %s!</string>
-    <string name="ServiceBT_Out_of_Range_Title">Dispositivo fora de alcance!</string>
+<!--    <string name="ServiceBT_Out_of_Range_Title">Dispositivo fora de alcance!</string>-->
     <string name="ServiceBT_Out_of_Range_ContextText">A tentar restabelecer conexão… Carrega aqui caso pretendas alterar/parar procura.</string>
     <string name="ServiceBT_BT_Off_Title">Bluetooth desligado</string>
     <string name="ServiceBT_BT_Off_ContextText">A conexão foi desligada, bem como o seu serviço. Pressione aqui caso queira criar uma nova conexão.</string>
@@ -70,4 +70,6 @@
     <string name="ServiceBT_Text">Carrega para alterar ou afetar outra conexão nova.</string>
     <string name="ERROR_DISCOVERY">Houve um erro enquanto se cancelava a descoberta de novos dispositivos. Por favor, manda-nos feedback para o contacto no Sobre!</string>
     <string name="ERROR_SERVICE">Um erro fez parar o mainServico: %s</string>
+    <string name="ServiceBT_BT_Error_Title">Erro na conexão.</string>
+    <string name="ServiceBT_BT_Error_ContextText">Ocorreu um erro enquanto se tentava conectar o dispositivo! Verifique se o dispositivo se encontra ligado.</string>
 </resources>
