@@ -38,6 +38,8 @@ public class MainServico extends Service {
 
     private int currentState = 0;
 
+    private boolean flagError = false;
+
     private String deviceName;
 
     private BluetoothDevice bluetoothDevice;
@@ -176,16 +178,19 @@ public class MainServico extends Service {
     }
 
     public void connectionEstablish() {
-        if (this.threadConnection != null) {
-            setThreadConnection(null);
-        }
+        if (!this.flagError) {
+            if (this.threadConnection != null) {
+                setThreadConnection(null);
+            }
 
-        threadConnected = new ThreadConnected(this);
-        threadConnected.start();
+            threadConnected = new ThreadConnected(this);
+            threadConnected.start();
+        }
     }
 
     public void connectionLostAtInitialThread() {
         if (threadConnected != null) {
+            flagError = true;
             setThreadConnected(null);
             setCurrentState(NULL_STATE);
             stopForeground(true);
@@ -195,6 +200,7 @@ public class MainServico extends Service {
 
     public void connectionFailed() {
         if (this.threadConnection != null && getCurrentState() == STATE_CONNECTING) {
+            flagError = true;
             setCurrentState(NULL_STATE);
             setThreadConnection(null);
             stopForeground(true);
@@ -204,6 +210,7 @@ public class MainServico extends Service {
 
     public void connectionLost() {
         if (threadConnected != null) {
+            flagError = true;
             threadConnected.cancel();
             setThreadConnected(null);
             setCurrentState(NULL_STATE);
