@@ -12,6 +12,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.IBinder;
+import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -145,19 +147,17 @@ public class MainServico extends Service {
     }
 
 
-    private Notification createNotification(String title, String contentText) {
-        Intent notificationIntent = new Intent(this, SplashActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this,
-                REQUEST_CODE_PENDING_INTENT,
-                notificationIntent, 0);
-
-        return new NotificationCompat.Builder(this, SERVICO_CHANNEL)
+    private void createNotification(String title, String contentText) {
+        Notification notification = new NotificationCompat.Builder(this, SERVICO_CHANNEL)
                 .setContentTitle(title)
                 .setContentText(contentText)
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(contentText))
                 .setSmallIcon(R.drawable.ic_bluetooth_connected_green_24dp)
-                .setContentIntent(pendingIntent)
                 .build();
+
+        NotificationManagerCompat notificationManager = NotificationManagerCompat
+                .from(getCurrentContext());
+        notificationManager.notify(NOTIFICATION_SERVICE_ID, notification);
     }
 
     //region BT Connections
@@ -191,6 +191,7 @@ public class MainServico extends Service {
     public void connectionLostAtInitialThread() {
         if (threadConnected != null) {
             flagError = true;
+            notificationError();
             setThreadConnected(null);
             setCurrentState(NULL_STATE);
             stopForeground(true);
@@ -201,6 +202,7 @@ public class MainServico extends Service {
     public void connectionFailed() {
         if (this.threadConnection != null && getCurrentState() == STATE_CONNECTING) {
             flagError = true;
+            notificationError();
             setCurrentState(NULL_STATE);
             setThreadConnection(null);
             stopForeground(true);
@@ -211,12 +213,18 @@ public class MainServico extends Service {
     public void connectionLost() {
         if (threadConnected != null) {
             flagError = true;
+            notificationError();
             threadConnected.cancel();
             setThreadConnected(null);
             setCurrentState(NULL_STATE);
             stopForeground(true);
             stopSelf();
         }
+    }
+
+    private void notificationError() {
+        createNotification(getResources().getString(R.string.ServiceBT_BT_Error_Title),
+                getResources().getString(R.string.ServiceBT_BT_Error_ContextText));
     }
 
     /**
@@ -243,15 +251,10 @@ public class MainServico extends Service {
                     case BluetoothAdapter.ACTION_STATE_CHANGED:
                         if (intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR)
                                 == BluetoothAdapter.STATE_OFF) {
-                            Notification btOffNotification = createNotification(
+                            createNotification(
                                     getResources().getString(R.string.ServiceBT_BT_Off_Title),
                                     getResources().getString(R.string.ServiceBT_BT_Off_ContextText)
                             );
-
-                            NotificationManagerCompat notificationManager = NotificationManagerCompat
-                                    .from(getCurrentContext());
-                            notificationManager.notify(NOTIFICATION_SERVICE_ID, btOffNotification);
-
                             connectionLost();
                         }
                         break;
@@ -260,17 +263,19 @@ public class MainServico extends Service {
                     // connected to the application
                     case BluetoothAdapter.ACTION_CONNECTION_STATE_CHANGED:
                         if (getCurrentState() == STATE_CONNECTED) {
-                            BluetoothDevice device = intent.getParcelableExtra(BluetoothAdapter.EXTRA_STATE);
-                            if (device.getName().equals(deviceName)) {
-                                deviceOutOfRange();
-                                Notification updateNotification = createForegroundNotification(
-                                        getResources().getString(R.string.ServiceBT_Out_of_Range_Title),
-                                        getResources().getString(R.string.ServiceBT_Out_of_Range_ContextText)
-                                );
-                                NotificationManager notificationManager = (NotificationManager)
-                                        getSystemService(Context.NOTIFICATION_SERVICE);
-                                notificationManager.notify(FOREGROUND_ID, updateNotification);
-                             }
+                            Toast.makeText(context, "onReceive:" + (intent
+                                    .getParcelableExtra(BluetoothAdapter.EXTRA_STATE)).toString(),
+                                    Toast.LENGTH_SHORT).show();
+//                            if (device.getName().equals(deviceName)) {
+//                                deviceOutOfRange();
+//                                Notification updateNotification = createForegroundNotification(
+//                                        getResources().getString(R.string.ServiceBT_Out_of_Range_Title),
+//                                        getResources().getString(R.string.ServiceBT_Out_of_Range_ContextText)
+//                                );
+//                                NotificationManager notificationManager = (NotificationManager)
+//                                        getSystemService(Context.NOTIFICATION_SERVICE);
+//                                notificationManager.notify(FOREGROUND_ID, updateNotification);
+//                             }
                         }
                         break;
 

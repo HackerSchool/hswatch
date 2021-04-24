@@ -45,35 +45,37 @@ public class ThreadConnection extends Thread {
             mainServico.connectionFailed();
         }
 
-        if (bluetoothSocket != null) {
+        // Initializes final variables
+        this.bluetoothSocket = bluetoothSocket;
+        this.mainServico = mainServico;
+        mainServico.setBluetoothSocket(this.bluetoothSocket);
 
-            // Initializes final variables
-            this.bluetoothSocket = bluetoothSocket;
-            this.mainServico = mainServico;
-            mainServico.setBluetoothSocket(this.bluetoothSocket);
-
-            // Change the current state the connection to Connecting
-            mainServico.setCurrentState(MainServico.STATE_CONNECTING);
-
-        }
+        // Change the current state the connection to Connecting
+        mainServico.setCurrentState(MainServico.STATE_CONNECTING);
 
     }
 
     @Override
     public void run() {
+        // Stops the discovery of new Bluetooth Devices, so it can save battery resources
         BluetoothAdapter.getDefaultAdapter().cancelDiscovery();
+
+        // Tries to connect to the Bluetooth Device and then establishes a connection if
+        // there wasn't any error
         try {
             this.bluetoothSocket.connect();
             this.mainServico.connectionEstablish();
-        } catch (IOException e) {
 
-            e.printStackTrace();
+        // If there was any error, cancel the connection and tries to close the socket and, if an
+        // error occurs, it must meant that there was an error out of the Application control, so
+        // just print the error and don't do anything more
+        } catch (NullPointerException | IOException exception) {
+            exception.printStackTrace();
             this.mainServico.setBluetoothSocket(null);
-
             try {
                 this.bluetoothSocket.close();
-            } catch (IOException ioException) {
-                ioException.printStackTrace();
+            } catch (NullPointerException | IOException exception1) {
+                exception1.printStackTrace();
             }
 
             // TODO(red signal to the setup phase)

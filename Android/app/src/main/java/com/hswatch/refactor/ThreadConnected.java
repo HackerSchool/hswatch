@@ -86,18 +86,9 @@ public class ThreadConnected extends Thread {
         this.bluetoothSocket = mainServico.getBluetoothSocket();
         this.mainServico = mainServico;
 
-        // Initializes the stream variables
-        InputStream inputStream = null;
-        OutputStream outputStream = null;
-        try {
-            inputStream = this.bluetoothSocket.getInputStream();
-            outputStream = this.bluetoothSocket.getOutputStream();
-        } catch (NullPointerException | IOException exception) {
-            exception.printStackTrace();
-            this.mainServico.connectionLostAtInitialThread();
-        }
-        this.inputStream = inputStream;
-        this.outputStream = outputStream;
+        // Get the input and output streams to be used through out the connection
+        this.inputStream = getInputStream(this.bluetoothSocket);
+        this.outputStream = getOutputStream(this.bluetoothSocket);
 
         // Updates the connection state on the Service
         mainServico.setCurrentState(MainServico.STATE_CONNECTED);
@@ -116,6 +107,44 @@ public class ThreadConnected extends Thread {
         WorkManager.getInstance(mainServico.getCurrentContext()).enqueueUniquePeriodicWork(
                 Utils.TAG_HOURS, ExistingPeriodicWorkPolicy.REPLACE, periodicWorkRequest
         );
+    }
+
+    /**
+     * Retrieves the Bluetooth Device's InputStream, while handle the error that may appears in
+     * the operation.
+     *
+     * @param bluetoothSocket The Bluetooth Device's socket which can retrieve the InputStream
+     *                        wanted.
+     * @return The InputStream wanted. Can be null in case there was an error
+     */
+    private InputStream getInputStream(BluetoothSocket bluetoothSocket) {
+        InputStream inputStream = null;
+        try {
+            inputStream = bluetoothSocket.getInputStream();
+        } catch (NullPointerException | IOException e) {
+            e.printStackTrace();
+            this.mainServico.connectionLostAtInitialThread();
+        }
+        return inputStream;
+    }
+
+    /**
+     * Retrieves the Bluetooth Device's OutputStream, while handle the error that may appears in
+     * the operation.
+     *
+     * @param bluetoothSocket The Bluetooth Device's socket which can retrieve the OutputStream
+     *                        wanted.
+     * @return The OutputStream wanted. Can be null in case there was an error
+     */
+    private OutputStream getOutputStream(BluetoothSocket bluetoothSocket) {
+        OutputStream outputStream = null;
+        try {
+            outputStream = bluetoothSocket.getOutputStream();
+        } catch (NullPointerException | IOException e) {
+            e.printStackTrace();
+            this.mainServico.connectionLostAtInitialThread();
+        }
+        return outputStream;
     }
 
     /**
