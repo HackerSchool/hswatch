@@ -16,13 +16,13 @@ public class ThreadConnection extends Thread {
     /**
      * Current BluetoothSocket to connect the app to the BluetoothDevice
      */
-    private final BluetoothSocket bluetoothSocket;
+    private BluetoothSocket bluetoothSocket;
 
     /**
      * Main Service on which the thread is started and ended on and also where the thread gets the
      * current state of the connection and to connect to the other Java API frameworks
      */
-    private final MainServico mainServico;
+    private MainServico mainServico;
 
     /**
      * The ThreadConnection's Constructor in which the connection is started with the Bluetooth
@@ -45,13 +45,18 @@ public class ThreadConnection extends Thread {
             mainServico.connectionFailed();
         }
 
-        // Initializes final variables
-        this.bluetoothSocket = bluetoothSocket;
-        this.mainServico = mainServico;
-        mainServico.setBluetoothSocket(this.bluetoothSocket);
+        if (bluetoothSocket != null) {
 
-        // Change the current state the connection to Connecting
-        mainServico.setCurrentState(MainServico.STATE_CONNECTING);
+            // Initializes final variables
+            this.bluetoothSocket = bluetoothSocket;
+            this.mainServico = mainServico;
+            mainServico.setBluetoothSocket(this.bluetoothSocket);
+
+            // Change the current state the connection to Connecting
+            mainServico.setCurrentState(MainServico.STATE_CONNECTING);
+
+        }
+
     }
 
     @Override
@@ -59,7 +64,9 @@ public class ThreadConnection extends Thread {
         BluetoothAdapter.getDefaultAdapter().cancelDiscovery();
         try {
             this.bluetoothSocket.connect();
+            this.mainServico.connectionEstablish();
         } catch (IOException e) {
+
             e.printStackTrace();
             this.mainServico.setBluetoothSocket(null);
 
@@ -74,7 +81,6 @@ public class ThreadConnection extends Thread {
             this.mainServico.connectionFailed();
         }
 
-        this.mainServico.connectionEstablish();
     }
 
     public void restart() {
@@ -83,9 +89,5 @@ public class ThreadConnection extends Thread {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public BluetoothSocket getBluetoothSocket() {
-        return this.bluetoothSocket;
     }
 }

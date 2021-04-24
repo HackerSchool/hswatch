@@ -29,10 +29,20 @@ public class ThreadConnected extends Thread {
     private static final String TAG = "ThreadConnected_Funciona_TAG";
 
     /**
-     * The variables to operate the Bluetooth device: Socket and the Input and Output streams
+     * Bluetooth Socket where the device is connected to. It could be null if not handled properly
      */
     private final BluetoothSocket bluetoothSocket;
+
+    /**
+     * InputStream variable which is capable to retrieve data received from the connected
+     * Bluetooth Device
+     */
     private final InputStream inputStream;
+
+    /**
+     * OutputStream variable which is capable to send data from the application to connected the
+     * Bluetooth Device
+      */
     private final OutputStream outputStream;
 
     /**
@@ -45,6 +55,24 @@ public class ThreadConnected extends Thread {
      * current state of the connection and to connect to the other Java API frameworks
      */
     private final MainServico mainServico;
+
+
+    /**
+     * Current buffer position to write on the #this.charByteReceived variable
+     */
+    private int bufferPosition = 0;
+
+    /**
+     * Array of char created from the bytes received in the connection. This array is used to
+     * generate the message received in string. It has a size of 3 elements.
+     */
+    private char[] charByteReceived = new char[3];
+
+    /**
+     * Message received from the readings made in the connection. It can be used to handle requests
+     * from the Bluetooth Device connected.
+     */
+    private String messageReceived = "";
 
     /**
      * The ThreadConnected's constructor in which starts the connection and initializes the Socket,
@@ -64,8 +92,8 @@ public class ThreadConnected extends Thread {
         try {
             inputStream = this.bluetoothSocket.getInputStream();
             outputStream = this.bluetoothSocket.getOutputStream();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (NullPointerException | IOException exception) {
+            exception.printStackTrace();
             this.mainServico.connectionLostAtInitialThread();
         }
         this.inputStream = inputStream;
@@ -95,12 +123,6 @@ public class ThreadConnected extends Thread {
      */
     @Override
     public void run() {
-        // To store the bytes received through the connection and then to read them with the string
-        // messageReceived
-        int bufferPosition = 0;
-        char[] charByteReceived = new char[3];
-        String messageReceived = "";
-
         // Send the first data to the Bluetooth Device: update the time that is shown on the watch
         sendTime();
 
@@ -120,27 +142,7 @@ public class ThreadConnected extends Thread {
                     }
 
                     // Reads the data which was received through the connection byte per byte
-                    for (int byteIndex = 0; byteIndex < bytesAvailable; byteIndex++) {
-                        byte currentByte = buffer[byteIndex];
-
-                        // Check if is the end of the message. If not, add correspondent letter to
-                        // char array
-                        if (delimitador[0] == currentByte) {
-                            messageReceived = new String(charByteReceived);
-                            bufferPosition = 0;
-                        } else {
-                            try {
-                                charByteReceived[bufferPosition++] = (char) currentByte;
-                            } catch (IndexOutOfBoundsException indexOutOfBoundsException) {
-                                // In case the bufferPosition be a value out of boundaries to the
-                                // charByteReceived, then end the scanning on the correspondent
-                                // byte and form the message
-                                messageReceived = new String(charByteReceived);
-                                bufferPosition = 0;
-                                break;
-                            }
-                        }
-                    }
+                    readBytesReceived(bytesAvailable, buffer);
 
                     // Restart the scanning variables in case there was an indicator in the
                     // message received
@@ -153,6 +155,41 @@ public class ThreadConnected extends Thread {
                 e.printStackTrace();
                 this.mainServico.connectionLost();
                 break;
+            }
+        }
+    }
+
+    /**
+     * Read each byte on the buffer array and convert them to string in the messageReceived
+     * variable. It stops the reading until it finds the delimiter byte or, if the bufferposition
+     * variable is out of bonds, when it catches the Index Out Of Bounds Exception.
+     *
+     * @param bytesAvailable The amount of bytes available to read. It derives from the
+     *                       #inputstream.available() method
+     * @param buffer A byte array where is storaged the bytes to be read and convert to string. It
+     *               should be initialize before the call of this method
+     */
+    private void readBytesReceived(int bytesAvailable, byte[] buffer) {
+        // Interates for each byte in the buffer
+        for (int byteIndex = 0; byteIndex < bytesAvailable; byteIndex++) {
+            byte currentByte = buffer[byteIndex];
+
+            // Check if is the end of the message. If not, add correspondent letter to
+            // char array
+            if (delimitador[0] == currentByte) {
+                this.messageReceived = new String(this.charByteReceived);
+                this.bufferPosition = 0;
+            } else {
+                try {
+                    this.charByteReceived[this.bufferPosition++] = (char) currentByte;
+                } catch (IndexOutOfBoundsException indexOutOfBoundsException) {
+                    // In case the bufferPosition is a value out of boundaries to the
+                    // charByteReceived, then end the scanning on the correspondent
+                    // byte and form the message
+                    this.messageReceived = new String(this.charByteReceived);
+                    this.bufferPosition = 0;
+                    break;
+                }
             }
         }
     }
@@ -192,7 +229,7 @@ public class ThreadConnected extends Thread {
                 this.write(element.getBytes());
             }
             this.write(delimitador);
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             this.mainServico.connectionLost();
         }
@@ -210,7 +247,7 @@ public class ThreadConnected extends Thread {
                 this.write(msg.getBytes());
             }
             this.write(delimitador);
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             this.mainServico.connectionLost();
         }
@@ -223,10 +260,7 @@ public class ThreadConnected extends Thread {
      * @throws IOException An input-output error that can occur while sending data to the Bluetooth
      * Device
      */
-    public void write(byte[] buffer) throws IOException {
-        //TODO(descobrir porque o socket está fechado)
-        Log.d(TAG, "write() called with: buffer = [" + Arrays.toString(buffer) + "]\n" +
-                this.bluetoothSocket.toString());
+    public void write(byte[] buffer) throws Exception {
         this.outputStream.write(buffer);
     }
 

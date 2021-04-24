@@ -54,6 +54,12 @@ public class MainServico extends Service {
         broadcastReceiverMainServico = new BroadcastReceiverMainServico();
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(broadcastReceiverMainServico);
+    }
+
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -71,7 +77,7 @@ public class MainServico extends Service {
         // A flag to check if the Bluetooth is On or Off
         intentFilter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
         // A flag to check if the Bluetooth Device is in or out of range
-        intentFilter.addAction(BluetoothDevice.ACTION_ACL_CONNECTED);
+        intentFilter.addAction(BluetoothAdapter.ACTION_CONNECTION_STATE_CHANGED);
         // Register BroadCastReceiverMainServico
         registerReceiver(broadcastReceiverMainServico, intentFilter);
 
@@ -100,6 +106,8 @@ public class MainServico extends Service {
 
         //TODO(adicionar broadcast receiver para saber da ligação bt: bt on e off e se está fora de
         // alcance: https://developer.android.com/reference/android/bluetooth/BluetoothAdapter.html#ACTION_CONNECTION_STATE_CHANGED)
+
+        //TODO(fechar o serviço na ativiade: https://stackoverflow.com/questions/20857120/what-is-the-proper-way-to-stop-a-service-running-as-foreground/20857343#20857343)
 
         createConection(this.bluetoothDevice);
 
@@ -243,9 +251,9 @@ public class MainServico extends Service {
 
                     // Stop ThreadConnected in case the Bluetooth Device is out of range and it was
                     // connected to the application
-                    case BluetoothDevice.ACTION_ACL_DISCONNECTED:
+                    case BluetoothAdapter.ACTION_CONNECTION_STATE_CHANGED:
                         if (getCurrentState() == STATE_CONNECTED) {
-                            BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                            BluetoothDevice device = intent.getParcelableExtra(BluetoothAdapter.EXTRA_STATE);
                             if (device.getName().equals(deviceName)) {
                                 deviceOutOfRange();
                                 Notification updateNotification = createForegroundNotification(
