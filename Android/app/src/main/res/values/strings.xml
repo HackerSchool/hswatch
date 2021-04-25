@@ -72,4 +72,5 @@
     <string name="ERROR_SERVICE">Um erro fez parar o mainServico: %s</string>
     <string name="ServiceBT_BT_Error_Title">Erro na conexão.</string>
     <string name="ServiceBT_BT_Error_ContextText">Ocorreu um erro enquanto se tentava conectar o dispositivo! Verifique se o dispositivo se encontra ligado.</string>
+    <string name="About_Text">Developed by: Filipe Varela | Pedro Direita @ Hackerschool</string>
 </resources>

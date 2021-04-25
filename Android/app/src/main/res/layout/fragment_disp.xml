@@ -39,13 +39,17 @@
         android:scrollbars="vertical"
         tools:listitem="@layout/opcao_disp"
         android:layout_below="@+id/conection_panel"
-        android:layout_above="@+id/txt_sobre"/>
+        android:layout_above="@+id/txt_about"/>
 
     <TextView
-        android:id="@+id/txt_sobre"
+        android:id="@+id/txt_about"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Sobre"
-        android:textSize="24sp"
-        android:layout_alignParentBottom="true"/>
+        android:layout_alignParentBottom="true"
+        android:text="@string/About_Text"
+        android:textAlignment="center"
+        android:textColor="@android:color/black"
+        android:textSize="12sp"
+        android:textStyle="italic" />
+
 </RelativeLayout>

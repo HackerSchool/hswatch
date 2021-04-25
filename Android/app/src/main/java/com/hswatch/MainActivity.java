@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.view.LayoutInflater;
@@ -59,6 +60,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 ActivityCompat.requestPermissions(this, PERMISSOES, 1);
             }
         }
+    }
+
+    public void showSite() {
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://hackerschool.io"));
+        startActivity(browserIntent);
     }
 
     private boolean temPermissao(Context context) {

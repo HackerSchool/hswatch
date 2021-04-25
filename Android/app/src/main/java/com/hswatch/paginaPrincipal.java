@@ -5,7 +5,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import com.hswatch.fragments.ConfigDeviceActivity;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -41,6 +44,9 @@ public class paginaPrincipal extends Fragment {
         final opcoesAdapter OpcoesAdapter = new opcoesAdapter(opcoesItems);
         recyclerView.setAdapter(OpcoesAdapter);
         OpcoesAdapter.setOnitemclicklistener(this::acaoItem);
+
+        ((TextView) view.findViewById(R.id.txt_about)).setOnClickListener(
+                (View.OnClickListener) view1 -> ((MainActivity) requireActivity()).showSite());
     }
 
     private void acaoItem(int position) {
