@@ -301,9 +301,9 @@ void Notification::timer_1s(){
 			std::string logo = notification_list.front().logo->c_str();
 			
 			if(notification_color.find(logo)==notification_color.end()){
-				fade3_led(100,100,100,&led_task);
+				fade3_led(100,100,100,&led_task,0);
 			}else{
-				fade3_led(notification_color.find(logo)->second[0],notification_color.find(logo)->second[1],notification_color.find(logo)->second[2],&led_task);
+				fade3_led(notification_color.find(logo)->second[0],notification_color.find(logo)->second[1],notification_color.find(logo)->second[2],&led_task,0);
 			}
 			//rainbow_led(&led_task);
 			//blink_led(pattern, &led_task);

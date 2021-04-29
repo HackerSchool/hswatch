@@ -6,10 +6,14 @@
 #define PWM_CHANNEL_B 5
 #define PWM_RESOLUTION 8
 #define PWM_GPIO_R 25
-#define PWM_GPIO_G 27
-#define PWM_GPIO_B 26
+#define PWM_GPIO_G 26
+#define PWM_GPIO_B 27
 
-SemaphoreHandle_t mutex_led;
+SemaphoreHandle_t mutex_led, mutex_change_context;
+
+TaskHandle_t *led_task;
+
+void create_blink_task(led_pattern * p, TaskHandle_t * task_h, int priority);
 
 void blink_task(void* par_in);
 
@@ -21,9 +25,10 @@ void init_led(){
 	ledcAttachPin(PWM_GPIO_G,PWM_CHANNEL_G);
 	ledcAttachPin(PWM_GPIO_B,PWM_CHANNEL_B);
 	mutex_led = xSemaphoreCreateMutex();
+	mutex_change_context = xSemaphoreCreateMutex();
 }
 
-void rainbow_led(TaskHandle_t * task_h){
+void rainbow_led(TaskHandle_t * task_h, int priority){
 
 	led_pattern * p =(led_pattern*) malloc(sizeof(led_pattern));
 
@@ -60,10 +65,10 @@ void rainbow_led(TaskHandle_t * task_h){
 		t++;
 	}
 
-	xTaskCreate(blink_task,"blink task",8192,p,1,task_h);
+	create_blink_task(p,task_h,priority);
 }
 
-void fade_led(unsigned char r, unsigned char g, unsigned char b, TaskHandle_t * task_h){
+void fade_led(unsigned char r, unsigned char g, unsigned char b, TaskHandle_t * task_h, int priority){
 	
 	led_pattern * p =(led_pattern*) malloc(sizeof(led_pattern));
 
@@ -98,10 +103,10 @@ void fade_led(unsigned char r, unsigned char g, unsigned char b, TaskHandle_t * 
 	p->b[t]=0;
 	p->time[t]=5000;
 
-	xTaskCreate(blink_task,"blink task",8192,p,1,task_h);	
+	create_blink_task(p,task_h,priority);	
 }
 
-void fade2_led(unsigned char r, unsigned char g, unsigned char b, TaskHandle_t * task_h){
+void fade2_led(unsigned char r, unsigned char g, unsigned char b, TaskHandle_t * task_h, int priority){
 	
 	led_pattern * p =(led_pattern*) malloc(sizeof(led_pattern));
 
@@ -139,10 +144,10 @@ void fade2_led(unsigned char r, unsigned char g, unsigned char b, TaskHandle_t *
 	p->b[t]=0;
 	p->time[t]=5000;
 
-	xTaskCreate(blink_task,"blink task",8192,p,1,task_h);	
+	create_blink_task(p,task_h,priority);	
 }
 
-void fade3_led(unsigned char r, unsigned char g, unsigned char b, TaskHandle_t * task_h){
+void fade3_led(unsigned char r, unsigned char g, unsigned char b, TaskHandle_t * task_h, int priority){
 	
 	led_pattern * p =(led_pattern*) malloc(sizeof(led_pattern));
 
@@ -180,10 +185,10 @@ void fade3_led(unsigned char r, unsigned char g, unsigned char b, TaskHandle_t *
 	p->b[t]=0;
 	p->time[t]=5000;
 
-	xTaskCreate(blink_task,"blink task",8192,p,1,task_h);	
+	create_blink_task(p,task_h,priority);	
 }
 
-void blink_led(led_pattern p, TaskHandle_t * task_h){
+void blink_led(led_pattern p, TaskHandle_t * task_h, int priority){
 	
 	led_pattern * pattern =(led_pattern*) malloc(sizeof(led_pattern));
 	pattern->r = (unsigned char*) malloc(sizeof(unsigned char)*p.size);
@@ -198,7 +203,7 @@ void blink_led(led_pattern p, TaskHandle_t * task_h){
 	pattern->size = p.size;
 	pattern->repeat = p.repeat;
 
-	xTaskCreate(blink_task,"blink task",8192,pattern,1,task_h);
+	create_blink_task(pattern,task_h,priority);
 }
 
 void blink_task(void* par_in){
@@ -206,7 +211,6 @@ void blink_task(void* par_in){
 	led_pattern * pattern = (led_pattern*) par_in;
 	int j=0;
 
-	xSemaphoreTake(mutex_led,portMAX_DELAY);
 	while( j<pattern->repeat){
 		for(int i=0; i<pattern->size; i++){
 			if(ulTaskNotifyTake(pdTRUE,0)==1){
@@ -220,6 +224,11 @@ void blink_task(void* par_in){
 				free(pattern->b);
 				free(pattern->time);
 				free(pattern);
+
+				*led_task=NULL;
+				led_task=NULL;
+
+				Serial.println("delete_task");
 
 				vTaskDelete(NULL);
 			}
@@ -243,11 +252,55 @@ void blink_task(void* par_in){
 	free(pattern->time);
 	free(pattern);
 
+	*led_task=NULL;
+	led_task=NULL;
 	vTaskDelete(NULL);
 }
 
+void create_blink_task(led_pattern * p, TaskHandle_t * task_h, int priority){
+	
+	xSemaphoreTake(mutex_change_context,portMAX_DELAY);
+
+	if(priority==1){
+		
+		cancel_blink_led(*led_task);
+
+		led_task=task_h;
+
+		xSemaphoreTake(mutex_led,portMAX_DELAY);
+		xTaskCreate(blink_task,"blink task",8192,p,1,task_h);
+	}else{
+		
+		if(uxSemaphoreGetCount(mutex_led)==1){
+			led_task=task_h;
+
+			xSemaphoreTake(mutex_led,portMAX_DELAY);
+			xTaskCreate(blink_task,"blink task",8192,p,1,task_h);
+		}else{
+
+			free(p->r);
+			free(p->g);
+			free(p->b);
+			free(p->time);
+			free(p);
+		}
+	}
+
+	xSemaphoreGive(mutex_change_context);
+}
+
 void cancel_blink_led(TaskHandle_t task){
+
+	Serial.println("cancel 1");
+
 	if(task==NULL)
 		return;
 	xTaskNotifyGive(task);
+
+	Serial.println("cancel 2");
+
+	while(uxSemaphoreGetCount(mutex_led)!=1){
+	}
+
+	Serial.println("cancel 3");
 }
