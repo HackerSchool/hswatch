@@ -188,6 +188,30 @@ void fade3_led(unsigned char r, unsigned char g, unsigned char b, TaskHandle_t *
 	create_blink_task(p,task_h,priority);	
 }
 
+void turnon_led(unsigned char r, unsigned char g, unsigned char b, TaskHandle_t * task_h, int priority){
+	
+	led_pattern * p =(led_pattern*) malloc(sizeof(led_pattern));
+
+	Serial.println("turnon_led");
+
+	p->size=1;
+	p->repeat=255;
+
+	p->r = (unsigned char*) malloc(sizeof(unsigned char)*p->size);
+	p->g = (unsigned char*) malloc(sizeof(unsigned char)*p->size);
+	p->b = (unsigned char*) malloc(sizeof(unsigned char)*p->size);
+	p->time = (unsigned int*) malloc(sizeof(int)*p->size);
+
+	p->r[0]=r;
+	p->g[0]=g;
+	p->b[0]=b;
+	p->time[0]=500;
+
+	Serial.println("turnon_led2");
+
+	create_blink_task(p,task_h,priority);	
+}
+
 void blink_led(led_pattern p, TaskHandle_t * task_h, int priority){
 	
 	led_pattern * pattern =(led_pattern*) malloc(sizeof(led_pattern));
@@ -258,12 +282,19 @@ void blink_task(void* par_in){
 }
 
 void create_blink_task(led_pattern * p, TaskHandle_t * task_h, int priority){
+
+	Serial.println("blink_task");
 	
 	xSemaphoreTake(mutex_change_context,portMAX_DELAY);
 
 	if(priority==1){
+
+		Serial.println("blink_task priority");
 		
-		cancel_blink_led(*led_task);
+		if(led_task!=NULL)
+			cancel_blink_led(*led_task);
+
+		Serial.println("blink_task priority2");
 
 		led_task=task_h;
 

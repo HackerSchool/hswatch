@@ -19,6 +19,7 @@
 #include "timer.h"
 #include "alarm.h"
 #include "weather.h"
+#include "flashlight.h"
 
 #define B_LEFT_UP 18
 #define B_LEFT_DOWN 16
@@ -85,6 +86,7 @@ void setup() {
 	new Timer("CHR","Chronograph & Timer",logo_timer);
 	new Alarm("ALA","Alarm", logo_alarm);
 	new Weather("WEA","Weather", logo_weather);
+	new FlashLight("FLA","Flashlight", logo_flashlight);
 	
 	new Menu("MEN","Menu",NULL);
 

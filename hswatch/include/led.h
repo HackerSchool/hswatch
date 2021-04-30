@@ -17,6 +17,7 @@ void rainbow_led(TaskHandle_t * task_h, int priority=1);
 void fade_led(unsigned char r, unsigned char g, unsigned char b, TaskHandle_t * task_h, int priority=1);
 void fade2_led(unsigned char r, unsigned char g, unsigned char b, TaskHandle_t * task_h, int priority=1);
 void fade3_led(unsigned char r, unsigned char g, unsigned char b, TaskHandle_t * task_h, int priority=1);
+void turnon_led(unsigned char r, unsigned char g, unsigned char b, TaskHandle_t * task_h, int priority=1);
 void blink_led(led_pattern pattern, TaskHandle_t * task_h, int priority=1);
 void cancel_blink_led(TaskHandle_t task);
 

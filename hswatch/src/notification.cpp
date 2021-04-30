@@ -10,7 +10,7 @@ std::map<std::string, std::vector<unsigned char>> notification_color = {
 	{ "INS", {100,0,100} },
 	{ "MES", {0,50,150} },
 	{ "TEL", {0,100,0} },
-	{ "WHA", {0,150,50} }
+	{ "WHA", {0,150,30} }
 };
 
 SemaphoreHandle_t mutex;
