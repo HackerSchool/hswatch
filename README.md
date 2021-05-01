@@ -9,7 +9,7 @@ This project aims to create a _diy_ smartwatch, open-source and programable usin
 ## Features 
 
 This are the features that are already implemented:
-- Show a clock (hours, minutes, seconds, day, month, year, weak day) regularly syncronized with the smartphone clock.
+- Show a clock (hours, minutes, seconds, day, month, year, week day) regularly syncronized with the smartphone clock.
 - Mirror notifications from the smartphone to the watch screen, vibrating each time a new one is received.
 - Show notification history, blinking a RGB LED each time there is an unread message. (The LED blinks a diferent color for diferent types of notifications)
 - Measure battery charge level of the smartwatch and show it on the main screen.
