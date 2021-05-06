@@ -24,6 +24,8 @@ import com.hswatch.MainActivity;
 import com.hswatch.R;
 import com.hswatch.SplashActivity;
 
+import java.util.List;
+
 import static com.hswatch.App.SERVICO_CHANNEL;
 import static com.hswatch.Utils.BT_DEVICE_NAME;
 import static com.hswatch.Utils.NOTIFICATION_SERVICE_ID;
@@ -76,12 +78,8 @@ public class MainServico extends Service {
 
         //region BroadcastReceiver Flags
         IntentFilter intentFilter = new IntentFilter();
-//        // A flag to check if the service is still connected to a device or not
-//        intentFilter.addAction(BluetoothAdapter.ACTION_CONNECTION_STATE_CHANGED);
-        // A flag to check if the Bluetooth is On or Off
+        // A flag to check if the service is still connected to a device or not
         intentFilter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
-        // A flag to check if the Bluetooth Device is in or out of range
-        intentFilter.addAction(BluetoothAdapter.ACTION_CONNECTION_STATE_CHANGED);
         // Register BroadCastReceiverMainServico
         registerReceiver(broadcastReceiverMainServico, intentFilter);
 
@@ -226,19 +224,6 @@ public class MainServico extends Service {
         createNotification(getResources().getString(R.string.ServiceBT_BT_Error_Title),
                 getResources().getString(R.string.ServiceBT_BT_Error_ContextText));
     }
-
-    /**
-     * Stop the ThreadConnected because the connection is lost, but could be re-established and not
-     * end the service.
-     */
-    private void deviceOutOfRange() {
-        if (threadConnected != null) {
-            threadConnected.cancel();
-            setThreadConnected(null);
-            setCurrentState(OUT_OF_RANGE);
-        }
-    }
-
     //endregion
 
     public class BroadcastReceiverMainServico extends BroadcastReceiver {
@@ -258,38 +243,6 @@ public class MainServico extends Service {
                             connectionLost();
                         }
                         break;
-
-                    // Stop ThreadConnected in case the Bluetooth Device is out of range and it was
-                    // connected to the application
-                    case BluetoothAdapter.ACTION_CONNECTION_STATE_CHANGED:
-                        if (getCurrentState() == STATE_CONNECTED) {
-                            Toast.makeText(context, "onReceive:" + (intent
-                                    .getParcelableExtra(BluetoothAdapter.EXTRA_STATE)).toString(),
-                                    Toast.LENGTH_SHORT).show();
-//                            if (device.getName().equals(deviceName)) {
-//                                deviceOutOfRange();
-//                                Notification updateNotification = createForegroundNotification(
-//                                        getResources().getString(R.string.ServiceBT_Out_of_Range_Title),
-//                                        getResources().getString(R.string.ServiceBT_Out_of_Range_ContextText)
-//                                );
-//                                NotificationManager notificationManager = (NotificationManager)
-//                                        getSystemService(Context.NOTIFICATION_SERVICE);
-//                                notificationManager.notify(FOREGROUND_ID, updateNotification);
-//                             }
-                        }
-                        break;
-
-                    // In case the previous connected Bluetooth Device starts to be within range,
-                    // try to reconnect it to the application
-                    case BluetoothDevice.ACTION_ACL_CONNECTED:
-                        if (getCurrentState() == OUT_OF_RANGE) {
-                            BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                            if (device.getName().equals(deviceName)) {
-                                createConection(device);
-                            }
-                        }
-                        break;
-
                     default:break;
                 }
             }
@@ -299,6 +252,12 @@ public class MainServico extends Service {
     public static void sendTime() {
         if (threadConnected != null) {
             threadConnected.sendTime();
+        }
+    }
+
+    public static void sendNotification(List<String> message) {
+        if (threadConnected != null) {
+            threadConnected.sendNotification(message);
         }
     }
 

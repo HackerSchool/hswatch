@@ -11,6 +11,8 @@ import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
 import android.util.Log;
 
+import com.hswatch.refactor.MainServico;
+
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -140,24 +142,20 @@ public class NotificationListener extends NotificationListenerService {
         if (titulo == null || texto == null) {
             return;
         }
-        byte[][] mensagemNotificacao = {
-                "NOT".getBytes(),
-                separador,
-                Objects.requireNonNull(packagesNotFiltro.get(packageName)).getBytes(),
-                separador,
-                DateFormat.getTimeInstance(DateFormat.MEDIUM, Locale.UK).format(new Date().getTime())
-                        .split(":")[0].getBytes(),
-                separador,
-                DateFormat.getTimeInstance(DateFormat.MEDIUM, Locale.UK).format(new Date().getTime())
-                        .split(":")[1].getBytes(),
-                separador,
-                titulo.getBytes(),
-                separador,
-                texto.getBytes(),
-                delimitador
-        };
+        // TODO(criar um filtro para as notificações)
+        List<String> mensagemNotificacao = new ArrayList<>();
+        mensagemNotificacao.add("Not");
+        mensagemNotificacao.add(Objects.requireNonNull(packagesNotFiltro.get(packageName)));
+        mensagemNotificacao.add(DateFormat.getTimeInstance(DateFormat.MEDIUM, Locale.UK).format(new Date().getTime())
+                .split(":")[0]);
+        mensagemNotificacao.add(DateFormat.getTimeInstance(DateFormat.MEDIUM, Locale.UK).format(new Date().getTime())
+                .split(":")[1]);
+        mensagemNotificacao.add(titulo);
+        mensagemNotificacao.add(texto);
 
-        Servico.enviarMensagensRelogio(mensagemNotificacao);
+        MainServico.sendNotification(mensagemNotificacao);
+
+//        Servico.enviarMensagensRelogio(mensagemNotificacao);
 //        int indexelemento = 0;
 //        try {
 //            for (byte[] elemento : mensagemNotificacao){

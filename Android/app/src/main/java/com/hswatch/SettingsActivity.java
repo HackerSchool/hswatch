@@ -14,6 +14,7 @@ import com.hswatch.databinding.SettingsActivityBinding;
 
 import java.util.Objects;
 
+//TODO(documentar)
 public class SettingsActivity extends AppCompatActivity {
 
     SettingsActivityBinding binding;

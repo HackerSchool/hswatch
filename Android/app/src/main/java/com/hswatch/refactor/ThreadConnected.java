@@ -11,6 +11,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import androidx.annotation.NonNull;
@@ -272,6 +273,20 @@ public class ThreadConnected extends Thread {
         try {
             this.write(TIME_INDICATOR.getBytes());
             for (String msg : timeMessage) {
+                this.write(separador);
+                this.write(msg.getBytes());
+            }
+            this.write(delimitador);
+        } catch (Exception e) {
+            e.printStackTrace();
+            this.mainServico.connectionLost();
+        }
+    }
+
+    public void sendNotification(List<String> message) {
+        try {
+            this.write(message.get(0).getBytes());
+            for (String msg : message.subList(1,message.size())) {
                 this.write(separador);
                 this.write(msg.getBytes());
             }
