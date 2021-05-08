@@ -7,12 +7,15 @@
 
 SemaphoreHandle_t mutex_vibrator;
 
+bool enable_v;
+
 void vibrate_task(void* par_in);
 
 void init_vibrator(){
 	ledcSetup(PWM_CHANNEL,PWM_FREQ,PWM_RESOLUTION);
 	ledcAttachPin(PWM_GPIO,PWM_CHANNEL);
 	mutex_vibrator = xSemaphoreCreateMutex();
+	enable_v=true;
 }
 
 void vibrate(vibrate_pattern pattern){
@@ -32,6 +35,9 @@ void vibrate(unsigned char * pattern_power, unsigned int * pattern_time, unsigne
 
 void vibrate(unsigned char * pattern_power, unsigned int * pattern_time, unsigned char size, unsigned char repeat, TaskHandle_t * task_h){
 	
+	if(!enable_v)
+		return;
+
 	vibrate_pattern * pattern =(vibrate_pattern*) malloc(sizeof(vibrate_pattern));
 	pattern->power = (unsigned char*) malloc(sizeof(unsigned char)*size);
 	pattern->time = (unsigned int*) malloc(sizeof(int)*size);
@@ -42,6 +48,16 @@ void vibrate(unsigned char * pattern_power, unsigned int * pattern_time, unsigne
 	pattern->repeat = repeat;
 
 	xTaskCreate(vibrate_task,"vibrate task",8192,pattern,1,task_h);
+}
+
+int enable_vibrator(int status){
+	if(status==0){
+		enable_v=false;
+	}else if(status==1){
+		enable_v=true;
+	}
+
+	return enable_v;
 }
 
 void vibrate_task(void* par_in){

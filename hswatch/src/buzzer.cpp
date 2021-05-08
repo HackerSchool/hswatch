@@ -7,12 +7,15 @@
 
 SemaphoreHandle_t mutex_buzzer;
 
+bool enable_b;
+
 void buzz_task(void* par_in);
 
 void init_buzzer(){
 	ledcSetup(PWM_CHANNEL,PWM_FREQ,PWM_RESOLUTION);
 	ledcAttachPin(PWM_GPIO,PWM_CHANNEL);
 	mutex_buzzer = xSemaphoreCreateMutex();
+	enable_b=true;
 }
 
 void buzz(buzzer_pattern pattern){
@@ -31,6 +34,9 @@ void buzz(unsigned char * pattern_power, unsigned int * pattern_time, unsigned i
 }
 
 void buzz(unsigned char * pattern_power, unsigned int * pattern_time, unsigned int * pattern_frequency, unsigned char size, unsigned char repeat, TaskHandle_t * task_h){
+
+	if(!enable_b)
+		return;
 	
 	buzzer_pattern * pattern =(buzzer_pattern*) malloc(sizeof(buzzer_pattern));
 	pattern->power = (unsigned char*) malloc(sizeof(unsigned char)*size);
@@ -44,6 +50,16 @@ void buzz(unsigned char * pattern_power, unsigned int * pattern_time, unsigned i
 	pattern->repeat = repeat;
 
 	xTaskCreate(buzz_task,"buzz task",8192,pattern,1,task_h);
+}
+
+int enable_buzzer(int status){
+	if(status==0){
+		enable_b=false;
+	}else if(status==1){
+		enable_b=true;
+	}
+
+	return enable_b;
 }
 
 void buzz_task(void* par_in){

@@ -3,7 +3,7 @@
 #define N_SAMPLES 5
 #define SAMPLING_PERIOD 5
 #define BATTERY_V_RANGE 515
-#define FULL_LEVEL 2515
+#define FULL_LEVEL 2200
 #define CHANGER 5
 
 #define BATTERY_PIN 34

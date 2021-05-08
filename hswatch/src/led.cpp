@@ -13,6 +13,10 @@ SemaphoreHandle_t mutex_led, mutex_change_context;
 
 TaskHandle_t *led_task;
 
+bool enable_l, enable_priority;
+
+bool approve_blink(int priority);
+
 void create_blink_task(led_pattern * p, TaskHandle_t * task_h, int priority);
 
 void blink_task(void* par_in);
@@ -26,9 +30,15 @@ void init_led(){
 	ledcAttachPin(PWM_GPIO_B,PWM_CHANNEL_B);
 	mutex_led = xSemaphoreCreateMutex();
 	mutex_change_context = xSemaphoreCreateMutex();
+
+	enable_l=true;
+	enable_priority=true;
 }
 
 void rainbow_led(TaskHandle_t * task_h, int priority){
+
+	if(!approve_blink(priority))
+		return;
 
 	led_pattern * p =(led_pattern*) malloc(sizeof(led_pattern));
 
@@ -70,6 +80,9 @@ void rainbow_led(TaskHandle_t * task_h, int priority){
 
 void fade_led(unsigned char r, unsigned char g, unsigned char b, TaskHandle_t * task_h, int priority){
 	
+	if(!approve_blink(priority))
+		return;
+
 	led_pattern * p =(led_pattern*) malloc(sizeof(led_pattern));
 
 	p->size=103;
@@ -108,6 +121,9 @@ void fade_led(unsigned char r, unsigned char g, unsigned char b, TaskHandle_t * 
 
 void fade2_led(unsigned char r, unsigned char g, unsigned char b, TaskHandle_t * task_h, int priority){
 	
+	if(!approve_blink(priority))
+		return;
+
 	led_pattern * p =(led_pattern*) malloc(sizeof(led_pattern));
 
 	p->size=103;
@@ -148,7 +164,10 @@ void fade2_led(unsigned char r, unsigned char g, unsigned char b, TaskHandle_t *
 }
 
 void fade3_led(unsigned char r, unsigned char g, unsigned char b, TaskHandle_t * task_h, int priority){
-	
+
+	if(!approve_blink(priority))
+		return;
+
 	led_pattern * p =(led_pattern*) malloc(sizeof(led_pattern));
 
 	p->size=103;
@@ -189,6 +208,9 @@ void fade3_led(unsigned char r, unsigned char g, unsigned char b, TaskHandle_t *
 }
 
 void turnon_led(unsigned char r, unsigned char g, unsigned char b, TaskHandle_t * task_h, int priority){
+
+	if(!approve_blink(priority))
+		return;
 	
 	led_pattern * p =(led_pattern*) malloc(sizeof(led_pattern));
 
@@ -213,6 +235,9 @@ void turnon_led(unsigned char r, unsigned char g, unsigned char b, TaskHandle_t 
 }
 
 void blink_led(led_pattern p, TaskHandle_t * task_h, int priority){
+
+	if(!approve_blink(priority))
+		return;
 	
 	led_pattern * pattern =(led_pattern*) malloc(sizeof(led_pattern));
 	pattern->r = (unsigned char*) malloc(sizeof(unsigned char)*p.size);
@@ -228,6 +253,33 @@ void blink_led(led_pattern p, TaskHandle_t * task_h, int priority){
 	pattern->repeat = p.repeat;
 
 	create_blink_task(pattern,task_h,priority);
+}
+
+int enable_led(int status){
+	
+	if(status==0){
+		enable_l=false;
+		enable_priority=false;
+	}else if(status==1){
+		enable_l=true;
+		enable_priority=false;
+	}else if(status==2){
+		enable_l=false;
+		enable_priority=true;
+	}else if(status==3){
+		enable_l=true;
+		enable_priority=true;
+	}
+
+	if((enable_priority==0)&&(enable_l==0)){
+		return 0;
+	}else if((enable_priority==0)&&(enable_l==1)){
+		return 1;
+	}else if((enable_priority==1)&&(enable_l==0)){
+		return 2;
+	}else{
+		return 3;
+	}
 }
 
 void blink_task(void* par_in){
@@ -279,6 +331,22 @@ void blink_task(void* par_in){
 	*led_task=NULL;
 	led_task=NULL;
 	vTaskDelete(NULL);
+}
+
+bool approve_blink(int priority){
+	if(priority==1){
+		if(enable_priority){
+			return true;
+		}else{
+			return false;
+		}
+	}else{
+		if(enable_l){
+			return true;
+		}else{
+			return false;
+		}
+	}
 }
 
 void create_blink_task(led_pattern * p, TaskHandle_t * task_h, int priority){
