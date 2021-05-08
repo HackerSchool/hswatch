@@ -14,6 +14,7 @@
 #include "led.h"
 #include "app.h"
 #include "battery.h"
+#include "about.h"
 
 //Include App go here
 #include "timer.h"
@@ -82,6 +83,7 @@ void setup() {
 
 	new Home("TIM","Home",NULL);
 	new Notification("NOT","Notification",NULL);
+	new About("Abo","About",NULL);
 	
 	//App Initialization goes here
 	new Timer("CHR","Chronograph & Timer",logo_timer);
