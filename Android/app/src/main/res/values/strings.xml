@@ -71,6 +71,11 @@
     <string name="ERROR_DISCOVERY">Houve um erro enquanto se cancelava a descoberta de novos dispositivos. Por favor, manda-nos feedback para o contacto no Sobre!</string>
     <string name="ERROR_SERVICE">Um erro fez parar o mainServico: %s</string>
     <string name="ServiceBT_BT_Error_Title">Erro na conexão.</string>
-    <string name="ServiceBT_BT_Error_ContextText">Ocorreu um erro enquanto se tentava conectar o dispositivo! Verifique se o dispositivo se encontra ligado.</string>
+    <string name="ServiceBT_BT_Error_ContextText">Ocorreu um erro na conexão! </string>
+    <string name="ServiceBT_BT_Error_Reconection">A aplicação está a tentar reconectar-se…</string>
+    <string name="Foreground_Reconection_Title">A tentar reconectar a %s</string>
+    <string name="Foreground_Reconection_Text">Carregue para parar reconexão</string>
     <string name="About_Text">Developed by: Filipe Varela | Pedro Direita @ Hackerschool</string>
+    <string name="Connection_Title">Conexão</string>
+    <string name="Switch_Connection_Title">Manter reconexão</string>
 </resources>

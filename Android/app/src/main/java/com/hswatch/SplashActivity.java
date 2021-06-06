@@ -4,10 +4,12 @@ import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.Preference;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.PreferenceManager;
 
 import com.hswatch.bluetooth.NoBTActivity;
 import com.hswatch.fragments.ConfigDeviceActivity;
@@ -59,12 +61,12 @@ public class SplashActivity extends AppCompatActivity {
                     Toast.LENGTH_LONG).show();
             finish();
         } else if (requestCode == Utils.BT_REQUEST && resultCode == RESULT_OK) {
-            verificarHistoriaDispositivos();
+            verifyHistoryDevice();
             finish();
         }
     }
 
-    private void verificarHistoriaDispositivos() {
+    private void verifyHistoryDevice() {
         SharedPreferences sharedPreferences = getSharedPreferences(HISTORY_SHARED_PREFERENCES, MODE_PRIVATE);
         if (sharedPreferences.getBoolean(CHECKER, false)) {
             Toast.makeText(getApplicationContext(), getResources().getText(R.string.BT_Device_Conected) +

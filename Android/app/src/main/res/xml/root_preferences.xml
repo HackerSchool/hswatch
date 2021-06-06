@@ -36,4 +36,9 @@
             app:useSimpleSummaryProvider="true"/>
 
     </PreferenceCategory>
+    <PreferenceCategory app:title="@string/Connection_Title">
+        <SwitchPreference
+            app:key="conection"
+            app:title="@string/Switch_Connection_Title"/>
+    </PreferenceCategory>
 </PreferenceScreen>

@@ -11,18 +11,17 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.IBinder;
-import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.preference.PreferenceManager;
 
 import com.hswatch.MainActivity;
 import com.hswatch.R;
-import com.hswatch.SplashActivity;
 
 import java.util.List;
 
@@ -43,6 +42,7 @@ public class MainServico extends Service {
     private int currentState = 0;
 
     private boolean flagError = false;
+    private boolean flagReconnection = false;
 
     private String deviceName;
 
@@ -51,8 +51,11 @@ public class MainServico extends Service {
 
     private ThreadConnection threadConnection;
     private static ThreadConnected threadConnected;
+    private ThreadReconnection threadReconnection;
 
     private BroadcastReceiverMainServico broadcastReceiverMainServico;
+
+    private SharedPreferences mainSettings;
 
     @Override
     public void onCreate() {
@@ -80,9 +83,16 @@ public class MainServico extends Service {
         IntentFilter intentFilter = new IntentFilter();
         // A flag to check if the service is still connected to a device or not
         intentFilter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
+
+        //region Test
+        intentFilter.addAction(BluetoothDevice.ACTION_ACL_CONNECTED);
+        intentFilter.addAction(BluetoothDevice.ACTION_ACL_DISCONNECTED);
+        intentFilter.addAction(BluetoothDevice.ACTION_ACL_DISCONNECT_REQUESTED);
+        //endregion
+
         // Register BroadCastReceiverMainServico
         registerReceiver(broadcastReceiverMainServico, intentFilter);
-
+        
         //endregion
 
 //        Trying to get a name to the device and then show a notification
@@ -112,6 +122,8 @@ public class MainServico extends Service {
         //TODO(fechar o serviço na ativiade: https://stackoverflow.com/questions/20857120/what-is-the-proper-way-to-stop-a-service-running-as-foreground/20857343#20857343)
 
         createConection(this.bluetoothDevice);
+
+        this.mainSettings = PreferenceManager.getDefaultSharedPreferences(getCurrentContext());
 
         return START_REDELIVER_INTENT;
     }
@@ -160,7 +172,7 @@ public class MainServico extends Service {
 
     //region BT Connections
 
-    private void createConection(BluetoothDevice bluetoothDevice) {
+    public void createConection(BluetoothDevice bluetoothDevice) {
         if (getCurrentState() == STATE_CONNECTING && this.threadConnection != null) {
             threadConnection.restart();
             setThreadConnection(null);
@@ -176,7 +188,7 @@ public class MainServico extends Service {
     }
 
     public void connectionEstablish() {
-        if (!this.flagError) {
+        if (!this.isFlagError()) {
             if (this.threadConnection != null) {
                 setThreadConnection(null);
             }
@@ -186,12 +198,18 @@ public class MainServico extends Service {
         }
     }
 
-    public void connectionLostAtInitialThread() {
-        if (threadConnected != null) {
-            flagError = true;
-            notificationError();
-            setThreadConnected(null);
-            setCurrentState(NULL_STATE);
+    /**
+     * If the user wants to reconnect the app to the device, but it's the first connection
+     * made, then cancel the service. If not, cancel the service so there is no reconnection
+     * to be made.
+     */
+    private void stopConnection() {
+        if (this.mainSettings.getBoolean("connection", true)) {
+            if (!isFlagReconnection()) {
+                stopForeground(true);
+                stopSelf();
+            }
+        } else {
             stopForeground(true);
             stopSelf();
         }
@@ -203,26 +221,91 @@ public class MainServico extends Service {
             notificationError();
             setCurrentState(NULL_STATE);
             setThreadConnection(null);
-            stopForeground(true);
-            stopSelf();
+            stopConnection();
+        }
+    }
+
+    public void connectionLostAtInitialThread() {
+        if (threadConnected != null) {
+            flagError = true;
+            notificationError();
+            setThreadConnected(null);
+            setCurrentState(NULL_STATE);
+            stopConnection();
         }
     }
 
     public void connectionLost() {
         if (threadConnected != null) {
             flagError = true;
-            notificationError();
+            notificationErrorReconection();
             threadConnected.cancel();
             setThreadConnected(null);
-            setCurrentState(NULL_STATE);
-            stopForeground(true);
-            stopSelf();
+            setCurrentState(OUT_OF_RANGE);
+            setReconnectionThread();
         }
+    }
+
+    private void setReconnectionThread() {
+        if (!this.mainSettings.getBoolean("connection", true)) {
+            setFlagReconnection(false);
+        } else {
+            setFlagReconnection(true);
+            notificationChangeService();
+            threadReconnection = new ThreadReconnection(this);
+            threadReconnection.start();
+        }
+    }
+
+    public void bluetoothIsOFF() {
+        setFlagReconnection(false);
+        setCurrentState(NULL_STATE);
+        createNotification(
+                getResources().getString(R.string.ServiceBT_BT_Off_Title),
+                getResources().getString(R.string.ServiceBT_BT_Off_ContextText)
+        );
+        if (threadConnection != null) {
+            setThreadConnection(null);
+        }
+        if (threadConnected != null) {
+            threadConnected.cancel();
+            setThreadConnected(null);
+        }
+        stopForeground(true);
+        stopSelf();
     }
 
     private void notificationError() {
         createNotification(getResources().getString(R.string.ServiceBT_BT_Error_Title),
                 getResources().getString(R.string.ServiceBT_BT_Error_ContextText));
+    }
+
+    private void notificationErrorReconection(){
+        createNotification(getResources().getString(R.string.ServiceBT_BT_Error_Title),
+                getResources().getString(R.string.ServiceBT_BT_Error_ContextText) +
+                        getResources().getString(R.string.ServiceBT_BT_Error_Reconection));
+    }
+
+    public void notificationChangeService() {
+        NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        if (isFlagReconnection()) {
+            mNotificationManager.notify(FOREGROUND_ID, createForegroundNotification(
+                    String.format(getResources().getString(R.string.Foreground_Reconection_Title), this.getBluetoothDevice().getName()),
+                    getResources().getString(R.string.Foreground_Reconection_Text)));
+        } else {
+            mNotificationManager.notify(FOREGROUND_ID, createForegroundNotification(
+                    String.format(getResources().getString(R.string.ServiceBT_Title), deviceName),
+                    getResources().getString(R.string.ServiceBT_Text)));
+        }
+
+    }
+
+    public void threadInterrupted(Thread thread) {
+        if (thread instanceof ThreadConnected) {
+            ((ThreadConnected) thread).cancel();
+        }
+        stopForeground(true);
+        stopSelf();
     }
     //endregion
 
@@ -231,19 +314,12 @@ public class MainServico extends Service {
         public void onReceive(Context context, @NonNull Intent intent) {
             final String action = intent.getAction();
             if (action != null) {
-                switch (action) {
-                    // Stop MainServico and ThreadConnected in case the Bluetooth is turn off
-                    case BluetoothAdapter.ACTION_STATE_CHANGED:
-                        if (intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR)
-                                == BluetoothAdapter.STATE_OFF) {
-                            createNotification(
-                                    getResources().getString(R.string.ServiceBT_BT_Off_Title),
-                                    getResources().getString(R.string.ServiceBT_BT_Off_ContextText)
-                            );
-                            connectionLost();
-                        }
-                        break;
-                    default:break;
+                // Stop MainServico and ThreadConnected in case the Bluetooth is turn off
+                if (action.equals(BluetoothAdapter.ACTION_STATE_CHANGED)) {
+                    if (intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR)
+                            == BluetoothAdapter.STATE_OFF) {
+                        bluetoothIsOFF();
+                    }
                 }
             }
         }
@@ -279,7 +355,8 @@ public class MainServico extends Service {
     }
 
     public boolean isConnected() {
-        return getCurrentState() == STATE_CONNECTED;
+        return getCurrentState() == STATE_CONNECTED &&
+                this.mainSettings.getBoolean("connection", true);
     }
 
     public BluetoothSocket getBluetoothSocket() {
@@ -297,5 +374,30 @@ public class MainServico extends Service {
     public static void setThreadConnected(ThreadConnected threadConnected) {
         MainServico.threadConnected = threadConnected;
     }
+
+    public boolean isFlagReconnection() {
+        return flagReconnection;
+    }
+
+    public void setFlagReconnection(boolean flagReconnection) {
+        this.flagReconnection = flagReconnection;
+    }
+
+    public boolean isFlagError() {
+        return flagError;
+    }
+
+    public void setFlagError(boolean flagError) {
+        this.flagError = flagError;
+    }
+
+    public SharedPreferences getMainSettings() {
+        return mainSettings;
+    }
+
+    public void setMainSettings(SharedPreferences mainSettings) {
+        this.mainSettings = mainSettings;
+    }
+
     //endregion
 }

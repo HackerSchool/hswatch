@@ -2,6 +2,7 @@ package com.hswatch.refactor;
 
 import android.bluetooth.BluetoothSocket;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.hswatch.Utils;
 import com.hswatch.worker.HoraWorker;
@@ -156,7 +157,18 @@ public class ThreadConnected extends Thread {
         // Send the first data to the Bluetooth Device: update the time that is shown on the watch
         sendTime();
 
+        // Then tell to ThreadReconnection to stop
+        this.mainServico.setFlagReconnection(false);
+
+        // If it's a reconnection, change the foreground notification text
+        this.mainServico.notificationChangeService();
+
         // While there is connection between the phone and the Bluetooth Device
+        manageConnection();
+
+    }
+
+    private void manageConnection() {
         while (this.mainServico.isConnected() || this.bluetoothSocket.isConnected()) {
             try {
                 // Verify if there is something to read
@@ -168,7 +180,7 @@ public class ThreadConnected extends Thread {
                     byte[] buffer = new byte[bytesAvailable];
                     if (this.inputStream.read(buffer) == -1) {
                         //TODO(ter efeito sobre o que acontece no final do inputstream read)
-                        break;
+                        throw new IOException("InputStream got -1 while reading to the buffer!");
                     }
 
                     // Reads the data which was received through the connection byte per byte
@@ -181,9 +193,21 @@ public class ThreadConnected extends Thread {
                         messageReceived = "";
                     }
                 }
+
+                // Checks if the device is still connected
+                this.write(delimitador);
+
+                // Throws an error in case the current thread was interrupted
+                if (Thread.interrupted()) {
+                    throw new InterruptedException("This thread was interrupted!");
+                }
+
             } catch (IOException e) {
                 e.printStackTrace();
                 this.mainServico.connectionLost();
+                break;
+            } catch (InterruptedException interruptedException) {
+                this.mainServico.threadInterrupted(this);
                 break;
             }
         }
@@ -304,7 +328,7 @@ public class ThreadConnected extends Thread {
      * @throws IOException An input-output error that can occur while sending data to the Bluetooth
      * Device
      */
-    public void write(byte[] buffer) throws Exception {
+    public void write(byte[] buffer) throws IOException {
         this.outputStream.write(buffer);
     }
 
