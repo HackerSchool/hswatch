@@ -35,8 +35,8 @@ public class apresentador_fragment extends Fragment {
 
         view.findViewById(R.id.apresentadorBtn).setOnClickListener(v -> {
             if (verificador) {
-                ((atividade_config) requireActivity()).seguir_fragment();
-                ((atividade_config) requireActivity()).listaBluetooth(true);
+                ((ConfigDeviceActivity) requireActivity()).seguir_fragment();
+                ((ConfigDeviceActivity) requireActivity()).listaBluetooth(true);
                 verificador = false;
             } else {
                 startActivityForResult(new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE), getResources().getInteger(R.integer.ATIVAR_BT));
@@ -49,8 +49,8 @@ public class apresentador_fragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == getResources().getInteger(R.integer.ATIVAR_BT) && resultCode == RESULT_OK){
             verificador = true;
-            ((atividade_config) requireActivity()).seguir_fragment();
-            ((atividade_config) requireActivity()).listaBluetooth(true);
+            ((ConfigDeviceActivity) requireActivity()).seguir_fragment();
+            ((ConfigDeviceActivity) requireActivity()).listaBluetooth(true);
         }
     }
 

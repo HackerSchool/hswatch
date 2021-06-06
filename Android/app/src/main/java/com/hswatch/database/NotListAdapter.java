@@ -33,7 +33,7 @@ public class NotListAdapter extends RecyclerView.Adapter<NotListAdapter.NotViewH
     private Filter notFilter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence charSequence) {
-            if (packagesFiltro == null) {
+            if (packagesFiltro == null || notificacoes == null || notificacaosTotal == null) {
                 return null;
             }
 
@@ -61,9 +61,11 @@ public class NotListAdapter extends RecyclerView.Adapter<NotListAdapter.NotViewH
 
         @Override
         protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-            notificacoes.clear();
-            notificacoes.addAll((List) filterResults.values);
-            notifyDataSetChanged();
+            if (notificacoes != null) {
+                notificacoes.clear();
+                notificacoes.addAll((List) filterResults.values);
+                notifyDataSetChanged();
+            }
         }
     };
 
@@ -105,25 +107,28 @@ public class NotListAdapter extends RecyclerView.Adapter<NotListAdapter.NotViewH
             holder.packageTxt.setText(current.getPackageName());
             holder.categoryTxt.setText(current.getCategory());
             holder.dateTxt.setText(current.getTime_received());
-        } else {
-            holder.headerTxt.setVisibility(View.VISIBLE);
-            holder.headerTxt.setText("Não há notificações!");
-            holder.titleTxt.setVisibility(View.INVISIBLE);
-            holder.textTxt.setVisibility(View.INVISIBLE);
-            holder.packageTxt.setVisibility(View.INVISIBLE);
-            holder.categoryTxt.setVisibility(View.INVISIBLE);
-            holder.dateTxt.setVisibility(View.INVISIBLE);
         }
     }
 
     public void setNotificacoes(List<Notificacao> notificacoes){
-        this.notificacoes = notificacoes;
+        if (!notificacoes.isEmpty()) {
+            this.notificacoes = notificacoes;
+        } else {
+            Notificacao notificacao = new Notificacao("Não há notificações!", "", "","",
+                    "", "");
+            this.notificacoes = new ArrayList<>();
+            this.notificacoes.add(notificacao);
+        }
         this.notificacaosTotal = new ArrayList<>(this.notificacoes);
         notifyDataSetChanged();
     }
 
     public void adicionarNotificacoes(List<Notificacao> notificacoes) {
-        this.notificacoes.addAll(notificacoes);
+        if (this.notificacoes.get(0).nome.equals("Não há notificações!")) {
+            this.notificacoes = notificacoes;
+        } else {
+            this.notificacoes.addAll(notificacoes);
+        }
         notifyDataSetChanged();
     }
 

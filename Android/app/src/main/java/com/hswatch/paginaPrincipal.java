@@ -5,7 +5,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import com.hswatch.fragments.ConfigDeviceActivity;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,8 +18,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-import static com.hswatch.Constantes.CHAMADAS;
-import static com.hswatch.Constantes.NOTIFICACOES;
+import static com.hswatch.Utils.CHAMADAS;
+import static com.hswatch.Utils.NOTIFICACOES;
 
 public class paginaPrincipal extends Fragment {
 
@@ -25,8 +28,6 @@ public class paginaPrincipal extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-//        opcoesItems.add(new opcoesItem(R.drawable.ic_bluetooth_black_24dp, "Configurações de conexão"));
-//        opcoesItems.add(new opcoesItem(R.drawable.ic_access_alarm_black_24dp, "Alarme"));
         opcoesItems.add(new opcoesItem(R.drawable.ic_notificacoes_recebidas, "Notificações Recebidas"));
         opcoesItems.add(new opcoesItem(R.drawable.ic_chamadas_recebidas, "Chamadas Recebidas"));
         return inflater.inflate(R.layout.fragment_disp, container, false);
@@ -43,6 +44,9 @@ public class paginaPrincipal extends Fragment {
         final opcoesAdapter OpcoesAdapter = new opcoesAdapter(opcoesItems);
         recyclerView.setAdapter(OpcoesAdapter);
         OpcoesAdapter.setOnitemclicklistener(this::acaoItem);
+
+        ((TextView) view.findViewById(R.id.txt_about)).setOnClickListener(
+                (View.OnClickListener) view1 -> ((MainActivity) requireActivity()).showSite());
     }
 
     private void acaoItem(int position) {
@@ -71,7 +75,7 @@ public class paginaPrincipal extends Fragment {
                 startActivity(new Intent(getActivity(), NotActivity.class));
                 break;
             case CHAMADAS:
-                startActivity(new Intent(getActivity(), ChamadaActivity.class));
+                startActivity(new Intent(getActivity(), CallActivity.class));
                 break;
         }
     }

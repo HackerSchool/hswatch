@@ -12,6 +12,7 @@
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:name=".App"
@@ -27,13 +28,13 @@
             android:label="@string/title_activity_settings"
             android:theme="@style/SettingsTheme"/>
         <activity
-            android:name=".ChamadaActivity"
+            android:name=".CallActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".NotActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".atividade_splash"
+            android:name=".SplashActivity"
             android:theme="@style/SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -41,15 +42,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".bluetooth.sem_bt" />
+        <activity android:name=".bluetooth.NoBTActivity" />
         <activity
-            android:name=".fragments.atividade_config"
+            android:name=".fragments.ConfigDeviceActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".MainActivity"
             android:theme="@style/MenuLateral" />
 
-        <service android:name=".bluetooth.Servico" />
+        <service android:name=".refactor.MainServico" />
         <service
             android:name=".bluetooth.NotificationListener"
             android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">

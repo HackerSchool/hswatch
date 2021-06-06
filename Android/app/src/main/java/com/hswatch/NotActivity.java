@@ -5,12 +5,15 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -23,6 +26,8 @@ import com.hswatch.database.NotViewModel;
 import com.hswatch.database.Notificacao;
 import com.hswatch.databinding.ActivityNotBinding;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -30,14 +35,16 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
-import static com.hswatch.Constantes.ACAO_ATIVIDADE_NOTIFICACOES;
-import static com.hswatch.Constantes.ACAO_NOTIFICACOES_ATIVIDADE;
-import static com.hswatch.Constantes.ATIVIDADE_CHAVE;
-import static com.hswatch.Constantes.DIRETIVA;
-import static com.hswatch.Constantes.RECOLHER;
-import static com.hswatch.Constantes.separador;
+import static com.hswatch.Utils.ACAO_ATIVIDADE_NOTIFICACOES;
+import static com.hswatch.Utils.ACAO_NOTIFICACOES_ATIVIDADE;
+import static com.hswatch.Utils.ACTIVITY_KEY;
+import static com.hswatch.Utils.DIRETIVA;
+import static com.hswatch.Utils.RECOLHER;
+import static com.hswatch.Utils.separador;
 
 public class NotActivity extends AppCompatActivity {
+
+    private static final String TAG = "NotActivity.TAG";
 
     private ActivityNotBinding binding;
     private NotListAdapter notListAdapter;
@@ -85,7 +92,7 @@ public class NotActivity extends AppCompatActivity {
             }
         }).attachToRecyclerView(binding.notRecycler);
 
-        binding.notBtnApagar.setOnClickListener(view -> notViewModel.deleteAll());
+//        binding.notBtnApagar.setOnClickListener(view -> notViewModel.deleteAll());
         binding.notBtnDummy.setOnClickListener(view -> enviarDummyNot());
         binding.notFab.setOnClickListener(view -> binding.notScrollView.smoothScrollTo(0, 0));
         binding.notEditSearch.addTextChangedListener(new TextWatcher() {
@@ -122,7 +129,7 @@ public class NotActivity extends AppCompatActivity {
                 "HSWatch".getBytes(),
                 separador,
                 "This is a dummy notification.\nKeep hacking!".getBytes(),
-                Constantes.delimitador
+                Utils.delimitador
         };
         Servico.enviarMensagensRelogio(mensagemNotificacao);
     }
@@ -139,6 +146,40 @@ public class NotActivity extends AppCompatActivity {
             notListAdapter.setNotificacoes(notificacoes);
 
         binding.notBtnApagar.setText(getResources().getString(R.string.apagar) + " (" + notificacaoList.size() + ")");
+        binding.notBtnExport.setOnClickListener(v -> {
+            Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
+            intent.setType("text/plain");
+            intent.putExtra(Intent.EXTRA_TITLE, "Exported_Data.txt");
+
+            startActivityForResult(intent, 5);
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 5) {
+            if (resultCode == RESULT_OK) {
+                Uri uri = data.getData();
+                String header = "id;nome;package_name;time_received;category;title;message\n";
+                try {
+                    OutputStream outputStream = getContentResolver().openOutputStream(uri);
+                    outputStream.write(header.getBytes());
+                    for (Notificacao notificacao : notificacaoList) {
+                        outputStream.write((notificacao.toString() + "\n").getBytes());
+                    }
+                    outputStream.close();
+                    Toast.makeText(this, "Finished it!", Toast.LENGTH_SHORT).show();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Toast.makeText(this, "Error found: " + e.toString(), Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                Toast.makeText(this, "Stopped transferring!", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     @SuppressLint("SetTextI18n")
@@ -149,8 +190,6 @@ public class NotActivity extends AppCompatActivity {
             notListAdapter.adicionarNotificacoes(notificacaoList.subList(delimitador, delimitador * 2));
             delimitador += delimitador;
         }
-
-        binding.notBtnApagar.setText(getResources().getString(R.string.apagar) + " (" + notificacaoList.size() + ")");
     }
 
     @Override
@@ -162,7 +201,7 @@ public class NotActivity extends AppCompatActivity {
 
         // Recolher notificações registadas pelo listener
         Intent recolher = new Intent(ACAO_ATIVIDADE_NOTIFICACOES);
-        recolher.putExtra(ATIVIDADE_CHAVE, RECOLHER);
+        recolher.putExtra(ACTIVITY_KEY, RECOLHER);
         sendBroadcast(recolher);
 
         // Indicar que a atividade está pronta

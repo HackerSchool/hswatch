@@ -3,15 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".bluetooth.sem_bt"
-    android:padding="24dp"
-    android:id="@+id/semBTatividade">
+    tools:context=".bluetooth.NoBTActivity"
+    android:padding="24dp">
 
     <TextView
-        android:id="@+id/semBTTitulo"
+        android:id="@+id/txt_nobt_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/semBTTitulo"
+        android:text="@string/NoBT_Title"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textStyle="bold"
@@ -21,11 +20,11 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/semBTTexto"
+        android:text="@string/NoBT_Text"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:layout_centerHorizontal="true"
-        android:layout_below="@+id/semBTTitulo"
+        android:layout_below="@+id/txt_nobt_title"
         android:paddingTop="6dp"/>
 
 </RelativeLayout>

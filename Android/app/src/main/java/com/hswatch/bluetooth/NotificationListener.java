@@ -11,6 +11,8 @@ import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
 import android.util.Log;
 
+import com.hswatch.refactor.MainServico;
+
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -19,16 +21,16 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
-import static com.hswatch.Constantes.ACAO_ATIVIDADE_NOTIFICACOES;
-import static com.hswatch.Constantes.ACAO_NOTIFICACOES_ATIVIDADE;
-import static com.hswatch.Constantes.ACAO_NOTIFICACOES_SERVICO;
-import static com.hswatch.Constantes.ATIVIDADE_CHAVE;
-import static com.hswatch.Constantes.DIRETIVA;
-import static com.hswatch.Constantes.RECOLHER;
-import static com.hswatch.Constantes.delimitador;
-import static com.hswatch.Constantes.packagesNotFiltro;
-import static com.hswatch.Constantes.separador;
 import static com.hswatch.NotActivity.notAtividadeAtiva;
+import static com.hswatch.Utils.ACAO_ATIVIDADE_NOTIFICACOES;
+import static com.hswatch.Utils.ACAO_NOTIFICACOES_ATIVIDADE;
+import static com.hswatch.Utils.ACAO_NOTIFICACOES_SERVICO;
+import static com.hswatch.Utils.ACTIVITY_KEY;
+import static com.hswatch.Utils.DIRETIVA;
+import static com.hswatch.Utils.RECOLHER;
+import static com.hswatch.Utils.delimitador;
+import static com.hswatch.Utils.packagesNotFiltro;
+import static com.hswatch.Utils.separador;
 
 public class NotificationListener extends NotificationListenerService {
 
@@ -72,6 +74,9 @@ public class NotificationListener extends NotificationListenerService {
         Log.v(TAG, "Guardar notificação" + sbn.getPackageName());
         if (packagesNotFiltro.containsKey(sbn.getPackageName())) {
             guardarNot(sbn);
+            
+//        TODO(I'm dumb e esqueci-me que posso fazer o toString() para ler a notificação)
+
             NotificacaoRecebida(sbn.getNotification().extras.getString("android.title"),
                     sbn.getNotification().extras.getString("android.text"),
                     sbn.getNotification().category, sbn.getPackageName());
@@ -104,7 +109,9 @@ public class NotificationListener extends NotificationListenerService {
 //            Obter o titulo da notificação
             add(sbn.getNotification().extras.getString("android.title"));
 //            Obter o conteudo da notificação
-            add(sbn.getNotification().extras.getString("android.text"));
+//            add(sbn.getNotification().extras.getString("android.text"));
+            add(sbn.getNotification().extras.getString("android.text") + "\n\n" +
+                    sbn.toString() + "\n\n" + sbn.getNotification().extras.toString());
         }};
 
         if (notAtividadeAtiva) {
@@ -135,24 +142,20 @@ public class NotificationListener extends NotificationListenerService {
         if (titulo == null || texto == null) {
             return;
         }
-        byte[][] mensagemNotificacao = {
-                "NOT".getBytes(),
-                separador,
-                Objects.requireNonNull(packagesNotFiltro.get(packageName)).getBytes(),
-                separador,
-                DateFormat.getTimeInstance(DateFormat.MEDIUM, Locale.UK).format(new Date().getTime())
-                        .split(":")[0].getBytes(),
-                separador,
-                DateFormat.getTimeInstance(DateFormat.MEDIUM, Locale.UK).format(new Date().getTime())
-                        .split(":")[1].getBytes(),
-                separador,
-                titulo.getBytes(),
-                separador,
-                texto.getBytes(),
-                delimitador
-        };
+        // TODO(criar um filtro para as notificações)
+        List<String> mensagemNotificacao = new ArrayList<>();
+        mensagemNotificacao.add("Not");
+        mensagemNotificacao.add(Objects.requireNonNull(packagesNotFiltro.get(packageName)));
+        mensagemNotificacao.add(DateFormat.getTimeInstance(DateFormat.MEDIUM, Locale.UK).format(new Date().getTime())
+                .split(":")[0]);
+        mensagemNotificacao.add(DateFormat.getTimeInstance(DateFormat.MEDIUM, Locale.UK).format(new Date().getTime())
+                .split(":")[1]);
+        mensagemNotificacao.add(titulo);
+        mensagemNotificacao.add(texto);
 
-        Servico.enviarMensagensRelogio(mensagemNotificacao);
+        MainServico.sendNotification(mensagemNotificacao);
+
+//        Servico.enviarMensagensRelogio(mensagemNotificacao);
 //        int indexelemento = 0;
 //        try {
 //            for (byte[] elemento : mensagemNotificacao){
@@ -203,7 +206,7 @@ public class NotificationListener extends NotificationListenerService {
                 return;
             }
             if (Objects.equals(ACAO_ATIVIDADE_NOTIFICACOES, acao)) {
-                String chave = intent.getStringExtra(ATIVIDADE_CHAVE);
+                String chave = intent.getStringExtra(ACTIVITY_KEY);
                 if (chave == null) {
                     return;
                 }
