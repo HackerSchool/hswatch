@@ -45,6 +45,7 @@ public class MainServico extends Service {
 
     private boolean flagError = false;
     private boolean flagReconnection = false;
+    private static boolean flagInstante = false;
 
     private String deviceName;
 
@@ -117,11 +118,6 @@ public class MainServico extends Service {
                 break;
             }
         }
-
-        //TODO(adicionar broadcast receiver para saber da ligação bt: bt on e off e se está fora de
-        // alcance: https://developer.android.com/reference/android/bluetooth/BluetoothAdapter.html#ACTION_CONNECTION_STATE_CHANGED)
-
-        //TODO(fechar o serviço na ativiade: https://stackoverflow.com/questions/20857120/what-is-the-proper-way-to-stop-a-service-running-as-foreground/20857343#20857343)
 
         createConection(this.bluetoothDevice);
 
@@ -208,10 +204,12 @@ public class MainServico extends Service {
     private void stopConnection() {
         if (this.mainSettings.getBoolean("connection", true)) {
             if (!isFlagReconnection()) {
+                MainServico.setFlagInstante(false);
                 stopForeground(true);
                 stopSelf();
             }
         } else {
+            MainServico.setFlagInstante(false);
             stopForeground(true);
             stopSelf();
         }
@@ -274,6 +272,7 @@ public class MainServico extends Service {
             setThreadConnected(null);
         }
         stopForeground(true);
+        MainServico.setFlagInstante(false);
         stopSelf();
     }
 
@@ -306,6 +305,7 @@ public class MainServico extends Service {
         if (thread instanceof ThreadConnected) {
             ((ThreadConnected) thread).cancel();
         }
+        MainServico.setFlagInstante(false);
         stopForeground(true);
         stopSelf();
     }
@@ -335,7 +335,7 @@ public class MainServico extends Service {
 
     public static void sendNotification(List<String> message) {
         if (threadConnected != null) {
-            threadConnected.sendNotification(message);
+            threadConnected.sendMessage(message);
         }
     }
 
@@ -407,6 +407,14 @@ public class MainServico extends Service {
 
     public boolean isFlagError() {
         return flagError;
+    }
+
+    public static boolean isFlagInstante() {
+        return flagInstante;
+    }
+
+    public static void setFlagInstante(boolean flagInstante) {
+        MainServico.flagInstante = flagInstante;
     }
 
     public void setFlagError(boolean flagError) {

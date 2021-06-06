@@ -161,6 +161,10 @@ public class ThreadConnected extends Thread {
         // ReconnectionThread
         this.mainServico.notificationChangeService();
 
+        // Tells to the service that exists a connection running, so the SplashActivity can start
+        // the MainActivity instead the SetupActivity
+        MainServico.setFlagInstante(true);
+
         // While there is connection between the phone and the Bluetooth Device
         manageConnection();
 
@@ -174,10 +178,9 @@ public class ThreadConnected extends Thread {
                 if (bytesAvailable > 0) {
 
                     // Check if we're not at the end of the stream
-                    // If yes, the get out of the loop
+                    // If yes, then get out of the loop
                     byte[] buffer = new byte[bytesAvailable];
                     if (this.inputStream.read(buffer) == -1) {
-                        //TODO(ter efeito sobre o que acontece no final do inputstream read)
                         throw new IOException("InputStream got -1 while reading to the buffer!");
                     }
 
@@ -305,7 +308,7 @@ public class ThreadConnected extends Thread {
         }
     }
 
-    public void sendNotification(List<String> message) {
+    public void sendMessage(List<String> message) {
         try {
             this.write(message.get(0).getBytes());
             for (String msg : message.subList(1,message.size())) {

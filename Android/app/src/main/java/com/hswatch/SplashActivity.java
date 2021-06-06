@@ -4,12 +4,10 @@ import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.Preference;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.preference.PreferenceManager;
 
 import com.hswatch.bluetooth.NoBTActivity;
 import com.hswatch.fragments.ConfigDeviceActivity;
@@ -32,7 +30,7 @@ public class SplashActivity extends AppCompatActivity {
         startActivity(new Intent(this, MainActivity.class));
         finish();
 
-//        if (ativoServico) {
+//        if (MainServico.isFlagInstante()) {
 //            startActivity(new Intent(SplashActivity.this, MainActivity.class));
 //            finish();
 //        } else {
