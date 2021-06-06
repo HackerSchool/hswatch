@@ -1,8 +1,11 @@
-package com.hswatch.refactor;
+package com.hswatch.bluetooth;
 
 import android.bluetooth.BluetoothSocket;
-import android.util.Log;
-import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.work.ExistingPeriodicWorkPolicy;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
 
 import com.hswatch.Utils;
 import com.hswatch.worker.HoraWorker;
@@ -11,14 +14,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-
-import androidx.annotation.NonNull;
-import androidx.work.ExistingPeriodicWorkPolicy;
-import androidx.work.PeriodicWorkRequest;
-import androidx.work.WorkManager;
 
 import static com.hswatch.Utils.TIME_INDICATOR;
 import static com.hswatch.Utils.WEATHER_INDICATOR;
@@ -160,7 +157,8 @@ public class ThreadConnected extends Thread {
         // Then tell to ThreadReconnection to stop
         this.mainServico.setFlagReconnection(false);
 
-        // If it's a reconnection, change the foreground notification text
+        // If it's a reconnection, change the foreground notification text and cancel the
+        // ReconnectionThread
         this.mainServico.notificationChangeService();
 
         // While there is connection between the phone and the Bluetooth Device

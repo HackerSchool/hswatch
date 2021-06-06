@@ -18,8 +18,7 @@ import androidx.fragment.app.Fragment;
 
 import com.hswatch.R;
 import com.hswatch.Utils;
-import com.hswatch.bluetooth.Servico;
-import com.hswatch.refactor.MainServico;
+import com.hswatch.bluetooth.MainServico;
 
 import java.util.ArrayList;
 import java.util.List;

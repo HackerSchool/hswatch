@@ -78,4 +78,6 @@
     <string name="About_Text">Developed by: Filipe Varela | Pedro Direita @ Hackerschool</string>
     <string name="Connection_Title">Conexão</string>
     <string name="Switch_Connection_Title">Manter reconexão</string>
+    <string name="RECEIVED">recebida</string>
+    <string name="LOST">perdida</string>
 </resources>

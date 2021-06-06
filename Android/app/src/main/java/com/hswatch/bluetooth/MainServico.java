@@ -1,4 +1,4 @@
-package com.hswatch.refactor;
+package com.hswatch.bluetooth;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -22,7 +22,9 @@ import androidx.preference.PreferenceManager;
 
 import com.hswatch.MainActivity;
 import com.hswatch.R;
+import com.hswatch.Utils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.hswatch.App.SERVICO_CHANNEL;
@@ -337,6 +339,19 @@ public class MainServico extends Service {
         }
     }
 
+    public static void sendCalls(String number, String callingName, String receivedHour, String callingState) {
+        if (threadConnected != null) {
+            ArrayList<String> callMessage = new ArrayList<String>(){{
+                add(Utils.NOT_INDICATOR);
+                add(Utils.INDICADOR_TEL);
+                add(receivedHour.split(":")[0]);
+                add(receivedHour.split(":")[1]);
+                add(callingName + "@" + number);
+                add(callingState);
+            }};
+        }
+    }
+
     //region Getters and Setters
     public Context getCurrentContext() {
         return getApplicationContext();
@@ -375,11 +390,18 @@ public class MainServico extends Service {
         MainServico.threadConnected = threadConnected;
     }
 
+    public void setThreadReconnection(ThreadReconnection threadReconnection) {
+        this.threadReconnection = threadReconnection;
+    }
+
     public boolean isFlagReconnection() {
         return flagReconnection;
     }
 
     public void setFlagReconnection(boolean flagReconnection) {
+        if (!flagReconnection)
+            this.setThreadReconnection(null);
+
         this.flagReconnection = flagReconnection;
     }
 

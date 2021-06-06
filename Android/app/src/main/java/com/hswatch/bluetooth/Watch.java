@@ -1,4 +1,4 @@
-package com.hswatch.refactor;
+package com.hswatch.bluetooth;
 
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
@@ -12,7 +12,6 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.hswatch.Utils;
-import com.hswatch.bluetooth.GPSListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;

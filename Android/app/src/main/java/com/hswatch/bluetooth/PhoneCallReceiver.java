@@ -8,6 +8,8 @@ import android.net.Uri;
 import android.provider.ContactsContract;
 import android.telephony.TelephonyManager;
 
+import com.hswatch.R;
+
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -18,6 +20,7 @@ import java.util.Objects;
 import static com.hswatch.CallActivity.chamadaAtividadeAtiva;
 import static com.hswatch.CallActivity.recetorChamada;
 
+//TODO(refactor this)
 public class PhoneCallReceiver extends BroadcastReceiver {
 
     public static final String TAG = "hswatch_phone_listener";
@@ -49,7 +52,7 @@ public class PhoneCallReceiver extends BroadcastReceiver {
                 estado = TelephonyManager.CALL_STATE_RINGING;
             }
 
-            verificadorEstado(estado, number, obterNomePorNumero(context, number));
+            verificadorEstado(estado, number, obterNomePorNumero(context, number), context);
         }
     }
 
@@ -70,7 +73,7 @@ public class PhoneCallReceiver extends BroadcastReceiver {
         return number;
     }
 
-    public void verificadorEstado(int estado, String number, String nome) {
+    public void verificadorEstado(int estado, String number, String nome, Context context) {
         if (estadoAnterior != estado) {
             /*
             * Estado 0: Não há chamada - IDLE
@@ -93,16 +96,14 @@ public class PhoneCallReceiver extends BroadcastReceiver {
                         }};
                         chamadasRegistadas.add(chamadaRecebida);
                     }
-                    Servico.receberChamada(number, nome, horaRecebida);
+                    MainServico.sendCalls(number, nome, horaRecebida,
+                            context.getResources().getString(R.string.RECEIVED));
                     break;
-//                case TelephonyManager.CALL_STATE_OFFHOOK:
-//                    if (estadoAnterior != TelephonyManager.CALL_STATE_RINGING) {
-//                        estaReceber = false;
-//                    }
                 case TelephonyManager.CALL_STATE_IDLE:
                     if (estadoAnterior == TelephonyManager.CALL_STATE_RINGING) {
                         String horaPerdida = DateFormat.getTimeInstance(DateFormat.MEDIUM, Locale.UK).format(new Date().getTime());
-                        Servico.perdidaChamada(number, nome, horaPerdida);
+                        MainServico.sendCalls(number, nome, horaPerdida,
+                                context.getResources().getString(R.string.LOST));
                         if (chamadaAtividadeAtiva) {
                             recetorChamada(nome, number, "Perdida", horaPerdida);
                         } else {

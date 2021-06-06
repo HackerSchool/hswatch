@@ -11,8 +11,6 @@ import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
 import android.util.Log;
 
-import com.hswatch.refactor.MainServico;
-
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -28,9 +26,7 @@ import static com.hswatch.Utils.ACAO_NOTIFICACOES_SERVICO;
 import static com.hswatch.Utils.ACTIVITY_KEY;
 import static com.hswatch.Utils.DIRETIVA;
 import static com.hswatch.Utils.RECOLHER;
-import static com.hswatch.Utils.delimitador;
 import static com.hswatch.Utils.packagesNotFiltro;
-import static com.hswatch.Utils.separador;
 
 public class NotificationListener extends NotificationListenerService {
 

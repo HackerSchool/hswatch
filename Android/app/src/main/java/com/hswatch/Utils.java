@@ -146,6 +146,7 @@ public class Utils {
      */
     public static final String TAG_HOURS = "tag_hours";
     public static final String TIME_INDICATOR = "TIM";
+    public static final String NOT_INDICATOR = "NOT";
 
 // Notas
 //    private void terPackagesNames() {

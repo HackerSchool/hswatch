@@ -20,11 +20,11 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.hswatch.bluetooth.Servico;
 import com.hswatch.database.NotListAdapter;
 import com.hswatch.database.NotViewModel;
 import com.hswatch.database.Notificacao;
 import com.hswatch.databinding.ActivityNotBinding;
+import com.hswatch.bluetooth.MainServico;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -40,7 +40,6 @@ import static com.hswatch.Utils.ACAO_NOTIFICACOES_ATIVIDADE;
 import static com.hswatch.Utils.ACTIVITY_KEY;
 import static com.hswatch.Utils.DIRETIVA;
 import static com.hswatch.Utils.RECOLHER;
-import static com.hswatch.Utils.separador;
 
 public class NotActivity extends AppCompatActivity {
 
@@ -115,23 +114,17 @@ public class NotActivity extends AppCompatActivity {
     }
 
     private void enviarDummyNot() {
-        byte[][] mensagemNotificacao = {
-                "NOT".getBytes(),
-                separador,
-                "com.hswatch".getBytes(),
-                separador,
-                DateFormat.getTimeInstance(DateFormat.MEDIUM, Locale.UK).format(new Date().getTime())
-                        .split(":")[0].getBytes(),
-                separador,
-                DateFormat.getTimeInstance(DateFormat.MEDIUM, Locale.UK).format(new Date().getTime())
-                        .split(":")[1].getBytes(),
-                separador,
-                "HSWatch".getBytes(),
-                separador,
-                "This is a dummy notification.\nKeep hacking!".getBytes(),
-                Utils.delimitador
-        };
-        Servico.enviarMensagensRelogio(mensagemNotificacao);
+        ArrayList<String> mensagemNotificacao = new ArrayList<String>(){{
+                add("NOT");
+                add("com.hswatch");
+                add(DateFormat.getTimeInstance(DateFormat.MEDIUM, Locale.UK).format(new Date().getTime())
+                        .split(":")[0]);
+                add(DateFormat.getTimeInstance(DateFormat.MEDIUM, Locale.UK).format(new Date().getTime())
+                        .split(":")[1]);
+                add("HSWatch");
+                add("This is a dummy notification.\nKeep hacking!");
+        }};
+        MainServico.sendNotification(mensagemNotificacao);
     }
 
     @SuppressLint("SetTextI18n")

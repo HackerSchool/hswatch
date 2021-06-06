@@ -1,4 +1,4 @@
-package com.hswatch.refactor;
+package com.hswatch.bluetooth;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;

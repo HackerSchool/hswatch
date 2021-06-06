@@ -1,4 +1,4 @@
-package com.hswatch.refactor;
+package com.hswatch.bluetooth;
 
 import android.content.Context;
 import android.content.SharedPreferences;
