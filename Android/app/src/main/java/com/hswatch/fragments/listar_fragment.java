@@ -46,6 +46,7 @@ public class listar_fragment extends Fragment {
 
         listView.setOnItemClickListener((parent, view1, position, id) -> {
             String nome = (String) listView.getItemAtPosition(position);
+
             Toast.makeText(view1.getContext(), "Tentar conexão no dispositivo " + nome,
                     Toast.LENGTH_LONG).show();
 

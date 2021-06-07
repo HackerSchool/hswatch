@@ -119,7 +119,7 @@ public class MainServico extends Service {
             }
         }
 
-        createConection(this.bluetoothDevice);
+        createConection();
 
         this.mainSettings = PreferenceManager.getDefaultSharedPreferences(getCurrentContext());
 
@@ -170,7 +170,7 @@ public class MainServico extends Service {
 
     //region BT Connections
 
-    public void createConection(BluetoothDevice bluetoothDevice) {
+    public void createConection() {
         if (getCurrentState() == STATE_CONNECTING && this.threadConnection != null) {
             threadConnection.restart();
             setThreadConnection(null);
@@ -181,7 +181,7 @@ public class MainServico extends Service {
             setThreadConnected(null);
         }
 
-        this.threadConnection = new ThreadConnection(bluetoothDevice, this);
+        this.threadConnection = new ThreadConnection(this.bluetoothDevice, this);
         this.threadConnection.start();
     }
 
