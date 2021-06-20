@@ -15,8 +15,8 @@ import java.util.Objects;
 
 import static com.hswatch.NotActivity.notAtividadeAtiva;
 import static com.hswatch.NotActivity.recetorSMS;
-import static com.hswatch.bluetooth.NotificationListener.NotificacaoRecebida;
-import static com.hswatch.bluetooth.NotificationListener.notificacoesGuardadas;
+import static com.hswatch.bluetooth.NotificationListener.SMSReceived;
+import static com.hswatch.bluetooth.NotificationListener.notificationsSaved;
 import static com.hswatch.bluetooth.PhoneCallReceiver.obterNomePorNumero;
 
 public class SMSReceiver extends BroadcastReceiver {
@@ -32,7 +32,7 @@ public class SMSReceiver extends BroadcastReceiver {
             String nome = obterNomePorNumero(context, smsMessage.getDisplayOriginatingAddress());
             String conteudo = smsMessage.getDisplayMessageBody();
             guardarNot(nome, conteudo);
-            NotificacaoRecebida(nome, conteudo, " - ", "sms");
+            SMSReceived(nome, conteudo);
         }
     }
 
@@ -52,7 +52,7 @@ public class SMSReceiver extends BroadcastReceiver {
         if (notAtividadeAtiva) {
             recetorSMS(notif);
         } else {
-            notificacoesGuardadas.add(notif);
+            notificationsSaved.add(notif);
         }
     }
 }

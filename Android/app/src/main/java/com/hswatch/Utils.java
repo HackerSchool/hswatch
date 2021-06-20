@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 public class Utils {
@@ -54,8 +55,9 @@ public class Utils {
     public static final String INDICADOR_SMS = "SMS";
     public static final String INDICADOR_TEL = "TEL";
     public static final String INDICADOR_HSW = "HSW";
-    public static HashMap<String, String> packagesNotFiltro = new HashMap<String, String>(){{
-        put("com.whatsapp", INDICADOR_WHATS);
+    public static final String WHATSAPP_PACKAGENAME = "com.whatsapp";
+    public static final Map<String, String> packagesNotIndicator = new HashMap<String, String>(){{
+        put(WHATSAPP_PACKAGENAME, INDICADOR_WHATS);
         put("com.instagram.android", INDICADOR_INSTA);
         put("com.facebook.orca", INDICADOR_MESSE);
         put("com.facebook.katana", INDICADOR_FACEB);
@@ -63,6 +65,14 @@ public class Utils {
         put("sms", INDICADOR_SMS);
         put("com.hswatch", INDICADOR_HSW);
     }};
+    public static final Map<String, String> packagesNotFilter = new HashMap<String, String>(){{
+        put("whatsapp", "com.whatsapp");
+        put("instagram", "com.instagram.android");
+        put("messenger", "com.facebook.orca");
+        put("facebook", "com.facebook.katana");
+    }};
+    public static final String WHATSAPP_WEB = "WhatsApp Web";
+    public static final String WHATSAPP_NAME = "WhatsApp";
 
     /**
      * Protocol's keys
@@ -96,7 +106,7 @@ public class Utils {
     public static final int BT_REQUEST = 1;
 
     @NonNull
-    public static HashMap<String, String> getWeekArray(@NonNull Context context) {
+    public static Map<String, String> getWeekArray(@NonNull Context context) {
         String[] weekArray = context.getResources()
                 .getStringArray(R.array.nomes_semana);
         HashMap<String, String> returnMap = new HashMap<>();
@@ -107,7 +117,7 @@ public class Utils {
     }
 
     @NonNull
-    public static String[] getCurrentTime (HashMap<String, String> weekMap) {
+    public static String[] getCurrentTime (Map<String, String> weekMap) {
         String[] hora = DateFormat.getTimeInstance().format(new Date()).split(":");
         String[] data = DateFormat.getDateInstance().format(new Date()).split("/");
         return new String[]{
@@ -146,7 +156,7 @@ public class Utils {
      */
     public static final String TAG_HOURS = "tag_hours";
     public static final String TIME_INDICATOR = "TIM";
-    public static final String NOT_INDICATOR = "NOT";
+    public static final String NOT_INDICATOR = "Not";
 
 // Notas
 //    private void terPackagesNames() {

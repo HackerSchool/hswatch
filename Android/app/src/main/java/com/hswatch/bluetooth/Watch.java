@@ -19,6 +19,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 //TODO(documentar)
@@ -26,7 +27,7 @@ public class Watch {
 
     private String name;
     private String address;
-    private final HashMap<String, String> weeksMap;
+    private final Map<String, String> weeksMap;
     private int timeInterval;
 
 
