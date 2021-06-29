@@ -16,13 +16,13 @@ public class ThreadConnection extends Thread {
     /**
      * Current BluetoothSocket to connect the app to the BluetoothDevice
      */
-    private BluetoothSocket bluetoothSocket;
+    private final BluetoothSocket bluetoothSocket;
 
     /**
      * Main Service on which the thread is started and ended on and also where the thread gets the
      * current state of the connection and to connect to the other Java API frameworks
      */
-    private MainServico mainServico;
+    private final MainServico mainServico;
 
     /**
      * The ThreadConnection's Constructor in which the connection is started with the Bluetooth

@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.hswatch.R;
 
 /**
- * Activity when the user denys turn on the BT.
+ * Activity when the user denys to turn on the BT.
  * It finishes when the user press the Back Button
  */
 public class NoBTActivity extends AppCompatActivity {

@@ -116,16 +116,10 @@ public class PhoneCallReceiver extends BroadcastReceiver {
                             chamadasRegistadas.add(chamadaRecebida);
                         }
                     }
-//                    else if (estaReceber) {
-//                        onCallEnded(context, number, horaRecebida, new Date());
-//                    }
                     break;
                 default:break;
             }
             estadoAnterior = estado;
         }
     }
-
-
-//                    Log.v(TAG, "Estado obtido: " + state + ";\tNumero recebido: " + phoneNumber);
 }

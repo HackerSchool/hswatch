@@ -24,6 +24,7 @@ import com.hswatch.MainActivity;
 import com.hswatch.R;
 import com.hswatch.Utils;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,6 +56,7 @@ public class MainServico extends Service {
     private ThreadConnection threadConnection;
     private static ThreadConnected threadConnected;
     private ThreadReconnection threadReconnection;
+    private ThreadTestConnection threadTestConnection;
 
     private BroadcastReceiverMainServico broadcastReceiverMainServico;
 
@@ -241,19 +243,17 @@ public class MainServico extends Service {
             notificationErrorReconection();
             threadConnected.cancel();
             setThreadConnected(null);
+            setThreadTestConnection(null);
             setCurrentState(OUT_OF_RANGE);
             setReconnectionThread();
         }
     }
 
-    private void setReconnectionThread() {
-        if (!this.mainSettings.getBoolean("connection", true)) {
-            setFlagReconnection(false);
-        } else {
-            setFlagReconnection(true);
-            notificationChangeService();
-            threadReconnection = new ThreadReconnection(this);
-            threadReconnection.start();
+
+    public void testConnection() {
+        if (this.threadTestConnection == null) {
+            this.threadTestConnection = new ThreadTestConnection(this);
+            this.threadTestConnection.start();
         }
     }
 
@@ -270,6 +270,12 @@ public class MainServico extends Service {
         if (threadConnected != null) {
             threadConnected.cancel();
             setThreadConnected(null);
+        }
+        if (threadReconnection != null) {
+            setThreadReconnection(null);
+        }
+        if (threadTestConnection != null) {
+            setThreadTestConnection(null);
         }
         stopForeground(true);
         MainServico.setFlagInstante(false);
@@ -341,7 +347,8 @@ public class MainServico extends Service {
 
     public static void sendCalls(String number, String callingName, String receivedHour, String callingState) {
         if (threadConnected != null) {
-            ArrayList<String> callMessage = new ArrayList<String>(){{
+
+            List<String> callMessage = new ArrayList<String>(){{
                 add(Utils.NOT_INDICATOR);
                 add(Utils.INDICADOR_TEL);
                 add(receivedHour.split(":")[0]);
@@ -349,6 +356,14 @@ public class MainServico extends Service {
                 add(callingName + "@" + number);
                 add(callingState);
             }};
+
+            threadConnected.sendMessage(callMessage);
+        }
+    }
+
+    public synchronized void write(byte[] buffer) throws IOException {
+        if (threadConnected != null) {
+            threadConnected.write(buffer);
         }
     }
 
@@ -427,6 +442,21 @@ public class MainServico extends Service {
 
     public void setMainSettings(SharedPreferences mainSettings) {
         this.mainSettings = mainSettings;
+    }
+
+    public void setThreadTestConnection(ThreadTestConnection threadTestConnection) {
+        this.threadTestConnection = threadTestConnection;
+    }
+
+    private void setReconnectionThread() {
+        if (!this.mainSettings.getBoolean("connection", true)) {
+            setFlagReconnection(false);
+        } else {
+            setFlagReconnection(true);
+            notificationChangeService();
+            threadReconnection = new ThreadReconnection(this);
+            threadReconnection.start();
+        }
     }
 
     //endregion

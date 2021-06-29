@@ -165,6 +165,9 @@ public class ThreadConnected extends Thread {
         // the MainActivity instead the SetupActivity
         MainServico.setFlagInstante(true);
 
+        // Initializes the test thread
+        this.mainServico.testConnection();
+
         // While there is connection between the phone and the Bluetooth Device
         manageConnection();
 
@@ -194,9 +197,6 @@ public class ThreadConnected extends Thread {
                         messageReceived = "";
                     }
                 }
-
-                // Checks if the device is still connected
-                this.write(delimitador);
 
                 // Throws an error in case the current thread was interrupted
                 if (Thread.interrupted()) {
