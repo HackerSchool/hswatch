@@ -10,10 +10,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.List;
 
+//TODO(documentar)
 public class opcoesAdapter extends RecyclerView.Adapter<opcoesAdapter.opcoesViewHolder> {
 
-    private ArrayList<opcoesItem> opcoesItems;
+    private final List<opcoesItem> opcoesItems;
 
     private onItemClickListener onitemclicklistener;
 
@@ -44,24 +46,21 @@ public class opcoesAdapter extends RecyclerView.Adapter<opcoesAdapter.opcoesView
         return opcoesItems.size();
     }
 
-    public opcoesAdapter (ArrayList<opcoesItem> opcoesItemArrayList) {opcoesItems=opcoesItemArrayList;}
+    public opcoesAdapter (List<opcoesItem> opcoesItemArrayList) {opcoesItems=opcoesItemArrayList;}
 
     public static class opcoesViewHolder extends RecyclerView.ViewHolder {
-        private ImageView marcaImagem;
-        private TextView marcaTexto;
+        private final ImageView marcaImagem;
+        private final TextView marcaTexto;
         public opcoesViewHolder(@NonNull View itemView, final onItemClickListener listener) {
             super(itemView);
             marcaImagem = itemView.findViewById(R.id.op_simb);
             marcaTexto = itemView.findViewById(R.id.op_txt);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (listener != null) {
-                        int position = getAdapterPosition();
-                        if (position != RecyclerView.NO_POSITION) {
-                            listener.onItemClick(position);
-                        }
+            itemView.setOnClickListener(v -> {
+                if (listener != null) {
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION) {
+                        listener.onItemClick(position);
                     }
                 }
             });

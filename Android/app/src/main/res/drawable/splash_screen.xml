@@ -4,9 +4,12 @@
 
     <item android:drawable="@color/HS_Logo"/>
 
-    <item>
-        <bitmap android:src="@drawable/ic_hs_logo"
-            android:gravity="center"
-            android:filter="false"/>
+    <item
+        android:height="512dp"
+        android:width="512dp"
+        android:gravity="center"
+        >
+        <bitmap android:src="@drawable/app_logo"
+            android:filter="true"/>
     </item>
 </layer-list>

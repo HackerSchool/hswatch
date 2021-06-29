@@ -17,13 +17,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static com.hswatch.Utils.CHAMADAS;
 import static com.hswatch.Utils.NOTIFICACOES;
 
 public class paginaPrincipal extends Fragment {
 
-    private ArrayList<opcoesItem> opcoesItems = new ArrayList<>();
+    private final List<opcoesItem> opcoesItems = new ArrayList<>();
 
     @Nullable
     @Override

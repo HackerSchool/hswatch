@@ -21,6 +21,7 @@ import androidx.core.view.GravityCompat;
 import com.google.android.material.navigation.NavigationView;
 import com.hswatch.databinding.ActivityMainBinding;
 import com.hswatch.fragments.ConfigDeviceActivity;
+import com.hswatch.refactor.ConfigurationFragment;
 
 import static com.hswatch.Utils.HISTORY_SHARED_PREFERENCES;
 import static com.hswatch.Utils.NAME;
@@ -137,7 +138,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 //            Iniciar uma nova conexão
             case R.id.novo:
-                startActivity(new Intent(getApplicationContext(), ConfigDeviceActivity.class));
+//                startActivity(new Intent(getApplicationContext(), ConfigDeviceActivity.class));
+                getSupportFragmentManager().beginTransaction().replace(R.id.frame, new ConfigurationFragment()).commit();
                 break;
 
 //                Definições
