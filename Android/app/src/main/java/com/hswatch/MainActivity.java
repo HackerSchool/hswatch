@@ -139,7 +139,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //            Iniciar uma nova conexão
             case R.id.novo:
 //                startActivity(new Intent(getApplicationContext(), ConfigDeviceActivity.class));
-                getSupportFragmentManager().beginTransaction().replace(R.id.frame, new ConfigurationFragment()).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.frame,
+                        new ConfigurationFragment()).commit();
                 break;
 
 //                Definições

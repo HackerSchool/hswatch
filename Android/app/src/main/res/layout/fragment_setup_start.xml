@@ -1,8 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/layout_setup_fragment"
+    android:padding="@dimen/setup_fragment_padding"
+    android:orientation="vertical"
+    android:elevation="10dp">
 
-<!--    TODO acabar com o texto de apresentação -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/apresentadorTitulo"
+        android:layout_gravity="center_horizontal"
+        android:textSize="20sp"
+        android:textAlignment="center"
+        android:textColor="@android:color/black"
+        android:textStyle="bold"
+        android:layout_marginBottom="6dp"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:background="@color/HS_Circ_1"
+        android:layout_marginBottom="6dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight=".58333"
+        android:text="@string/apresentadorSubTitulo"
+        android:layout_gravity="center_horizontal"
+        android:textAlignment="center"
+        android:textColor="@android:color/black"
+        android:paddingStart="6dp"
+        android:paddingEnd="6dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="24dp"
+        android:layout_marginBottom="6dp"
+        />
+
+    <Button
+        android:id="@+id/btn_setup_start"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/apresentadorBtn"/>
 
 </LinearLayout>

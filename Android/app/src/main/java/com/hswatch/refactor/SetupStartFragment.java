@@ -4,16 +4,36 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+
+import com.hswatch.R;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-class SetupStartFragment extends Fragment {
+public class SetupStartFragment extends Fragment {
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return super.onCreateView(inflater, container, savedInstanceState);
+        return inflater.inflate(
+                R.layout.fragment_setup_start,
+                container,
+                false
+        );
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        view.findViewById(R.id.btn_setup_start).setOnClickListener(v -> {
+            ConfigurationFragment configurationFragment = (ConfigurationFragment) getParentFragment();
+
+            if (configurationFragment != null) {
+                configurationFragment.changeFragment();
+            }
+        });
     }
 }

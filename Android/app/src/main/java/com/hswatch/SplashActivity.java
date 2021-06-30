@@ -30,6 +30,8 @@ public class SplashActivity extends AppCompatActivity {
         startActivity(new Intent(this, MainActivity.class));
         finish();
 
+        //TODO(criar um extra para iniciar a mainactivity num fragment expecifico)
+
 //        if (MainServico.isFlagInstante()) {
 //            startActivity(new Intent(SplashActivity.this, MainActivity.class));
 //            finish();

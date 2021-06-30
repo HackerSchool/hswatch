@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.hswatch.MainActivity;
 import com.hswatch.R;
@@ -24,11 +25,13 @@ public class ConfigurationFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        MainActivity mainActivity = (MainActivity) getActivity();
+        getChildFragmentManager().beginTransaction().replace(R.id.frame_message,
+                new SetupStartFragment()).commit();
+    }
 
-        if (mainActivity != null) {
-            mainActivity.getSupportFragmentManager().beginTransaction().replace(R.id.frame_message,
-                    new SetupStartFragment());
-        }
+    public void changeFragment() {
+        Toast.makeText(getContext(), "Yes I will...", Toast.LENGTH_SHORT).show();
+
+        //TODO(switch para mudar de fragment)
     }
 }
