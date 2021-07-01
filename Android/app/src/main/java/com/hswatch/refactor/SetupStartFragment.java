@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.hswatch.R;
+import com.hswatch.Utils;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,7 +17,8 @@ public class SetupStartFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         return inflater.inflate(
                 R.layout.fragment_setup_start,
                 container,
@@ -32,7 +34,7 @@ public class SetupStartFragment extends Fragment {
             ConfigurationFragment configurationFragment = (ConfigurationFragment) getParentFragment();
 
             if (configurationFragment != null) {
-                configurationFragment.changeFragment();
+                configurationFragment.changeFragment(Utils.NEXT_FROM_START);
             }
         });
     }

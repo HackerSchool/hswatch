@@ -11,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/apresentadorTitulo"
+        android:textAllCaps="true"
         android:layout_gravity="center_horizontal"
         android:textSize="20sp"
         android:textAlignment="center"
@@ -30,8 +31,9 @@
         android:layout_height="0dp"
         android:layout_weight=".58333"
         android:text="@string/apresentadorSubTitulo"
+        android:textSize="16sp"
         android:layout_gravity="center_horizontal"
-        android:textAlignment="center"
+        android:justificationMode="inter_word"
         android:textColor="@android:color/black"
         android:paddingStart="6dp"
         android:paddingEnd="6dp"
@@ -44,6 +46,7 @@
         android:id="@+id/btn_setup_start"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/apresentadorBtn"/>
+        android:text="@string/apresentadorBtn"
+        android:backgroundTint="@color/HS_Circ_3"/>
 
 </LinearLayout>
