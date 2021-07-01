@@ -8,6 +8,8 @@ import android.widget.Toast;
 
 import com.hswatch.MainActivity;
 import com.hswatch.R;
+import com.hswatch.SetupServiceFragment;
+import com.hswatch.Utils;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -29,9 +31,23 @@ public class ConfigurationFragment extends Fragment {
                 new SetupStartFragment()).commit();
     }
 
-    public void changeFragment() {
+    public void changeFragment(int fragmentChosen) {
         Toast.makeText(getContext(), "Yes I will...", Toast.LENGTH_SHORT).show();
 
+        //TODO(fragmento de iniciar a app pela primeira vez)
+
+        switch (fragmentChosen) {
+            case Utils.NEXT_FROM_START:
+                getChildFragmentManager().beginTransaction().replace(R.id.frame_message,
+                        new SetupServiceFragment()).commit();
+                break;
+            case Utils.NEXT_FROM_LIST:
+                //TODO(iniciar fragment com a mensagem de que se ligou com sucesso)
+                break;
+            default:break;
+        }
+
         //TODO(switch para mudar de fragment)
+        //TODO(adicionar os restantes fragmentos e serviço para depois na sexta ter o layout melhorado acabado para o HackFeed)
     }
 }

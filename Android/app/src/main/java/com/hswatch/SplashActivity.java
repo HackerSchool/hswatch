@@ -19,6 +19,7 @@ import static com.hswatch.Utils.NAME;
 public class SplashActivity extends AppCompatActivity {
 
     // TODO acabar documentação nesta atividade
+    //TODO(adicionar atividade caso esteja a fazer reconexão)
 
     public static final String TAG = "hswatch.ativ.splash";
 
@@ -30,7 +31,7 @@ public class SplashActivity extends AppCompatActivity {
         startActivity(new Intent(this, MainActivity.class));
         finish();
 
-        //TODO(criar um extra para iniciar a mainactivity num fragment expecifico)
+        //TODO(criar um extra para iniciar a mainactivity num fragment especifico)
 
 //        if (MainServico.isFlagInstante()) {
 //            startActivity(new Intent(SplashActivity.this, MainActivity.class));

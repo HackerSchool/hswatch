@@ -158,6 +158,15 @@ public class Utils {
     public static final String TIME_INDICATOR = "TIM";
     public static final String NOT_INDICATOR = "Not";
 
+
+    /**
+     * Setup Fragment Keys
+     */
+    public static final int NEXT_FROM_START = 0;
+    public static final int NEXT_FROM_LIST = 1;
+
+
+
 // Notas
 //    private void terPackagesNames() {
 //        PackageManager pm = getPackageManager();
