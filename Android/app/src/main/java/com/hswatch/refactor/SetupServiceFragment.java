@@ -1,4 +1,4 @@
-package com.hswatch;
+package com.hswatch.refactor;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -12,6 +12,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.hswatch.R;
+import com.hswatch.Utils;
 import com.hswatch.bluetooth.MainServico;
 
 import java.util.ArrayList;

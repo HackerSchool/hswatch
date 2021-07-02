@@ -9,7 +9,7 @@
     <string name="navigation_abrir">Abrir menu lateral</string>
     <string name="navigation_fechar">Fechar menu lateral</string>
     <string name="apresentadorTitulo">Configuração do Relógio</string>
-    <string name="apresentadorSubTitulo">Vai configurar o relógio à aplicação HSWatch e a partir daí serão gerenciadas todas as trocas de dados entre a aplicação e o relógio. Carregue no botão para começar!</string>
+    <string name="apresentadorSubTitulo">Vai configurar o relógio à aplicação HSWatch e a partir daí serão gerenciadas todas as trocas de dados entre a aplicação e o relógio.\nCarregue no botão para começar!</string>
     <string name="apresentadorBtn">Ligar</string>
     <string name="listarTitulo">Selecione o dispositivo</string>
     <string name="ServicoDisp">hswatch.Servico.BTDispositivo</string>

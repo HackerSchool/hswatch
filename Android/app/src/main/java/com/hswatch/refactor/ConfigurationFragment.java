@@ -6,9 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.hswatch.MainActivity;
 import com.hswatch.R;
-import com.hswatch.SetupServiceFragment;
 import com.hswatch.Utils;
 
 import androidx.annotation.NonNull;
