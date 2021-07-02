@@ -33,6 +33,8 @@ import static com.hswatch.Utils.BT_DEVICE_NAME;
 import static com.hswatch.Utils.NOTIFICATION_SERVICE_ID;
 import static com.hswatch.Utils.REQUEST_CODE_PENDING_INTENT;
 import static com.hswatch.Utils.FOREGROUND_ID;
+import static com.hswatch.Utils.connectionSucceeded;
+import static com.hswatch.Utils.tryConnecting;
 
 //TODO(documentar)
 public class MainServico extends Service {
@@ -125,6 +127,8 @@ public class MainServico extends Service {
 
         this.mainSettings = PreferenceManager.getDefaultSharedPreferences(getCurrentContext());
 
+        tryConnecting = true;
+
         return START_REDELIVER_INTENT;
     }
 
@@ -208,11 +212,15 @@ public class MainServico extends Service {
             if (!isFlagReconnection()) {
                 MainServico.setFlagInstante(false);
                 stopForeground(true);
+                tryConnecting = false;
+                connectionSucceeded = false;
                 stopSelf();
             }
         } else {
             MainServico.setFlagInstante(false);
             stopForeground(true);
+            tryConnecting = false;
+            connectionSucceeded = false;
             stopSelf();
         }
     }
@@ -279,6 +287,8 @@ public class MainServico extends Service {
         }
         stopForeground(true);
         MainServico.setFlagInstante(false);
+        tryConnecting = false;
+        connectionSucceeded = false;
         stopSelf();
     }
 
@@ -313,6 +323,8 @@ public class MainServico extends Service {
         }
         MainServico.setFlagInstante(false);
         stopForeground(true);
+        tryConnecting = false;
+        connectionSucceeded = false;
         stopSelf();
     }
     //endregion
@@ -414,8 +426,7 @@ public class MainServico extends Service {
     }
 
     public void setFlagReconnection(boolean flagReconnection) {
-        if (!flagReconnection)
-            this.setThreadReconnection(null);
+        if (!flagReconnection) this.setThreadReconnection(null);
 
         this.flagReconnection = flagReconnection;
     }

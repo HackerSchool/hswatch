@@ -30,7 +30,7 @@ public class ConfigurationFragment extends Fragment {
     }
 
     public void changeFragment(int fragmentChosen) {
-        Toast.makeText(getContext(), "Yes I will...", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "Now this, puts a smile on my face...", Toast.LENGTH_SHORT).show();
 
         //TODO(fragmento de iniciar a app pela primeira vez)
 

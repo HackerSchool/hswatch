@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.hswatch.R;
 import com.hswatch.Utils;
@@ -25,7 +24,10 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
-public class SetupServiceFragment extends Fragment {
+import static com.hswatch.Utils.connectionSucceeded;
+import static com.hswatch.Utils.tryConnecting;
+
+public class SetupServiceFragment extends Fragment implements Runnable  {
 
     private ListView listView;
     private boolean searchAble = false;
@@ -49,9 +51,15 @@ public class SetupServiceFragment extends Fragment {
         showBTDevices(listView);
 
         listView.setOnItemClickListener((adapterView, view1, position, l) -> {
-            if (searchAble) startService((String) listView.getItemAtPosition(position));
+            if (searchAble) startConnection((String) listView.getItemAtPosition(position));
         });
 
+    }
+
+    private void startConnection(String deviceName) {
+        startService(deviceName);
+
+        this.run();
     }
 
     private void startService(String deviceName) {
@@ -69,9 +77,24 @@ public class SetupServiceFragment extends Fragment {
     }
 
     private void showBTDevices(@NonNull ListView listView) {
-        Set<BluetoothDevice> bluetoothDeviceSet = BluetoothAdapter.getDefaultAdapter()
-                .getBondedDevices();
 
+        Context context;
+        try {
+            context = requireContext();
+        } catch (IllegalStateException illegalStateException) {
+            illegalStateException.printStackTrace();
+            return;
+        }
+
+        listView.setAdapter(new ArrayAdapter<>(
+                context,
+                R.layout.lista_emparelhados_layout,
+                returnNames(BluetoothAdapter.getDefaultAdapter().getBondedDevices(), context)
+        ));
+
+    }
+
+    private List<String> returnNames(Set<BluetoothDevice> bluetoothDeviceSet, Context context) {
         List<String> names = new ArrayList<>();
         if (bluetoothDeviceSet.size() > 0) {
             for (BluetoothDevice bluetoothDevice : bluetoothDeviceSet) {
@@ -79,20 +102,22 @@ public class SetupServiceFragment extends Fragment {
             }
             searchAble = true;
         } else {
-            try {
-                names.add(requireContext().getResources().getString(R.string.BT_DEVICE_NOT_FOUND));
-            } catch (IllegalStateException illegalStateException) {
-                illegalStateException.printStackTrace();
-                names.add("Error");
-            }
+            names.add(context.getResources().getString(R.string.BT_DEVICE_NOT_FOUND));
             searchAble = false;
         }
+        return names;
+    }
 
-        listView.setAdapter(new ArrayAdapter<>(
-                requireContext(),
-                R.layout.lista_emparelhados_layout,
-                names
-        ));
+    @Override
+    public void run() {
+        while (tryConnecting);
 
+        if (connectionSucceeded) {
+            ConfigurationFragment configurationFragment = (ConfigurationFragment) getParentFragment();
+
+            if (configurationFragment != null) {
+                configurationFragment.changeFragment(Utils.NEXT_FROM_START);
+            }
+        }
     }
 }

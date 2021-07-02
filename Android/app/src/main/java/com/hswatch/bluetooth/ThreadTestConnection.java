@@ -21,16 +21,18 @@ class ThreadTestConnection extends Thread {
     @Override
     public void run() {
         super.run();
-        while (this.mainServico.isConnected() || this.bluetoothSocket.isConnected()) {
-            try {
-                this.mainServico.write(Utils.delimitador);
+        synchronized (this) {
+            while (this.mainServico.isConnected() || this.bluetoothSocket.isConnected()) {
+                try {
+                    this.mainServico.write(Utils.delimitador);
 
-                this.wait(halfMinute);
+                    this.wait(halfMinute);
 
-            } catch (IOException | InterruptedException ioException) {
-                ioException.printStackTrace();
-                this.mainServico.connectionLost();
-                break;
+                } catch (IOException | InterruptedException ioException) {
+                    ioException.printStackTrace();
+                    this.mainServico.connectionLost();
+                    break;
+                }
             }
         }
     }

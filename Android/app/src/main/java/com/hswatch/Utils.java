@@ -164,7 +164,8 @@ public class Utils {
      */
     public static final int NEXT_FROM_START = 0;
     public static final int NEXT_FROM_LIST = 1;
-
+    public static volatile boolean tryConnecting = false;
+    public static volatile boolean connectionSucceeded = false;
 
 
 // Notas
