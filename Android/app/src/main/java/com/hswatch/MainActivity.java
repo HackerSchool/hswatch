@@ -20,13 +20,7 @@ import androidx.core.view.GravityCompat;
 
 import com.google.android.material.navigation.NavigationView;
 import com.hswatch.databinding.ActivityMainBinding;
-import com.hswatch.fragments.ConfigDeviceActivity;
 import com.hswatch.refactor.ConfigurationFragment;
-
-import static com.hswatch.Utils.HISTORY_SHARED_PREFERENCES;
-import static com.hswatch.Utils.NAME;
-import static com.hswatch.Utils.PERMISSOES;
-import static com.hswatch.Utils.CHECKER;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -58,7 +52,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 //        Permissoes
             if (!temPermissao(this)) {
-                ActivityCompat.requestPermissions(this, PERMISSOES, 1);
+                ActivityCompat.requestPermissions(this, Utils.PERMISSOES, 1);
             }
         }
     }
@@ -70,7 +64,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private boolean temPermissao(Context context) {
         if (context != null) {
-            for (String permissao : PERMISSOES) {
+            for (String permissao : Utils.PERMISSOES) {
                 if (ContextCompat.checkSelfPermission(context, permissao) != PackageManager.PERMISSION_GRANTED) {
                     return false;
                 }
@@ -117,7 +111,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (binding.atividadePrincipal.isDrawerOpen(GravityCompat.START)) {
             binding.atividadePrincipal.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            ConfigurationFragment configurationFragment = (ConfigurationFragment) getSupportFragmentManager()
+                .findFragmentByTag(Utils.CONFIGURATION_SETUP_KEY);
+            if (configurationFragment != null) {
+                if (configurationFragment.getChildFragmentManager().getBackStackEntryCount() > 0) {
+                    configurationFragment.getChildFragmentManager().popBackStack();
+                } else {
+                    finishAffinity();
+                }
+            } else {
+                super.onBackPressed();
+            }
         }
     }
 
@@ -127,7 +131,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //            Página principal
             case R.id.casa:
                 getSupportFragmentManager().beginTransaction().replace(R.id.frame,
-                        new paginaPrincipal()).commit();
+                        new paginaPrincipal(), Utils.MAIN_FRAGMENT_KEY).commit();
                 break;
 
 //                Lista de dispositivos guardados (facil de emparelhar no futuro)
@@ -140,7 +144,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.novo:
 //                startActivity(new Intent(getApplicationContext(), ConfigDeviceActivity.class));
                 getSupportFragmentManager().beginTransaction().replace(R.id.frame,
-                        new ConfigurationFragment()).commit();
+                        new ConfigurationFragment(), Utils.CONFIGURATION_SETUP_KEY).commit();
                 break;
 
 //                Definições
@@ -148,10 +152,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
                 break;
             case R.id.apagar:
-                SharedPreferences sharedPreferences = getSharedPreferences(HISTORY_SHARED_PREFERENCES, MODE_PRIVATE);
+                SharedPreferences sharedPreferences = getSharedPreferences(Utils.HISTORY_SHARED_PREFERENCES, MODE_PRIVATE);
                 sharedPreferences.edit()
-                        .putString(NAME, "Erro")
-                        .putBoolean(CHECKER, false)
+                        .putString(Utils.NAME, "Erro")
+                        .putBoolean(Utils.CHECKER, false)
                         .apply();
                 finishAffinity();
 
@@ -162,5 +166,4 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         binding.atividadePrincipal.closeDrawer(GravityCompat.START);
         return true;
     }
-
 }

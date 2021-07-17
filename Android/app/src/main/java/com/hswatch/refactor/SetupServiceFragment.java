@@ -116,7 +116,7 @@ public class SetupServiceFragment extends Fragment implements Runnable  {
             ConfigurationFragment configurationFragment = (ConfigurationFragment) getParentFragment();
 
             if (configurationFragment != null) {
-                configurationFragment.changeFragment(Utils.NEXT_FROM_START);
+                configurationFragment.changeFragment(Utils.NEXT_FROM_LIST);
             }
         }
     }

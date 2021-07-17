@@ -162,8 +162,14 @@ public class Utils {
     /**
      * Setup Fragment Keys
      */
-    public static final int NEXT_FROM_START = 0;
-    public static final int NEXT_FROM_LIST = 1;
+    public static final String MAIN_FRAGMENT_KEY = "MAIN_FRAGMENT";
+    public static final String CONFIGURATION_SETUP_KEY = "CONFIGURATION_SETUP_FRAGMENT";
+    public static final String SETUP_TAG_FRAGMENT = "SETUP_TAG_FRAGMENT";
+    public static final String INITIAL_STATE_TAG_FRAGMENT = "INITIAL_STATE_TAG_FRAGMENT";
+    public static final int INITIAL_STATE = 0;
+    public static final int NEXT_FROM_START = 1;
+    public static final int NEXT_FROM_LIST = 2;
+    public static final int NEXT_FROM_FINISH = 3;
     public static volatile boolean tryConnecting = false;
     public static volatile boolean connectionSucceeded = false;
 
