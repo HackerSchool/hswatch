@@ -29,9 +29,10 @@
     <string name="ServiceBT_BT_Off_ContextText">A conexão foi desligada, bem como o seu serviço. Pressione aqui caso queira criar uma nova conexão.</string>
 
     <string name="AVISO_NOT_LIST">O HSWatch necessita do acesso às notificações para o seu funcionamento e de efeitos de demonstragem.\nDeseja ativar a leitura das notificações?</string>
-    <string name="finalizador_titulo">Conexão realizada com sucesso!</string>
+    <string name="finalizador_titulo">Conexão sucedida!</string>
     <string name="finalizador_texto">Agora tem o relógio conectado com a aplicação HSWatch! Carregue no botão para começar a personalizar e definir os seus novos parâmetros.</string>
     <string name="finalizador_sub_texto">Esperemos que desfrute ao máximo da sua aplicação daqui para a frente!</string>
+    <string name="finishing_setup_btn">Finalizar</string>
     <string name="NOME">Nome</string>
     <string name="MENU_CASA">Página Principal</string>
     <string name="MENU_DISPOSITIVOS">Dispositivos</string>

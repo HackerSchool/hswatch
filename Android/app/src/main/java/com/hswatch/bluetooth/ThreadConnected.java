@@ -94,8 +94,6 @@ public class ThreadConnected extends Thread {
         // Updates the connection state on the Service
         mainServico.setCurrentState(MainServico.STATE_CONNECTED);
 
-        //TODO(green signal with name)
-
         // Initializes the Watch object
         this.currentWatch = new Watch(mainServico.getCurrentContext(),
                 mainServico.getBluetoothDevice());

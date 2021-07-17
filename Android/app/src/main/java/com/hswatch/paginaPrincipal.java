@@ -29,6 +29,7 @@ public class paginaPrincipal extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        opcoesItems.clear();
         opcoesItems.add(new opcoesItem(R.drawable.ic_notificacoes_recebidas, "Notificações Recebidas"));
         opcoesItems.add(new opcoesItem(R.drawable.ic_chamadas_recebidas, "Chamadas Recebidas"));
         return inflater.inflate(R.layout.fragment_disp, container, false);

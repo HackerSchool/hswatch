@@ -166,6 +166,7 @@ public class Utils {
     public static final String CONFIGURATION_SETUP_KEY = "CONFIGURATION_SETUP_FRAGMENT";
     public static final String SETUP_TAG_FRAGMENT = "SETUP_TAG_FRAGMENT";
     public static final String INITIAL_STATE_TAG_FRAGMENT = "INITIAL_STATE_TAG_FRAGMENT";
+    public static final String FINISHING_TAG_FRAGMENT = "FINISHING_TAG_FRAGMENT";
     public static final int INITIAL_STATE = 0;
     public static final int NEXT_FROM_START = 1;
     public static final int NEXT_FROM_LIST = 2;

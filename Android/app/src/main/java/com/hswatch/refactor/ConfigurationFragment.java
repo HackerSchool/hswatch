@@ -9,6 +9,7 @@ import android.widget.Toast;
 import com.hswatch.MainActivity;
 import com.hswatch.R;
 import com.hswatch.Utils;
+import com.hswatch.paginaPrincipal;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -59,11 +60,16 @@ public class ConfigurationFragment extends Fragment {
 
             // Transition from the Servicce Fragment to the Finishing Fragment
             case Utils.NEXT_FROM_LIST:
-                //TODO(iniciar fragment com a mensagem de que se ligou com sucesso)
+                getChildFragmentManager().beginTransaction()
+                        .replace(R.id.frame_message, new FinishingSetupFragment())
+                        .addToBackStack(Utils.FINISHING_TAG_FRAGMENT)
+                        .commit();
                 break;
 
             case Utils.NEXT_FROM_FINISH:
-                //TODO(iniciar mainfragment aqui)
+                getParentFragmentManager().beginTransaction()
+                        .replace(R.id.frame, new paginaPrincipal())
+                        .commit();
                 break;
             default:break;
         }
