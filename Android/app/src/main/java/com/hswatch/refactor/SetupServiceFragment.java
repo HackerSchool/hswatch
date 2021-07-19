@@ -27,7 +27,7 @@ import androidx.fragment.app.Fragment;
 import static com.hswatch.Utils.connectionSucceeded;
 import static com.hswatch.Utils.tryConnecting;
 
-public class SetupServiceFragment extends Fragment implements Runnable  {
+public class SetupServiceFragment extends Fragment {
 
     private ListView listView;
     private boolean searchAble = false;
@@ -57,12 +57,35 @@ public class SetupServiceFragment extends Fragment implements Runnable  {
     }
 
     private void startConnection(String deviceName) {
-        startService(deviceName);
+        startMainServico(deviceName);
 
-        this.run();
+        new Thread(new Runnable(){
+            @Override
+            public void run() {
+
+                synchronized (this) {
+                    try {
+                        this.wait(1000);
+                    } catch (InterruptedException interruptedException) {
+                        interruptedException.printStackTrace();
+                    }
+                }
+
+                while (tryConnecting);
+
+                if (connectionSucceeded) {
+                    ConfigurationFragment configurationFragment = (ConfigurationFragment) getParentFragment();
+
+                    if (configurationFragment != null) {
+                        configurationFragment.changeFragment(Utils.NEXT_FROM_LIST);
+                    }
+                }
+            }
+        }).start();
     }
 
-    private void startService(String deviceName) {
+    private void startMainServico(String deviceName) {
+
         Context context;
         try {
             context = requireContext();
@@ -71,9 +94,12 @@ public class SetupServiceFragment extends Fragment implements Runnable  {
             return;
         }
 
-        Intent startService = new Intent(getContext(), MainServico.class);
-        startService.putExtra(Utils.BT_DEVICE_NAME, deviceName);
-        ContextCompat.startForegroundService(context, startService);
+        Intent startServiceIntent = new Intent(context, MainServico.class);
+        startServiceIntent.putExtra(Utils.BT_DEVICE_NAME, deviceName);
+//        getActivity().startForegroundService(startServiceIntent);
+        ContextCompat.startForegroundService(context, startServiceIntent);
+
+        tryConnecting = true;
     }
 
     private void showBTDevices(@NonNull ListView listView) {
@@ -106,18 +132,5 @@ public class SetupServiceFragment extends Fragment implements Runnable  {
             searchAble = false;
         }
         return names;
-    }
-
-    @Override
-    public void run() {
-        while (tryConnecting);
-
-        if (connectionSucceeded) {
-            ConfigurationFragment configurationFragment = (ConfigurationFragment) getParentFragment();
-
-            if (configurationFragment != null) {
-                configurationFragment.changeFragment(Utils.NEXT_FROM_LIST);
-            }
-        }
     }
 }

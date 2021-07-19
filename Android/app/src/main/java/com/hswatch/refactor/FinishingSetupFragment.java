@@ -13,7 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-class FinishingSetupFragment extends Fragment {
+public class FinishingSetupFragment extends Fragment {
 
     @Nullable
     @Override
@@ -33,7 +33,7 @@ class FinishingSetupFragment extends Fragment {
             ConfigurationFragment configurationFragment = (ConfigurationFragment) getParentFragment();
 
             if (configurationFragment != null) {
-                configurationFragment.changeFragment(Utils.NEXT_FROM_FINISH );
+                configurationFragment.changeFragment(Utils.NEXT_FROM_FINISH);
             }
         });
 

@@ -6,7 +6,8 @@
     android:background="@drawable/layout_setup_fragment"
     android:padding="@dimen/setup_fragment_padding"
     android:orientation="vertical"
-    android:elevation="10dp">
+    android:elevation="10dp"
+    android:layout_gravity="center">
 
     <TextView
         android:layout_width="match_parent"

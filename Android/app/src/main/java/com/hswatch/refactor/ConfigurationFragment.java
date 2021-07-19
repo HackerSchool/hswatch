@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.hswatch.MainActivity;
 import com.hswatch.R;
@@ -37,7 +36,7 @@ public class ConfigurationFragment extends Fragment {
     }
 
     public void changeFragment(int fragmentChosen) {
-        Toast.makeText(getContext(), "Now this, puts a smile on my face...", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getContext(), "Now this, puts a smile on my face...", Toast.LENGTH_SHORT).show();
 
         //TODO(fragmento de iniciar a app pela primeira vez)
 
@@ -51,16 +50,23 @@ public class ConfigurationFragment extends Fragment {
                 break;
 
             // Transition from the Setup Fragment to the Service Fragment
+            //TODO(verificar o porquê de aparecer imensas notificações quando se desliga o serviço)
+            //TODO(perceber porque é que o serviço termina quando se bloqueia o tlm)
+
             case Utils.NEXT_FROM_START:
                 getChildFragmentManager().beginTransaction()
+                        .setCustomAnimations(R.animator.slide_in_left, R.animator.slide_out_right,
+                                R.animator.slide_in_pop_left, R.animator.slide_out_pop_right)
                         .replace(R.id.frame_message, new SetupServiceFragment())
                         .addToBackStack(Utils.SETUP_TAG_FRAGMENT)
                         .commit();
                 break;
 
-            // Transition from the Servicce Fragment to the Finishing Fragment
+            // Transition from the Service Fragment to the Finishing Fragment
             case Utils.NEXT_FROM_LIST:
                 getChildFragmentManager().beginTransaction()
+                        .setCustomAnimations(R.animator.slide_in_left, R.animator.slide_out_right,
+                                R.animator.slide_in_pop_left, R.animator.slide_out_pop_right)
                         .replace(R.id.frame_message, new FinishingSetupFragment())
                         .addToBackStack(Utils.FINISHING_TAG_FRAGMENT)
                         .commit();
@@ -73,10 +79,9 @@ public class ConfigurationFragment extends Fragment {
                 break;
             default:break;
         }
-
-        //TODO(switch para mudar de fragment)
-        //TODO(adicionar os restantes fragmentos e serviço para depois na sexta ter o layout melhorado acabado para o HackFeed)
     }
 
-
+    public MainActivity getMainActivity() {
+        return mainActivity;
+    }
 }
