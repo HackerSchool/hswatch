@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.hswatch.MainActivity;
 import com.hswatch.R;
 import com.hswatch.Utils;
 import com.hswatch.bluetooth.MainServico;
@@ -96,8 +97,15 @@ public class SetupServiceFragment extends Fragment {
 
         Intent startServiceIntent = new Intent(context, MainServico.class);
         startServiceIntent.putExtra(Utils.BT_DEVICE_NAME, deviceName);
+        ConfigurationFragment configurationFragment = (ConfigurationFragment) getParentFragment();
+
+        if (configurationFragment != null) {
+            MainActivity mainActivity = configurationFragment.getMainActivity();
+            mainActivity.startForegroundService(startServiceIntent);
+        }
+
 //        getActivity().startForegroundService(startServiceIntent);
-        ContextCompat.startForegroundService(context, startServiceIntent);
+//        ContextCompat.startForegroundService(context, startServiceIntent);
 
         tryConnecting = true;
     }

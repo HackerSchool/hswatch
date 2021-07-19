@@ -81,6 +81,7 @@ public class ConfigurationFragment extends Fragment {
         }
     }
 
+    @NonNull
     public MainActivity getMainActivity() {
         return mainActivity;
     }
