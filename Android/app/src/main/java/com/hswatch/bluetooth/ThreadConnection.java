@@ -78,8 +78,6 @@ public class ThreadConnection extends Thread {
                 exception1.printStackTrace();
             }
 
-            // TODO(red signal to the setup phase)
-
             this.mainServico.connectionFailed();
         }
 

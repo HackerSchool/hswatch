@@ -32,13 +32,13 @@ class ThreadReconnection extends Thread {
 
 //                    Thread.sleep(60000);
 
-                    if (Thread.interrupted()) {
+                    if (Thread.interrupted())
                         throw new InterruptedException("Reconnection was interrupted!");
-                    }
 
                 } catch(InterruptedException interruptedException){
                     this.mainServico.threadInterrupted(this);
                     interruptedException.printStackTrace();
+                    break;
                 }
             }
         }
