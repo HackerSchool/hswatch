@@ -164,6 +164,8 @@ public class ThreadConnected extends Thread {
         // Tells to the service that exists a connection running, so the SplashActivity can start
         // the MainActivity instead the SetupActivity
         MainServico.setFlagInstante(true);
+        connectionSucceeded = true;
+        tryConnecting = false;
 
         // Initializes the test thread
         this.mainServico.testConnection();
@@ -308,6 +310,10 @@ public class ThreadConnected extends Thread {
         }
     }
 
+    /**
+     *
+     * @param message
+     */
     public void sendMessage(List<String> message) {
         try {
             this.write(message.get(0).getBytes());

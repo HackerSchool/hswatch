@@ -8,6 +8,7 @@ import android.content.IntentFilter;
 import android.provider.Settings;
 import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
+import android.util.Log;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -68,7 +69,7 @@ public class NotificationListener extends NotificationListenerService {
     @Override
     public void onNotificationPosted(StatusBarNotification sbn) {
         super.onNotificationPosted(sbn);
-        if (packagesNotFilter.containsKey(sbn.getPackageName())) {
+        if (packagesNotFilter.containsValue(sbn.getPackageName())) {
             sendNotification(sbn);
         }
     }

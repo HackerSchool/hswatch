@@ -104,6 +104,7 @@ public class MainServico extends Service {
         try {
             deviceName = intent.getStringExtra(BT_DEVICE_NAME);
         } catch (Exception e) {
+            tryConnecting = false;
             e.printStackTrace();
             return START_STICKY;
         }
@@ -120,6 +121,8 @@ public class MainServico extends Service {
                 break;
             }
         }
+
+        tryConnecting = true;
 
         createConection(this.bluetoothDevice);
 
@@ -172,7 +175,7 @@ public class MainServico extends Service {
 
     //region BT Connections
 
-    public void createConection(BluetoothDevice bluetoothDevice) {
+    public synchronized void createConection(BluetoothDevice bluetoothDevice) {
         if (getCurrentState() == STATE_CONNECTING && this.threadConnection != null) {
             threadConnection.restart();
             setThreadConnection(null);
@@ -187,7 +190,7 @@ public class MainServico extends Service {
         this.threadConnection.start();
     }
 
-    public void connectionEstablish() {
+    public synchronized void connectionEstablish() {
         if (!this.isFlagError()) {
             if (this.threadConnection != null) {
                 setThreadConnection(null);
@@ -213,11 +216,18 @@ public class MainServico extends Service {
         } else {
             MainServico.setFlagInstante(false);
             stopForeground(true);
+            tryConnecting = false;
+            connectionSucceeded = false;
+            notificationEndService();
             stopSelf();
         }
     }
 
-    public void connectionFailed() {
+    private void notificationEndService() {
+
+    }
+
+    public synchronized void connectionFailed() {
         if (this.threadConnection != null && getCurrentState() == STATE_CONNECTING) {
             flagError = true;
             notificationError();
@@ -227,24 +237,24 @@ public class MainServico extends Service {
         }
     }
 
-    public void connectionLostAtInitialThread() {
+    public synchronized void connectionLostAtInitialThread() {
         if (threadConnected != null) {
             flagError = true;
             notificationError();
-            setThreadConnected(null);
             setCurrentState(NULL_STATE);
+            setThreadConnected(null);
             stopConnection();
         }
     }
 
-    public void connectionLost() {
+    public synchronized void connectionLost() {
         if (threadConnected != null) {
             flagError = true;
+            setCurrentState(OUT_OF_RANGE);
             notificationErrorReconection();
             threadConnected.cancel();
             setThreadConnected(null);
             setThreadTestConnection(null);
-            setCurrentState(OUT_OF_RANGE);
             setReconnectionThread();
         }
     }
@@ -277,9 +287,7 @@ public class MainServico extends Service {
         if (threadTestConnection != null) {
             setThreadTestConnection(null);
         }
-        stopForeground(true);
-        MainServico.setFlagInstante(false);
-        stopSelf();
+        stopConnection();
     }
 
     private void notificationError() {
@@ -304,16 +312,13 @@ public class MainServico extends Service {
                     String.format(getResources().getString(R.string.ServiceBT_Title), deviceName),
                     getResources().getString(R.string.ServiceBT_Text)));
         }
-
     }
 
     public void threadInterrupted(Thread thread) {
         if (thread instanceof ThreadConnected) {
             ((ThreadConnected) thread).cancel();
         }
-        MainServico.setFlagInstante(false);
-        stopForeground(true);
-        stopSelf();
+        stopConnection();
     }
     //endregion
 
@@ -361,10 +366,10 @@ public class MainServico extends Service {
         }
     }
 
-    public synchronized void write(byte[] buffer) throws IOException {
-        if (threadConnected != null) {
-            threadConnected.write(buffer);
-        }
+    public synchronized boolean write(byte[] buffer) throws IOException {
+        if (threadConnected != null) threadConnected.write(buffer);
+
+        return threadConnected != null;
     }
 
     //region Getters and Setters

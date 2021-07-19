@@ -21,16 +21,24 @@ class ThreadTestConnection extends Thread {
     @Override
     public void run() {
         super.run();
-        while (this.mainServico.isConnected() || this.bluetoothSocket.isConnected()) {
-            try {
-                this.mainServico.write(Utils.delimitador);
+        synchronized (this) {
+            while (this.mainServico.isConnected() || this.bluetoothSocket.isConnected()) {
+                try {
+                    boolean result = this.mainServico.write(Utils.delimitador);
 
-                this.wait(halfMinute);
+                    if (result)
+                        this.wait(halfMinute);
+                    else
+                        throw new NullPointerException("There was no ThreadConnected class to send the message on!");
 
-            } catch (IOException | InterruptedException ioException) {
-                ioException.printStackTrace();
-                this.mainServico.connectionLost();
-                break;
+                } catch (IOException | InterruptedException ioException) {
+                    ioException.printStackTrace();
+                    this.mainServico.threadInterrupted(this);
+                    break;
+                } catch (NullPointerException nullPointerException) {
+                    nullPointerException.printStackTrace();
+                    break;
+                }
             }
         }
     }
