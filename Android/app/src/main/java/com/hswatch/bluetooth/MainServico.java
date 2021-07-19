@@ -33,6 +33,8 @@ import static com.hswatch.Utils.BT_DEVICE_NAME;
 import static com.hswatch.Utils.NOTIFICATION_SERVICE_ID;
 import static com.hswatch.Utils.REQUEST_CODE_PENDING_INTENT;
 import static com.hswatch.Utils.FOREGROUND_ID;
+import static com.hswatch.Utils.tryConnecting;
+import static com.hswatch.Utils.connectionSucceeded;
 
 //TODO(documentar)
 public class MainServico extends Service {

@@ -21,6 +21,8 @@ import static com.hswatch.Utils.TIME_INDICATOR;
 import static com.hswatch.Utils.WEATHER_INDICATOR;
 import static com.hswatch.Utils.delimitador;
 import static com.hswatch.Utils.separador;
+import static com.hswatch.Utils.tryConnecting;
+import static com.hswatch.Utils.connectionSucceeded;
 
 //TODO(documentar)
 public class ThreadConnected extends Thread {
