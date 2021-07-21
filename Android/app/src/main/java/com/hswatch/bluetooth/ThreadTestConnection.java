@@ -31,12 +31,16 @@ class ThreadTestConnection extends Thread {
                     else
                         throw new NullPointerException("There was no ThreadConnected class to send the message on!");
 
-                } catch (IOException | InterruptedException ioException) {
-                    ioException.printStackTrace();
+                } catch (InterruptedException interruptedException) {
+                    interruptedException.printStackTrace();
                     this.mainServico.threadInterrupted(this);
                     break;
                 } catch (NullPointerException nullPointerException) {
                     nullPointerException.printStackTrace();
+                    break;
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                    this.mainServico.connectionLost();
                     break;
                 }
             }

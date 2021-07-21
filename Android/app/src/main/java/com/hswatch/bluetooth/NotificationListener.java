@@ -302,7 +302,6 @@ public class NotificationListener extends NotificationListenerService {
 //        if (titulo == null || texto == null) {
 //            return;
 //        }
-//        // TODO(criar um filtro para as notificações)
 //        if (filterNot(titulo, texto, packageName)) {
 //            List<String> mensagemNotificacao = new ArrayList<>();
 //            mensagemNotificacao.add(NOT_INDICATOR);

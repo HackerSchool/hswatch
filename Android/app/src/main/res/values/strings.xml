@@ -78,8 +78,9 @@
     <string name="Foreground_Reconection_Text">Carregue para parar reconexão</string>
     <string name="About_Text">Developed by: Filipe Varela | Pedro Direita @ Hackerschool</string>
     <string name="Connection_Title">Conexão</string>
-    <string name="Switch_Connection_Title">Manter reconexão</string>
+    <string name="Switch_Connection_Title">Manter conexão</string>
     <string name="RECEIVED">recebida</string>
     <string name="LOST">perdida</string>
     <string name="BT_DEVICE_NOT_FOUND">Não foi encontrado nenhum dispositivo</string>
+    <string name="ServiceBT_Service_Off_Title">Serviço desligado</string>
 </resources>

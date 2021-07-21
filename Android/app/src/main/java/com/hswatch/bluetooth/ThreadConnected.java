@@ -94,8 +94,6 @@ public class ThreadConnected extends Thread {
         // Updates the connection state on the Service
         mainServico.setCurrentState(MainServico.STATE_CONNECTED);
 
-        //TODO(green signal with name)
-
         // Initializes the Watch object
         this.currentWatch = new Watch(mainServico.getCurrentContext(),
                 mainServico.getBluetoothDevice());
@@ -178,7 +176,7 @@ public class ThreadConnected extends Thread {
     }
 
     private void manageConnection() {
-        while (this.mainServico.isConnected() || this.bluetoothSocket.isConnected()) {
+        while (this.mainServico.isConnected()) {
             try {
                 // Verify if there is something to read
                 int bytesAvailable = this.inputStream.available();
@@ -210,12 +208,14 @@ public class ThreadConnected extends Thread {
             } catch (IOException e) {
                 e.printStackTrace();
                 this.mainServico.connectionLost();
-                break;
+                return;
             } catch (InterruptedException interruptedException) {
+                interruptedException.printStackTrace();
                 this.mainServico.threadInterrupted(this);
-                break;
+                return;
             }
         }
+        this.mainServico.connectionLost();
     }
 
     /**

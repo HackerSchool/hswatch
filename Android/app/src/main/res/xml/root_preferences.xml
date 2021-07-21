@@ -38,7 +38,7 @@
     </PreferenceCategory>
     <PreferenceCategory app:title="@string/Connection_Title">
         <SwitchPreference
-            app:key="conection"
+            app:key="connection"
             app:title="@string/Switch_Connection_Title"
             app:defaultValue="true"/>
     </PreferenceCategory>

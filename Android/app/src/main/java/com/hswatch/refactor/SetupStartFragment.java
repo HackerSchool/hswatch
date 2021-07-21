@@ -15,8 +15,6 @@ import androidx.fragment.app.Fragment;
 
 public class SetupStartFragment extends Fragment {
 
-    //TODO(verificar bluetooth connection aqui ou no configuration)
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
