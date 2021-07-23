@@ -7,7 +7,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.ContactsContract;
 import android.telephony.TelephonyManager;
-import android.util.Log;
 
 import com.hswatch.R;
 
@@ -23,8 +22,6 @@ import static com.hswatch.CallActivity.recetorChamada;
 
 //TODO(refactor this)
 public class PhoneCallReceiver extends BroadcastReceiver {
-
-    public static final String TAG = "hswatch_phone_listener";
 
     public static int estadoAnterior = TelephonyManager.CALL_STATE_IDLE;
     public static boolean estaReceber;

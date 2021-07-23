@@ -34,6 +34,7 @@
                 android:layout_margin="12dp"/>
 
             <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/cha_recycler"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 tools:listitem="@layout/not_disp"
@@ -43,6 +44,7 @@
     </ScrollView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/cha_fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"

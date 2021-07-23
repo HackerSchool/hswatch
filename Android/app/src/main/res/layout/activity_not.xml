@@ -82,6 +82,7 @@
                 android:layout_margin="6dp"/>
 
             <Button
+                android:id="@+id/not_btn_adicionar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/ADICIONAR"
@@ -94,6 +95,7 @@
 
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/not_fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
