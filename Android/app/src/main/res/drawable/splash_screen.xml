@@ -5,11 +5,9 @@
     <item android:drawable="@color/HS_Logo"/>
 
     <item
-        android:height="512dp"
-        android:width="512dp"
         android:gravity="center"
         >
-        <bitmap android:src="@drawable/app_logo"
+        <bitmap android:src="@drawable/wallpaper"
             android:filter="true"/>
     </item>
 </layer-list>

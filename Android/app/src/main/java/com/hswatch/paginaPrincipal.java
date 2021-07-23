@@ -13,6 +13,7 @@ import com.hswatch.fragments.ConfigDeviceActivity;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -25,13 +26,24 @@ import static com.hswatch.Utils.NOTIFICACOES;
 public class paginaPrincipal extends Fragment {
 
     private final List<opcoesItem> opcoesItems = new ArrayList<>();
+    private opcoesAdapter OpcoesAdapter;
+    private RecyclerView recyclerView;
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         opcoesItems.clear();
-        opcoesItems.add(new opcoesItem(R.drawable.ic_notificacoes_recebidas, "Notificações Recebidas"));
-        opcoesItems.add(new opcoesItem(R.drawable.ic_chamadas_recebidas, "Chamadas Recebidas"));
+        opcoesItems.add(new opcoesItem(
+                R.drawable.ic_notificacoes_recebidas,
+                getResources().getString(R.string.notifications_received_item)
+        ));
+        opcoesItems.add(new opcoesItem(
+                R.drawable.ic_chamadas_recebidas,
+                getResources().getString(R.string.calls_received_item)
+        ));
+
         return inflater.inflate(R.layout.fragment_disp, container, false);
     }
 
@@ -39,13 +51,15 @@ public class paginaPrincipal extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        RecyclerView recyclerView = view.findViewById(R.id.rec_frag);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        this.recyclerView = view.findViewById(R.id.rec_frag);
+        this.recyclerView.setHasFixedSize(true);
+        this.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        final opcoesAdapter OpcoesAdapter = new opcoesAdapter(opcoesItems);
-        recyclerView.setAdapter(OpcoesAdapter);
-        OpcoesAdapter.setOnitemclicklistener(this::acaoItem);
+        this.OpcoesAdapter = new opcoesAdapter(opcoesItems);
+        this.OpcoesAdapter.setOnitemclicklistener(this::acaoItem);
+
+        populateRecyclerView(PreferenceManager.getDefaultSharedPreferences(view.getContext())
+                .getBoolean("debugging_mode", false));
 
         ((TextView) view.findViewById(R.id.txt_about)).setOnClickListener(
                 (View.OnClickListener) view1 -> ((MainActivity) requireActivity()).showSite());
@@ -69,6 +83,15 @@ public class paginaPrincipal extends Fragment {
                 Toast.makeText(getContext(), "Fora de alcance " + position, Toast.LENGTH_LONG).show();
                 break;
         }
+    }
+
+    public void populateRecyclerView(boolean debuggingMode) {
+        if (debuggingMode) {
+            this.recyclerView.setAdapter(this.OpcoesAdapter);
+        } else {
+            this.recyclerView.setAdapter(null);
+        }
+        this.recyclerView.invalidate();
     }
 
     private void iniciarAtividade(String chave) {

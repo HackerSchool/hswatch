@@ -104,6 +104,13 @@ public class Utils {
      * Key's for Activity's Response
      */
     public static final int BT_REQUEST = 1;
+    public static final String SETUP_APP_BACKGROUNDMODE = "SETUP_APP_BACKGROUNDMODE";
+    public static final String FIRST_START = "FIRST_START";
+    public static final String MAIN_ACTIVITY_MODE = "MAIN_ACTIVITY_MODE";
+    public static final int MAIN_ACTIVITY_FIRST_START = 0;
+    public static final int MAIN_ACTIVITY_CONNECTION = 1;
+    public static final int MAIN_ACTIVITY_NEEDS_CONNECTION = 2;
+    public static final String CONFIGURATION_MODE = "CONFIGURATION_MODE";
 
     @NonNull
     public static Map<String, String> getWeekArray(@NonNull Context context) {
@@ -141,6 +148,10 @@ public class Utils {
         return "&key=e2cd4478289c4b5ab5ac602203922b80&days=6";
     }
 
+
+
+
+
     /**
      * Weather API Constants
      */
@@ -164,13 +175,29 @@ public class Utils {
      */
     public static final String MAIN_FRAGMENT_KEY = "MAIN_FRAGMENT";
     public static final String CONFIGURATION_SETUP_KEY = "CONFIGURATION_SETUP_FRAGMENT";
+    public static final String INITIAL_APP_STATE_TAG_FRAGMENT = "INITIAL_APP_STATE_TAG_FRAGMENT";
+    public static final String FUNCTIONALITY_APP_STATE_TAG_FRAGMENT = "FUNCTIONALITY_APP_STATE_TAG_FRAGMENT";
+    public static final String PAIR_APP_STATE_TAG_FRAGMENT = "PAIR_APP_STATE_TAG_FRAGMENT";
+    public static final String BACKGROUND_SERVICE_APP_STATE_TAG_FRAGMENT = "BACKGROUND_SERVICE_APP_STATE_TAG_FRAGMENT";
     public static final String SETUP_TAG_FRAGMENT = "SETUP_TAG_FRAGMENT";
     public static final String INITIAL_STATE_TAG_FRAGMENT = "INITIAL_STATE_TAG_FRAGMENT";
     public static final String FINISHING_TAG_FRAGMENT = "FINISHING_TAG_FRAGMENT";
-    public static final int INITIAL_STATE = 0;
-    public static final int NEXT_FROM_START = 1;
-    public static final int NEXT_FROM_LIST = 2;
-    public static final int NEXT_FROM_FINISH = 3;
+    public static final String SETUP_APP_TITLE = "SETUP_APP_TITLE";
+    public static final String SETUP_APP_CONTENT = "SETUP_APP_CONTENT";
+    public static final String SETUP_APP_CONTENT_DESCRIPTION = "SETUP_APP_CONTENT_DESCRIPTION";
+    public static final String SETUP_APP_IMAGE_RESOURCE = "SETUP_APP_IMAGE_RESOURCE";
+    public static final String SETUP_APP_BUTTON_TEXT = "SETUP_APP_BUTTON_TEXT";
+    public static final String SETUP_APP_STATUS = "SETUP_APP_STATUS";
+    public static final int NEXT_FROM_APP_START = 0;
+    public static final int NEXT_FROM_APP_FUNC = 1;
+    public static final int NEXT_FROM_APP_PAIR = 2;
+    public static final int NEXT_FROM_APP_BACKGROUND_SERVICE = 3;
+    public static final int INITIAL_STATE = 4;
+    public static final int NEXT_FROM_START = 5;
+    public static final int NEXT_FROM_LIST = 6;
+    public static final int NEXT_FROM_FINISH = 7;
+    public static final int BACKGROUND_APP = 0;
+    public static final int BACKGROUND_CONNECTION = 1;
     public static volatile boolean tryConnecting = false;
     public static volatile boolean connectionSucceeded = false;
 

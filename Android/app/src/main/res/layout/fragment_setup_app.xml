@@ -10,9 +10,10 @@
     android:layout_gravity="center">
 
     <TextView
+        android:id="@+id/txtview_title_setup_app"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/apresentadorTitulo"
+        android:text="@string/setup_pair_app_title"
         android:textAllCaps="true"
         android:layout_gravity="center_horizontal"
         android:textSize="20sp"
@@ -29,18 +30,20 @@
         android:layout_marginBottom="6dp"/>
 
     <ImageView
+        android:id="@+id/imgview_setup_app"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_bluetooth_black_24dp"
-        android:minHeight="150dp"
-        app:tint="@color/HS_Circ_3"
-        android:layout_marginBottom="6dp"/>
+        android:layout_height="150dp"
+        android:src="@drawable/bt_symbol_dot_weak"
+        android:layout_marginBottom="6dp"
+        android:contentDescription="@string/setup_pair_app_image_description"
+        app:tint="@color/HS_Circ_4" />
 
     <TextView
+        android:id="@+id/txtview_content_setup_app"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight=".58333"
-        android:text="@string/apresentadorSubTitulo"
+        android:text="@string/setup_pair_app_content"
         android:lineSpacingMultiplier="1.1"
         android:textSize="16sp"
         android:layout_gravity="center_horizontal"
@@ -49,13 +52,14 @@
         android:paddingEnd="6dp"
         android:paddingBottom="8dp"
         android:layout_marginBottom="6dp"
+        android:hyphenationFrequency="normal"
         />
 
     <Button
-        android:id="@+id/btn_setup_start"
+        android:id="@+id/btn_setup_app"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/apresentadorBtn"
-        android:backgroundTint="@color/HS_Circ_3"/>
+        android:text="@string/setup_pair_app_btn"
+        android:backgroundTint="@color/HS_Circ_4"/>
 
 </LinearLayout>

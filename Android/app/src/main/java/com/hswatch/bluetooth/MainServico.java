@@ -39,14 +39,15 @@ import static com.hswatch.Utils.connectionSucceeded;
 public class MainServico extends Service {
 
     public static final int NULL_STATE = 0;
-    public static final int STATE_CONNECTING = 2;
-    public static final int STATE_CONNECTED = 3;
-    public static final int OUT_OF_RANGE = 4;
+    public static final int STATE_CONNECTING = 1;
+    public static final int STATE_CONNECTED = 2;
+    public static final int OUT_OF_RANGE = 3;
+    public static final int RECONNECTING = 4;
 
-    private int currentState = 0;
+    private static int currentState = 0;
 
     private boolean flagError = false;
-    private boolean flagReconnection = false;
+    private static boolean flagReconnection = false;
     private static volatile boolean flagConnectionSwitch;
     private static boolean flagInstante = false;
 
@@ -190,7 +191,7 @@ public class MainServico extends Service {
                 .setContentTitle(title)
                 .setContentText(contentText)
                 .setStyle(new Notification.BigTextStyle().bigText(contentText))
-                .setSmallIcon(R.drawable.ic_bluetooth_connected_green_24dp)
+                .setSmallIcon(R.drawable.hswatch_icon)
                 .setContentIntent(pendingIntent)
                 .setOngoing(true)
                 .build();
@@ -202,7 +203,7 @@ public class MainServico extends Service {
                 .setContentTitle(title)
                 .setContentText(contentText)
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(contentText))
-                .setSmallIcon(R.drawable.ic_bluetooth_connected_green_24dp)
+                .setSmallIcon(R.drawable.hswatch_icon)
                 .build();
 
         this.notificationManager.notify(NOTIFICATION_SERVICE_ID, notification);
@@ -246,11 +247,13 @@ public class MainServico extends Service {
             if (!isFlagReconnection()) {
                 MainServico.setFlagInstante(false);
                 stopForeground(true);
+                setCurrentState(NULL_STATE);
                 stopSelf();
             }
         } else {
             MainServico.setFlagInstante(false);
             stopForeground(true);
+            setCurrentState(NULL_STATE);
             tryConnecting = false;
             connectionSucceeded = false;
             stopSelf();
@@ -268,7 +271,6 @@ public class MainServico extends Service {
         if (this.threadConnection != null && getCurrentState() == STATE_CONNECTING) {
             flagError = true;
             notificationError();
-            setCurrentState(NULL_STATE);
             setThreadConnection(null);
             stopConnection();
         }
@@ -278,7 +280,6 @@ public class MainServico extends Service {
         if (threadConnected != null) {
             flagError = true;
             notificationError();
-            setCurrentState(NULL_STATE);
             setThreadConnected(null);
             stopConnection();
         }
@@ -301,13 +302,11 @@ public class MainServico extends Service {
         if (this.threadTestConnection == null) {
             this.threadTestConnection = new ThreadTestConnection(this);
             this.threadTestConnection.start();
-//            (new ThreadScreenOff(this.getCurrentContext())).start();
         }
     }
 
     public void bluetoothIsOFF() {
         setFlagReconnection(false);
-        setCurrentState(NULL_STATE);
         createNotification(
                 getResources().getString(R.string.ServiceBT_BT_Off_Title),
                 getResources().getString(R.string.ServiceBT_BT_Off_ContextText)
@@ -434,12 +433,12 @@ public class MainServico extends Service {
         return this.bluetoothDevice;
     }
 
-    public int getCurrentState() {
-        return this.currentState;
+    public static int getCurrentState() {
+        return MainServico.currentState;
     }
 
-    public void setCurrentState(int currentState) {
-        this.currentState = currentState;
+    public static void setCurrentState(int currentState) {
+        MainServico.currentState = currentState;
     }
 
     public boolean isConnected() {
@@ -466,15 +465,15 @@ public class MainServico extends Service {
         this.threadReconnection = threadReconnection;
     }
 
-    public boolean isFlagReconnection() {
-        return flagReconnection;
+    public static boolean isFlagReconnection() {
+        return MainServico.flagReconnection;
     }
 
     public void setFlagReconnection(boolean flagReconnection) {
         if (!flagReconnection)
             this.setThreadReconnection(null);
 
-        this.flagReconnection = flagReconnection;
+        MainServico.flagReconnection = flagReconnection;
     }
 
     public boolean isFlagError() {
@@ -512,6 +511,7 @@ public class MainServico extends Service {
         } else {
             setFlagReconnection(true);
             notificationChangeService();
+            setCurrentState(RECONNECTING);
             threadReconnection = new ThreadReconnection(this);
             threadReconnection.start();
         }

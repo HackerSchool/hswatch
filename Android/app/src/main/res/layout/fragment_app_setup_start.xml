@@ -12,7 +12,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/finalizador_titulo"
+        android:text="@string/setup_start_app_title"
         android:textAllCaps="true"
         android:layout_gravity="center_horizontal"
         android:textSize="20sp"
@@ -30,17 +30,17 @@
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_baseline_check_circle_outline"
-        android:minHeight="150dp"
-        app:tint="@color/HS_Circ_3"
-        android:layout_marginBottom="6dp"/>
+        android:layout_height="150dp"
+        android:src="@drawable/hswatch_icon"
+        android:layout_marginBottom="6dp"
+        android:contentDescription="@string/setup_start_app_image_description"
+        app:tint="@color/HS_Circ_4" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight=".58333"
-        android:text="@string/finalizador_texto"
+        android:text="@string/setup_start_app_content"
         android:lineSpacingMultiplier="1.1"
         android:textSize="16sp"
         android:layout_gravity="center_horizontal"
@@ -49,13 +49,14 @@
         android:paddingEnd="6dp"
         android:paddingBottom="8dp"
         android:layout_marginBottom="6dp"
+        android:hyphenationFrequency="normal"
         />
 
     <Button
-        android:id="@+id/btn_setup_finishing"
+        android:id="@+id/btn_setup_app_start"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/finishing_setup_btn"
-        android:backgroundTint="@color/HS_Circ_3"/>
+        android:text="@string/setup_start_app_btn"
+        android:backgroundTint="@color/HS_Circ_4"/>
 
 </LinearLayout>

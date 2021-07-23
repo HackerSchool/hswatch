@@ -8,7 +8,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -17,6 +20,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
+import androidx.fragment.app.Fragment;
+import androidx.preference.PreferenceManager;
 
 import com.google.android.material.navigation.NavigationView;
 import com.hswatch.databinding.ActivityMainBinding;
@@ -35,26 +40,88 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(binding.getRoot());
         setSupportActionBar(binding.toolbar);
 
+
 //        Iniciar Menu Lateral
         iniciarEcraPrinciapal(savedInstanceState);
     }
 
     private void iniciarEcraPrinciapal(Bundle savedInstanceState) {
         binding.navigationView.setNavigationItemSelectedListener(this);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, binding.atividadePrincipal,
-                binding.toolbar, R.string.navigation_abrir, R.string.navigation_fechar);
+
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this,
+                binding.atividadePrincipal,
+                binding.toolbar,
+                R.string.navigation_abrir,
+                R.string.navigation_fechar
+        );
+
         binding.atividadePrincipal.addDrawerListener(toggle);
         toggle.syncState();
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.frame,
-                    new paginaPrincipal()).commit();
-            binding.navigationView.setCheckedItem(R.id.navigation_view);
 
-//        Permissoes
-            if (!temPermissao(this)) {
+        if (savedInstanceState == null) {
+            checkMainActivityMode();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        boolean debuggingMode = PreferenceManager
+                .getDefaultSharedPreferences(this)
+                .getBoolean("debugging_mode", false);
+
+        binding.navigationView.getMenu().findItem(R.id.apagar).setVisible(
+                debuggingMode
+        );
+
+        binding.navigationView.getMenu().findItem(R.id.notif).setVisible(
+                debuggingMode
+        );
+
+        Fragment fragment = getSupportFragmentManager().findFragmentByTag(Utils.MAIN_FRAGMENT_KEY);
+
+        if (fragment != null) {
+            if (fragment.isVisible()) {
+                ((paginaPrincipal) fragment).populateRecyclerView(debuggingMode);
+            }
+        }
+    }
+
+    private void checkMainActivityMode() {
+        int mode = getIntent().getIntExtra(Utils.MAIN_ACTIVITY_MODE, Utils.MAIN_ACTIVITY_CONNECTION);
+
+        if (mode == Utils.MAIN_ACTIVITY_FIRST_START) {
+            startConfiguration(true);
+            binding.toolbar.setVisibility(View.GONE);
+        } else if (mode == Utils.MAIN_ACTIVITY_NEEDS_CONNECTION) {
+            startConfiguration(false);
+            binding.toolbar.setVisibility(View.VISIBLE);
+        }else {
+            getSupportFragmentManager().beginTransaction().replace(R.id.frame,
+                    new paginaPrincipal(), Utils.MAIN_FRAGMENT_KEY)
+                    .commit();
+
+            binding.toolbar.setVisibility(View.VISIBLE);
+
+            if (gotPermissions(this)) {
                 ActivityCompat.requestPermissions(this, Utils.PERMISSOES, 1);
             }
         }
+
+    }
+
+    private void startConfiguration(boolean initialSetup) {
+        ConfigurationFragment configurationFragment = new ConfigurationFragment();
+        Bundle bundle = new Bundle();
+
+        bundle.putBoolean(Utils.CONFIGURATION_MODE, initialSetup);
+        configurationFragment.setArguments(bundle);
+
+        getSupportFragmentManager().beginTransaction().replace(R.id.frame,
+                configurationFragment, Utils.CONFIGURATION_SETUP_KEY)
+                .commit();
     }
 
     public void showSite() {
@@ -62,15 +129,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         startActivity(browserIntent);
     }
 
-    private boolean temPermissao(Context context) {
+    private boolean gotPermissions(Context context) {
         if (context != null) {
             for (String permissao : Utils.PERMISSOES) {
-                if (ContextCompat.checkSelfPermission(context, permissao) != PackageManager.PERMISSION_GRANTED) {
-                    return false;
+                if (ContextCompat.checkSelfPermission(context, permissao) !=
+                        PackageManager.PERMISSION_GRANTED) {
+                    return true;
                 }
             }
         }
-        return true;
+        return false;
     }
 
     @Override
@@ -98,7 +166,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             //The notification access has not acquired yet!
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setMessage(getResources().getString(R.string.AVISO_NOT_LIST))
-                    .setPositiveButton("Sim", (dialog, which) -> startActivity(new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS")))
+                    .setPositiveButton("Sim", (dialog, which) ->
+                            startActivity(new Intent(Settings
+                                    .ACTION_NOTIFICATION_LISTENER_SETTINGS)))
                     .setNegativeButton("Não", (dialog, which) -> {
                         dialog.cancel();
                         finish();
@@ -125,45 +195,55 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-//            Página principal
+//            MainFragment
             case R.id.casa:
                 getSupportFragmentManager().beginTransaction().replace(R.id.frame,
                         new paginaPrincipal(), Utils.MAIN_FRAGMENT_KEY).commit();
                 break;
 
-//                Lista de dispositivos guardados (facil de emparelhar no futuro)
-//            case R.id.disp:
-//                getSupportFragmentManager().beginTransaction().replace(R.id.frame,
-//                        new paginaPrincipal()).commit();
-//                break;
-
-//            Iniciar uma nova conexão
+//            Setup
             case R.id.novo:
-//                startActivity(new Intent(getApplicationContext(), ConfigDeviceActivity.class));
-                getSupportFragmentManager().beginTransaction().replace(R.id.frame,
-                        new ConfigurationFragment(), Utils.CONFIGURATION_SETUP_KEY).commit();
+                startConfiguration(false);
                 break;
 
-//                Definições
+            case R.id.setup:
+                startConfiguration(true);
+                break;
+
+//            Settings
             case R.id.def:
-                startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
+                startActivity(new Intent(getApplicationContext(),
+                        SettingsActivity.class));
                 break;
-            case R.id.apagar:
-                SharedPreferences sharedPreferences = getSharedPreferences(Utils.HISTORY_SHARED_PREFERENCES, MODE_PRIVATE);
-                sharedPreferences.edit()
-                        .putString(Utils.NAME, "Erro")
-                        .putBoolean(Utils.CHECKER, false)
-                        .apply();
-                finishAffinity();
 
-//                Notificações
+//            Debug
+            case R.id.apagar:
+                SharedPreferences sharedPreferences = getSharedPreferences(
+                        Utils.HISTORY_SHARED_PREFERENCES,
+                        MODE_PRIVATE
+                );
+                sharedPreferences.edit().clear().apply();
+                finishAffinity();
             case R.id.notif:
-                startActivity(new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"));
+                startActivity(new Intent(Settings
+                        .ACTION_NOTIFICATION_LISTENER_SETTINGS));
         }
         binding.atividadePrincipal.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void verifyNotificationsSetup() {
+        if (gotPermissions(this)) {
+            ActivityCompat.requestPermissions(this, Utils.PERMISSOES, 1);
+        }
+
+        if (this.binding.toolbar.getVisibility() == View.GONE) {
+            this.binding.toolbar.setVisibility(View.VISIBLE);
+        }
     }
 }

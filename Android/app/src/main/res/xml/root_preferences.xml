@@ -36,10 +36,20 @@
             app:useSimpleSummaryProvider="true"/>
 
     </PreferenceCategory>
+
     <PreferenceCategory app:title="@string/Connection_Title">
         <SwitchPreference
             app:key="connection"
             app:title="@string/Switch_Connection_Title"
             app:defaultValue="true"/>
     </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/debugging_category">
+        <SwitchPreference
+            app:key="debugging_mode"
+            app:title="@string/debugging_mode_title"
+            android:defaultValue="false"
+            />
+    </PreferenceCategory>
+
 </PreferenceScreen>
