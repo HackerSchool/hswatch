@@ -44,9 +44,6 @@
         </activity>
         <activity android:name=".bluetooth.NoBTActivity" />
         <activity
-            android:name=".fragments.ConfigDeviceActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
             android:name=".MainActivity"
             android:theme="@style/MenuLateral" />
 

@@ -11,11 +11,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.hswatch.bluetooth.MainServico;
 import com.hswatch.bluetooth.NoBTActivity;
-import com.hswatch.fragments.ConfigDeviceActivity;
 
-import static com.hswatch.Utils.CHECKER;
 import static com.hswatch.Utils.HISTORY_SHARED_PREFERENCES;
-import static com.hswatch.Utils.NAME;
 
 //TODO(documentar)
 public class SplashActivity extends AppCompatActivity {

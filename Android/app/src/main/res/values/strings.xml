@@ -3,7 +3,6 @@
 
 <!--    SplashActivity-->
     <string name="BT_Unavailable">Bluetooth Indisponível!</string>
-    <string name="BT_Device_Conected">Está conectado ao dispositivo: </string>
     <string name="NoBT_Toast">O HSWatch necessita de o bluetooth ligado para poder operar.</string>
 
     <string name="navigation_abrir">Abrir menu lateral</string>
@@ -14,18 +13,13 @@
     <string name="setup_start_btn">Ligar</string>
 
     <string name="listarTitulo">Selecione o dispositivo</string>
-    <string name="ServicoDisp">hswatch.Servico.BTDispositivo</string>
-    <string name="SINAL_VERDE">sinal.verde.bt</string>
-    <string name="LISTAR_FRAG">hswatch.fragment.listar</string>
-    <string name="FINALIZAR_FRAG">hswatch.fragment.finalizador</string>
 
-<!--    NoBTActivity -->
+    <!--    NoBTActivity -->
     <string name="NoBT_Title">Tem o Bluetooth desligado!</string>
     <string name="NoBT_Text">Ative o Bluetooth e depois carregue neste ecrã para começar a sua experiência com o HSWatch!</string>
 
 <!--    MainServico -->
     <string name="ServiceBT_Title">Estás agora conectado a %s!</string>
-    <string name="ServiceBT_Out_of_Range_ContextText">A tentar restabelecer conexão… Carrega aqui caso pretendas alterar/parar procura.</string>
     <string name="ServiceBT_BT_Off_Title">Bluetooth desligado</string>
     <string name="ServiceBT_BT_Off_ContextText">A conexão foi desligada, bem como o seu serviço. Pressione aqui caso queira criar uma nova conexão.</string>
 
@@ -34,12 +28,10 @@
 <!--    Strings for the finishing setup fragment -->
     <string name="setup_finishing_title">Conexão sucedida!</string>
     <string name="setup_finishing_content">Agora tem o relógio conectado com a aplicação HSWatch! Carregue no botão para começar a personalizar e definir os seus novos parâmetros.</string>
-    <string name="finalizador_sub_texto">Esperemos que desfrute ao máximo da sua aplicação daqui para a frente!</string>
     <string name="setup_finishing_btn">Finalizar</string>
 
     <string name="NOME">Nome</string>
     <string name="MENU_CASA">Página Principal</string>
-    <string name="MENU_DISPOSITIVOS">Dispositivos</string>
     <string name="menu_make_conection">Adicionar novo dispositivo</string>
     <string name="MENU_DEFINICOES">Definições</string>
     <string name="DEF_CIDADE">Cidade escolhida</string>
@@ -68,8 +60,6 @@
     <string name="SUM_OFF">É usada a localização atual do telemóvel.</string>
     <string name="DUMMY_TEXT">Dummy Text</string>
     <string name="ServiceBT_Text">Carrega para alterar ou afetar outra conexão nova.</string>
-    <string name="ERROR_DISCOVERY">Houve um erro enquanto se cancelava a descoberta de novos dispositivos. Por favor, manda-nos feedback para o contacto no Sobre!</string>
-    <string name="ERROR_SERVICE">Um erro fez parar o mainServico: %s</string>
     <string name="ServiceBT_BT_Error_Title">Erro na conexão.</string>
     <string name="ServiceBT_BT_Error_ContextText">Ocorreu um erro na conexão! </string>
     <string name="ServiceBT_BT_Error_Reconection">A aplicação está a tentar reconectar-se…</string>
@@ -113,11 +103,6 @@
     <string name="setup_finished_app_btn">PASSAR PARA A CONEXÃO!</string>
     <string name="setup_func_app_btn">CONTINUAR!</string>
     <string name="menu_initial_setup">Setup inicial</string>
-    <string name="menu_debug">Debugging</string>
-    <string name="debugging_warning">Falta %d clicks para ativar o modo depurador</string>
-    <string name="debugging_mode_activated">Modo depurador ativado.</string>
-    <string name="debugging_off_warning">Falta %d clicks para desativar o modo depurador</string>
-    <string name="debugging_mode_deactivated">Modo depurador desativado</string>
     <string name="debugging_category">Depuração</string>
     <string name="debugging_mode_title">Modo de depuração</string>
     <string name="notifications_received_item">Notificações Recebidas</string>
