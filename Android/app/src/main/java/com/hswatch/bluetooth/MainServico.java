@@ -17,13 +17,13 @@ import android.os.IBinder;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 import androidx.preference.PreferenceManager;
 
-import com.hswatch.MainActivity;
 import com.hswatch.R;
+import com.hswatch.SplashActivity;
 import com.hswatch.Utils;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,19 +32,23 @@ import static com.hswatch.Utils.BT_DEVICE_NAME;
 import static com.hswatch.Utils.NOTIFICATION_SERVICE_ID;
 import static com.hswatch.Utils.REQUEST_CODE_PENDING_INTENT;
 import static com.hswatch.Utils.FOREGROUND_ID;
+import static com.hswatch.Utils.tryConnecting;
+import static com.hswatch.Utils.connectionSucceeded;
 
 //TODO(documentar)
 public class MainServico extends Service {
 
     public static final int NULL_STATE = 0;
-    public static final int STATE_CONNECTING = 2;
-    public static final int STATE_CONNECTED = 3;
-    public static final int OUT_OF_RANGE = 4;
+    public static final int STATE_CONNECTING = 1;
+    public static final int STATE_CONNECTED = 2;
+    public static final int OUT_OF_RANGE = 3;
+    public static final int RECONNECTING = 4;
 
-    private int currentState = 0;
+    private static int currentState = 0;
 
     private boolean flagError = false;
-    private boolean flagReconnection = false;
+    private static boolean flagReconnection = false;
+    private static volatile boolean flagConnectionSwitch;
     private static boolean flagInstante = false;
 
     private String deviceName;
@@ -55,10 +59,14 @@ public class MainServico extends Service {
     private ThreadConnection threadConnection;
     private static ThreadConnected threadConnected;
     private ThreadReconnection threadReconnection;
+    private ThreadTestConnection threadTestConnection;
 
     private BroadcastReceiverMainServico broadcastReceiverMainServico;
 
     private SharedPreferences mainSettings;
+    private SharedPreferences.OnSharedPreferenceChangeListener onMainSettingsChangeListener;
+
+    private NotificationManager notificationManager;
 
     @Override
     public void onCreate() {
@@ -69,6 +77,15 @@ public class MainServico extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
+
+        this.mainSettings.unregisterOnSharedPreferenceChangeListener(
+                this.onMainSettingsChangeListener
+        );
+
+        cancelThreads();
+
+        notificationEndService();
+
         unregisterReceiver(broadcastReceiverMainServico);
     }
 
@@ -82,26 +99,16 @@ public class MainServico extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
-        //region BroadcastReceiver Flags
-        IntentFilter intentFilter = new IntentFilter();
-        // A flag to check if the service is still connected to a device or not
-        intentFilter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
+        this.notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
-        //region Test
-        intentFilter.addAction(BluetoothDevice.ACTION_ACL_CONNECTED);
-        intentFilter.addAction(BluetoothDevice.ACTION_ACL_DISCONNECTED);
-        intentFilter.addAction(BluetoothDevice.ACTION_ACL_DISCONNECT_REQUESTED);
-        //endregion
-
-        // Register BroadCastReceiverMainServico
-        registerReceiver(broadcastReceiverMainServico, intentFilter);
-        
-        //endregion
+        // BroadcastReceiver Setup
+        registerServiceBroadCast();
 
 //        Trying to get a name to the device and then show a notification
         try {
             deviceName = intent.getStringExtra(BT_DEVICE_NAME);
         } catch (Exception e) {
+            tryConnecting = false;
             e.printStackTrace();
             return START_STICKY;
         }
@@ -119,11 +126,46 @@ public class MainServico extends Service {
             }
         }
 
-        createConection();
+        tryConnecting = true;
 
-        this.mainSettings = PreferenceManager.getDefaultSharedPreferences(getCurrentContext());
+        setupMainSettings();
+
+        flagConnectionSwitch = true;
+
+        createConection(this.bluetoothDevice);
 
         return START_REDELIVER_INTENT;
+    }
+
+    /**
+     * Method to instantiates the MainServico's settings object as well register a change listener
+     * to verifies the changes on the sharedpreferences presents on the Settings Activity
+     * {@link com.hswatch.SettingsActivity}
+     */
+    private void setupMainSettings() {
+        this.mainSettings = PreferenceManager.getDefaultSharedPreferences(getCurrentContext());
+
+        this.onMainSettingsChangeListener = (sharedPreferences, s) -> {
+            if ("connection".equals(s)) {
+                flagConnectionSwitch = sharedPreferences.getBoolean(s, true);
+            }
+        };
+
+        this.mainSettings.registerOnSharedPreferenceChangeListener(this.onMainSettingsChangeListener);
+    }
+
+    /**
+     * Register the Service's BroadcastReceiver with the follow flags into account: ACTION_STATE_CHANGED -
+     * verifies when the Bluetooth is off or on and react in case it's turned off.
+     */
+    private void registerServiceBroadCast() {
+        IntentFilter intentFilter = new IntentFilter();
+
+        // A flag to check if the service is still connected to a device or not
+        intentFilter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
+
+        // Register BroadCastReceiverMainServico
+        registerReceiver(broadcastReceiverMainServico, intentFilter);
     }
 
 
@@ -140,7 +182,7 @@ public class MainServico extends Service {
      */
     @NonNull
     private Notification createForegroundNotification(String title, String contentText) {
-        Intent notificationIntent = new Intent(this, MainActivity.class);
+        Intent notificationIntent = new Intent(this, SplashActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this,
                 REQUEST_CODE_PENDING_INTENT,
                 notificationIntent, 0);
@@ -149,8 +191,9 @@ public class MainServico extends Service {
                 .setContentTitle(title)
                 .setContentText(contentText)
                 .setStyle(new Notification.BigTextStyle().bigText(contentText))
-                .setSmallIcon(R.drawable.ic_bluetooth_connected_green_24dp)
+                .setSmallIcon(R.drawable.hswatch_icon)
                 .setContentIntent(pendingIntent)
+                .setOngoing(true)
                 .build();
     }
 
@@ -160,17 +203,15 @@ public class MainServico extends Service {
                 .setContentTitle(title)
                 .setContentText(contentText)
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(contentText))
-                .setSmallIcon(R.drawable.ic_bluetooth_connected_green_24dp)
+                .setSmallIcon(R.drawable.hswatch_icon)
                 .build();
 
-        NotificationManagerCompat notificationManager = NotificationManagerCompat
-                .from(getCurrentContext());
-        notificationManager.notify(NOTIFICATION_SERVICE_ID, notification);
+        this.notificationManager.notify(NOTIFICATION_SERVICE_ID, notification);
     }
 
     //region BT Connections
 
-    public void createConection() {
+    public synchronized void createConection(BluetoothDevice bluetoothDevice) {
         if (getCurrentState() == STATE_CONNECTING && this.threadConnection != null) {
             threadConnection.restart();
             setThreadConnection(null);
@@ -181,11 +222,11 @@ public class MainServico extends Service {
             setThreadConnected(null);
         }
 
-        this.threadConnection = new ThreadConnection(this.bluetoothDevice, this);
+        this.threadConnection = new ThreadConnection(bluetoothDevice, this);
         this.threadConnection.start();
     }
 
-    public void connectionEstablish() {
+    public synchronized void connectionEstablish() {
         if (!this.isFlagError()) {
             if (this.threadConnection != null) {
                 setThreadConnection(null);
@@ -206,64 +247,79 @@ public class MainServico extends Service {
             if (!isFlagReconnection()) {
                 MainServico.setFlagInstante(false);
                 stopForeground(true);
+                setCurrentState(NULL_STATE);
                 stopSelf();
             }
         } else {
             MainServico.setFlagInstante(false);
             stopForeground(true);
+            setCurrentState(NULL_STATE);
+            tryConnecting = false;
+            connectionSucceeded = false;
             stopSelf();
         }
     }
 
-    public void connectionFailed() {
+    private void notificationEndService() {
+        createNotification(
+                getResources().getString(R.string.ServiceBT_Service_Off_Title),
+                getResources().getString(R.string.ServiceBT_BT_Off_ContextText)
+        );
+    }
+
+    public synchronized void connectionFailed() {
         if (this.threadConnection != null && getCurrentState() == STATE_CONNECTING) {
             flagError = true;
             notificationError();
-            setCurrentState(NULL_STATE);
             setThreadConnection(null);
             stopConnection();
         }
     }
 
-    public void connectionLostAtInitialThread() {
+    public synchronized void connectionLostAtInitialThread() {
         if (threadConnected != null) {
             flagError = true;
             notificationError();
             setThreadConnected(null);
-            setCurrentState(NULL_STATE);
             stopConnection();
         }
     }
 
-    public void connectionLost() {
+    public synchronized void connectionLost() {
         if (threadConnected != null) {
             flagError = true;
+            setCurrentState(OUT_OF_RANGE);
             notificationErrorReconection();
             threadConnected.cancel();
             setThreadConnected(null);
-            setCurrentState(OUT_OF_RANGE);
+            setThreadTestConnection(null);
             setReconnectionThread();
         }
     }
 
-    private void setReconnectionThread() {
-        if (!this.mainSettings.getBoolean("connection", true)) {
-            setFlagReconnection(false);
-        } else {
-            setFlagReconnection(true);
-            notificationChangeService();
-            threadReconnection = new ThreadReconnection(this);
-            threadReconnection.start();
+
+    public void testConnection() {
+        if (this.threadTestConnection == null) {
+            this.threadTestConnection = new ThreadTestConnection(this);
+            this.threadTestConnection.start();
         }
     }
 
     public void bluetoothIsOFF() {
         setFlagReconnection(false);
-        setCurrentState(NULL_STATE);
         createNotification(
                 getResources().getString(R.string.ServiceBT_BT_Off_Title),
                 getResources().getString(R.string.ServiceBT_BT_Off_ContextText)
         );
+        cancelThreads();
+        stopConnection();
+    }
+
+    /**
+     * The method call when the service is about to end or is certain to end at this code's point.
+     * It cancels all the possible threads that is still running.
+     */
+    private void cancelThreads() {
         if (threadConnection != null) {
             setThreadConnection(null);
         }
@@ -271,9 +327,12 @@ public class MainServico extends Service {
             threadConnected.cancel();
             setThreadConnected(null);
         }
-        stopForeground(true);
-        MainServico.setFlagInstante(false);
-        stopSelf();
+        if (threadReconnection != null) {
+            setThreadReconnection(null);
+        }
+        if (threadTestConnection != null) {
+            setThreadTestConnection(null);
+        }
     }
 
     private void notificationError() {
@@ -282,9 +341,12 @@ public class MainServico extends Service {
     }
 
     private void notificationErrorReconection(){
-        createNotification(getResources().getString(R.string.ServiceBT_BT_Error_Title),
-                getResources().getString(R.string.ServiceBT_BT_Error_ContextText) +
-                        getResources().getString(R.string.ServiceBT_BT_Error_Reconection));
+        String content = getResources().getString(R.string.ServiceBT_BT_Error_ContextText);
+        if (this.mainSettings.getBoolean("connection", false)) {
+            content += getResources().getString(R.string.ServiceBT_BT_Error_Reconection);
+        }
+
+        createNotification(getResources().getString(R.string.ServiceBT_BT_Error_Title), content);
     }
 
     public void notificationChangeService() {
@@ -298,16 +360,17 @@ public class MainServico extends Service {
                     String.format(getResources().getString(R.string.ServiceBT_Title), deviceName),
                     getResources().getString(R.string.ServiceBT_Text)));
         }
-
     }
 
     public void threadInterrupted(Thread thread) {
         if (thread instanceof ThreadConnected) {
             ((ThreadConnected) thread).cancel();
+        } else if (thread instanceof ThreadTestConnection) {
+            SharedPreferences.Editor editor = this.mainSettings.edit();
+            editor.putBoolean("connection", false);
+            editor.apply();
         }
-        MainServico.setFlagInstante(false);
-        stopForeground(true);
-        stopSelf();
+        stopConnection();
     }
     //endregion
 
@@ -341,7 +404,8 @@ public class MainServico extends Service {
 
     public static void sendCalls(String number, String callingName, String receivedHour, String callingState) {
         if (threadConnected != null) {
-            ArrayList<String> callMessage = new ArrayList<String>(){{
+
+            List<String> callMessage = new ArrayList<String>(){{
                 add(Utils.NOT_INDICATOR);
                 add(Utils.INDICADOR_TEL);
                 add(receivedHour.split(":")[0]);
@@ -349,7 +413,15 @@ public class MainServico extends Service {
                 add(callingName + "@" + number);
                 add(callingState);
             }};
+
+            threadConnected.sendMessage(callMessage);
         }
+    }
+
+    public synchronized boolean write(byte[] buffer) throws IOException {
+        if (threadConnected != null) threadConnected.write(buffer);
+
+        return threadConnected != null;
     }
 
     //region Getters and Setters
@@ -361,17 +433,16 @@ public class MainServico extends Service {
         return this.bluetoothDevice;
     }
 
-    public int getCurrentState() {
-        return this.currentState;
+    public static int getCurrentState() {
+        return MainServico.currentState;
     }
 
-    public void setCurrentState(int currentState) {
-        this.currentState = currentState;
+    public static void setCurrentState(int currentState) {
+        MainServico.currentState = currentState;
     }
 
     public boolean isConnected() {
-        return getCurrentState() == STATE_CONNECTED &&
-                this.mainSettings.getBoolean("connection", true);
+        return getCurrentState() == STATE_CONNECTED && flagConnectionSwitch;
     }
 
     public BluetoothSocket getBluetoothSocket() {
@@ -394,15 +465,15 @@ public class MainServico extends Service {
         this.threadReconnection = threadReconnection;
     }
 
-    public boolean isFlagReconnection() {
-        return flagReconnection;
+    public static boolean isFlagReconnection() {
+        return MainServico.flagReconnection;
     }
 
     public void setFlagReconnection(boolean flagReconnection) {
         if (!flagReconnection)
             this.setThreadReconnection(null);
 
-        this.flagReconnection = flagReconnection;
+        MainServico.flagReconnection = flagReconnection;
     }
 
     public boolean isFlagError() {
@@ -427,6 +498,42 @@ public class MainServico extends Service {
 
     public void setMainSettings(SharedPreferences mainSettings) {
         this.mainSettings = mainSettings;
+    }
+
+    public void setThreadTestConnection(ThreadTestConnection threadTestConnection) {
+        this.threadTestConnection = threadTestConnection;
+    }
+
+    private void setReconnectionThread() {
+        if (!this.mainSettings.getBoolean("connection", true)) {
+            setFlagReconnection(false);
+            stopConnection();
+        } else {
+            setFlagReconnection(true);
+            notificationChangeService();
+            setCurrentState(RECONNECTING);
+            threadReconnection = new ThreadReconnection(this);
+            threadReconnection.start();
+        }
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return "MainServico{" +
+                "currentState=" + currentState +
+                ", flagError=" + flagError +
+                ", flagReconnection=" + flagReconnection +
+                ", deviceName='" + deviceName + '\'' +
+                ", bluetoothDevice=" + bluetoothDevice +
+                ", bluetoothSocket=" + bluetoothSocket +
+                ", threadConnection=" + threadConnection +
+                ", threadReconnection=" + threadReconnection +
+                ", threadTestConnection=" + threadTestConnection +
+                ", broadcastReceiverMainServico=" + broadcastReceiverMainServico +
+                ", mainSettings=" + mainSettings +
+                ", notificationManager=" + notificationManager +
+                '}';
     }
 
     //endregion

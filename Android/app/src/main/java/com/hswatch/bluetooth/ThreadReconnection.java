@@ -26,17 +26,19 @@ class ThreadReconnection extends Thread {
             while (sharedPreferences.getBoolean("connection", true) && this.mainServico.isFlagReconnection()) {
                 try {
                     this.mainServico.setFlagError(false);
-                    this.mainServico.createConection();
+                    this.mainServico.createConection(this.mainServico.getBluetoothDevice());
 
                     this.wait(oneMinute);
 
-                    if (Thread.interrupted()) {
+//                    Thread.sleep(60000);
+
+                    if (Thread.interrupted())
                         throw new InterruptedException("Reconnection was interrupted!");
-                    }
 
                 } catch(InterruptedException interruptedException){
                     this.mainServico.threadInterrupted(this);
                     interruptedException.printStackTrace();
+                    break;
                 }
             }
         }

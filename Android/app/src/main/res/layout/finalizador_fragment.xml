@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="78dp"
-        android:text="@string/finalizador_titulo"
+        android:text="@string/setup_finishing_title"
         android:textAllCaps="true"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
@@ -23,7 +23,7 @@
         android:id="@+id/finalizadorTexto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/finalizador_texto"
+        android:text="@string/setup_finishing_content"
         android:layout_below="@+id/finalizadorTitulo"
         android:paddingTop="90dp"
         android:paddingStart="12dp"
@@ -56,7 +56,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:text="@string/apresentadorBtn"
+        android:text="@string/setup_start_btn"
         android:textAppearance="@style/TextAppearance.AppCompat.Button"
         android:background="@drawable/estilo_butao" />
 

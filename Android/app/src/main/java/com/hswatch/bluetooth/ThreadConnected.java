@@ -21,6 +21,8 @@ import static com.hswatch.Utils.TIME_INDICATOR;
 import static com.hswatch.Utils.WEATHER_INDICATOR;
 import static com.hswatch.Utils.delimitador;
 import static com.hswatch.Utils.separador;
+import static com.hswatch.Utils.tryConnecting;
+import static com.hswatch.Utils.connectionSucceeded;
 
 //TODO(documentar)
 public class ThreadConnected extends Thread {
@@ -92,8 +94,6 @@ public class ThreadConnected extends Thread {
         // Updates the connection state on the Service
         mainServico.setCurrentState(MainServico.STATE_CONNECTED);
 
-        //TODO(green signal with name)
-
         // Initializes the Watch object
         this.currentWatch = new Watch(mainServico.getCurrentContext(),
                 mainServico.getBluetoothDevice());
@@ -164,6 +164,11 @@ public class ThreadConnected extends Thread {
         // Tells to the service that exists a connection running, so the SplashActivity can start
         // the MainActivity instead the SetupActivity
         MainServico.setFlagInstante(true);
+        connectionSucceeded = true;
+        tryConnecting = false;
+
+        // Initializes the test thread
+        this.mainServico.testConnection();
 
         // While there is connection between the phone and the Bluetooth Device
         manageConnection();
@@ -171,7 +176,7 @@ public class ThreadConnected extends Thread {
     }
 
     private void manageConnection() {
-        while (this.mainServico.isConnected() || this.bluetoothSocket.isConnected()) {
+        while (this.mainServico.isConnected()) {
             try {
                 // Verify if there is something to read
                 int bytesAvailable = this.inputStream.available();
@@ -195,9 +200,6 @@ public class ThreadConnected extends Thread {
                     }
                 }
 
-                // Checks if the device is still connected
-                this.write(delimitador);
-
                 // Throws an error in case the current thread was interrupted
                 if (Thread.interrupted()) {
                     throw new InterruptedException("This thread was interrupted!");
@@ -206,12 +208,14 @@ public class ThreadConnected extends Thread {
             } catch (IOException e) {
                 e.printStackTrace();
                 this.mainServico.connectionLost();
-                break;
+                return;
             } catch (InterruptedException interruptedException) {
+                interruptedException.printStackTrace();
                 this.mainServico.threadInterrupted(this);
-                break;
+                return;
             }
         }
+        this.mainServico.connectionLost();
     }
 
     /**
@@ -308,6 +312,10 @@ public class ThreadConnected extends Thread {
         }
     }
 
+    /**
+     *
+     * @param message
+     */
     public void sendMessage(List<String> message) {
         try {
             this.write(message.get(0).getBytes());

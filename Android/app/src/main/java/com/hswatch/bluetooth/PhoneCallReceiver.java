@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.ContactsContract;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 
 import com.hswatch.R;
 
@@ -116,16 +117,10 @@ public class PhoneCallReceiver extends BroadcastReceiver {
                             chamadasRegistadas.add(chamadaRecebida);
                         }
                     }
-//                    else if (estaReceber) {
-//                        onCallEnded(context, number, horaRecebida, new Date());
-//                    }
                     break;
                 default:break;
             }
             estadoAnterior = estado;
         }
     }
-
-
-//                    Log.v(TAG, "Estado obtido: " + state + ";\tNumero recebido: " + phoneNumber);
 }

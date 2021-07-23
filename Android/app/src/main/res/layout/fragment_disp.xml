@@ -19,27 +19,33 @@
         <ImageView
             android:layout_width="128dp"
             android:layout_height="128dp"
-            android:src="@drawable/sem_fundo_hs" />
+            android:src="@drawable/the_winnig_w" />
 
         <TextView
             android:id="@+id/txt_estado"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Conectado"
+            android:text="@string/conecteded"
             android:textAlignment="center"
             android:textSize="24sp" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rec_frag"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/conection_panel"
+        android:layout_above="@id/txt_about"
         android:layout_marginTop="12dp"
         android:layout_marginBottom="12dp"
-        android:scrollbars="vertical"
-        tools:listitem="@layout/opcao_disp"
-        android:layout_below="@+id/conection_panel"
-        android:layout_above="@+id/txt_about"/>
+        android:orientation="vertical"
+        android:gravity="center_vertical">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rec_frag"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="vertical"
+            tools:listitem="@layout/opcao_disp"/>
+    </LinearLayout>
 
     <TextView
         android:id="@+id/txt_about"

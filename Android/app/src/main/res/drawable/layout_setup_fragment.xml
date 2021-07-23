@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item>
+        <shape>
+            <corners
+                android:radius="10dp"/>
+            <stroke
+                android:color="@android:color/black"
+                android:width="7dp"/>
+        </shape>
+    </item>
+
+    <item
+        android:gravity="center"
+        android:start="@dimen/setup_padding"
+        android:end="@dimen/setup_padding"
+        android:top="@dimen/setup_padding"
+        android:bottom="@dimen/setup_padding">
+        <shape>
+            <solid
+                android:color="@color/HS_Circ_5"/>
+            <corners
+                android:radius="10dp"/>
+        </shape>
+    </item>
+
+</layer-list>

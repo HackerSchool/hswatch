@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/layout_setup_fragment"
+    android:padding="@dimen/setup_fragment_padding"
+    android:orientation="vertical"
+    android:elevation="10dp"
+    android:layout_gravity="center">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/setup_start_app_title"
+        android:textAllCaps="true"
+        android:layout_gravity="center_horizontal"
+        android:textSize="20sp"
+        android:textAlignment="center"
+        android:textColor="@android:color/black"
+        android:textStyle="bold"
+        android:layout_marginBottom="6dp"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:background="@color/HS_Circ_1"
+        android:layout_marginBottom="6dp"/>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:src="@drawable/hswatch_icon"
+        android:layout_marginBottom="6dp"
+        android:contentDescription="@string/setup_start_app_image_description"
+        app:tint="@color/HS_Circ_4" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight=".58333"
+        android:text="@string/setup_start_app_content"
+        android:lineSpacingMultiplier="1.1"
+        android:textSize="16sp"
+        android:layout_gravity="center_horizontal"
+        android:textColor="@android:color/black"
+        android:paddingStart="6dp"
+        android:paddingEnd="6dp"
+        android:paddingBottom="8dp"
+        android:layout_marginBottom="6dp"
+        android:hyphenationFrequency="normal"
+        />
+
+    <Button
+        android:id="@+id/btn_setup_app_start"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/setup_start_app_btn"
+        android:backgroundTint="@color/HS_Circ_4"/>
+
+</LinearLayout>

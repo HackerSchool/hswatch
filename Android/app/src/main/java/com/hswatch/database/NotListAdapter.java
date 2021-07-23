@@ -17,8 +17,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static com.hswatch.bluetooth.NotificationListener.packagesFiltro;
+import static com.hswatch.Utils.packagesNotFilter;
 
+//TODO(documentar)
 public class NotListAdapter extends RecyclerView.Adapter<NotListAdapter.NotViewHolder>
         implements Filterable {
 
@@ -30,10 +31,10 @@ public class NotListAdapter extends RecyclerView.Adapter<NotListAdapter.NotViewH
         return notFilter;
     }
 
-    private Filter notFilter = new Filter() {
+    private final Filter notFilter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence charSequence) {
-            if (packagesFiltro == null || notificacoes == null || notificacaosTotal == null) {
+            if (notificacoes == null || notificacaosTotal == null) {
                 return null;
             }
 
@@ -43,10 +44,10 @@ public class NotListAdapter extends RecyclerView.Adapter<NotListAdapter.NotViewH
                 notFiltrada.addAll(notificacaosTotal);
             } else {
                 String pesquisa = charSequence.toString().toLowerCase().trim();
-                for (String key : packagesFiltro.keySet()) {
+                for (String key : packagesNotFilter.keySet()) {
                     if (key.contains(pesquisa)) {
                         for (Notificacao notificacao : notificacaosTotal) {
-                            if (Objects.equals(notificacao.getPackageName(), packagesFiltro.get(key))) {
+                            if (Objects.equals(notificacao.getPackageName(), packagesNotFilter.get(key))) {
                                 notFiltrada.add(notificacao);
                             }
                         }
