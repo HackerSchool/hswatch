@@ -56,9 +56,10 @@ public class Utils {
     public static final String INDICADOR_TEL = "TEL";
     public static final String INDICADOR_HSW = "HSW";
     public static final String WHATSAPP_PACKAGENAME = "com.whatsapp";
+    public static final String INSTAGRAM_PACKAGENAME = "com.instagram.android";
     public static final Map<String, String> packagesNotIndicator = new HashMap<String, String>(){{
         put(WHATSAPP_PACKAGENAME, INDICADOR_WHATS);
-        put("com.instagram.android", INDICADOR_INSTA);
+        put(INSTAGRAM_PACKAGENAME, INDICADOR_INSTA);
         put("com.facebook.orca", INDICADOR_MESSE);
         put("com.facebook.katana", INDICADOR_FACEB);
         put("com.google.android.gm", INDICADOR_EMAIL);
@@ -124,7 +125,7 @@ public class Utils {
     }
 
     @NonNull
-    public static String[] getCurrentTime (Map<String, String> weekMap) {
+    public static String[] getCurrentTime (@NonNull Map<String, String> weekMap) {
         String[] hora = DateFormat.getTimeInstance().format(new Date()).split(":");
         String[] data = DateFormat.getDateInstance().format(new Date()).split("/");
         return new String[]{
