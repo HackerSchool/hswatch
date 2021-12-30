@@ -5,6 +5,10 @@ import android.content.Context;
 
 import androidx.annotation.NonNull;
 
+import com.android.volley.Request;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -15,8 +19,8 @@ public class Utils {
 
 
     /**
-     *  Keys to use on SharedPreferences
-      */
+     * Keys to use on SharedPreferences
+     */
     public static final String HISTORY_SHARED_PREFERENCES = "historia_dispositivos_conectados";
     public static final String CHECKER = "verificador_conexao";
     public static final String NAME = "historia_nome_dispositivo";
@@ -57,7 +61,7 @@ public class Utils {
     public static final String INDICADOR_HSW = "HSW";
     public static final String WHATSAPP_PACKAGENAME = "com.whatsapp";
     public static final String INSTAGRAM_PACKAGENAME = "com.instagram.android";
-    public static final Map<String, String> packagesNotIndicator = new HashMap<String, String>(){{
+    public static final Map<String, String> packagesNotIndicator = new HashMap<String, String>() {{
         put(WHATSAPP_PACKAGENAME, INDICADOR_WHATS);
         put(INSTAGRAM_PACKAGENAME, INDICADOR_INSTA);
         put("com.facebook.orca", INDICADOR_MESSE);
@@ -66,7 +70,7 @@ public class Utils {
         put("sms", INDICADOR_SMS);
         put("com.hswatch", INDICADOR_HSW);
     }};
-    public static final Map<String, String> packagesNotFilter = new HashMap<String, String>(){{
+    public static final Map<String, String> packagesNotFilter = new HashMap<String, String>() {{
         put("whatsapp", "com.whatsapp");
         put("instagram", "com.instagram.android");
         put("messenger", "com.facebook.orca");
@@ -77,13 +81,13 @@ public class Utils {
 
     /**
      * Protocol's keys
-      */
+     */
     public static final byte[] separador = {0x03};
     public static final byte[] delimitador = {0x00};
 
     /**
-     * Permissions
-     * Add here the permission needed and then, on the MainActivity, this will make an Dialog appear
+     * An array of permissions to request to the user. Some of these permissions need to be on the
+     * Manifest to be called.
      */
     public static final String[] PERMISSOES = {
             Manifest.permission.READ_PHONE_STATE,
@@ -125,7 +129,7 @@ public class Utils {
     }
 
     @NonNull
-    public static String[] getCurrentTime (@NonNull Map<String, String> weekMap) {
+    public static String[] getCurrentTime(@NonNull Map<String, String> weekMap) {
         String[] hora = DateFormat.getTimeInstance().format(new Date()).split(":");
         String[] data = DateFormat.getDateInstance().format(new Date()).split("/");
         return new String[]{
@@ -145,13 +149,10 @@ public class Utils {
      *
      * @return a string to be added onto the end of the url
      */
-    public static String getKey() {
-        return "&key=e2cd4478289c4b5ab5ac602203922b80&days=6";
+    @NonNull
+    public static String getKey(String apiKey) {
+        return "&key=" + apiKey + "&days=6";
     }
-
-
-
-
 
     /**
      * Weather API Constants
@@ -202,6 +203,20 @@ public class Utils {
     public static volatile boolean tryConnecting = false;
     public static volatile boolean connectionSucceeded = false;
 
+
+    public static void testAPI(String apiKeyTest, Context context, UtilsTestConnectionCallback callback) {
+        String url = "https://api.weatherbit.io/v2.0/forecast/daily?city=Lisbon&key=" + apiKeyTest;
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
+                response -> callback.statusResponse(true),
+                error -> callback.statusResponse(false)
+        );
+        Volley.newRequestQueue(context).add(request);
+    }
+
+    public interface UtilsTestConnectionCallback {
+        void statusResponse(boolean responseSucceed);
+    }
 
 // Notas
 //    private void terPackagesNames() {

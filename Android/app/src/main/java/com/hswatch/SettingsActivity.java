@@ -3,9 +3,11 @@ package com.hswatch;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.LayoutInflater;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.EditTextPreference;
+import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.SwitchPreferenceCompat;
 
@@ -64,6 +66,35 @@ public class SettingsActivity extends AppCompatActivity {
                     GPSListener.getInstance(getContext()).stop();
                 }
             }
+
+            EditTextPreference apiEditTextPreference = findPreference(getString(R.string.KEY_API_PREFERENCES));
+            if (apiEditTextPreference != null) {
+                apiEditTextPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                    @Override
+                    public boolean onPreferenceChange(Preference preference, Object newValue) {
+                        String apiKey = apiEditTextPreference.getText();
+                        if (!apiKey.isEmpty()) {
+                            Utils.testAPI(apiKey, getContext(), responseSucceed -> {
+                                if (responseSucceed) {
+                                    Toast.makeText(
+                                            getContext(),
+                                            getString(R.string.toast_API_key_accepting),
+                                            Toast.LENGTH_SHORT
+                                    ).show();
+                                } else {
+                                    Toast.makeText(
+                                            getContext(),
+                                            getString(R.string.toast_API_key_error),
+                                            Toast.LENGTH_SHORT
+                                    ).show();
+                                }
+                            });
+                        }
+                        return false;
+                    }
+                });
+            }
+
         }
     }
 }

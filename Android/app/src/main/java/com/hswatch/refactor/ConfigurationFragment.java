@@ -1,22 +1,22 @@
 package com.hswatch.refactor;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.hswatch.MainActivity;
-import com.hswatch.R;
-import com.hswatch.Utils;
-import com.hswatch.paginaPrincipal;
 
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.preference.PreferenceManager;
+
+import com.hswatch.MainActivity;
+import com.hswatch.R;
+import com.hswatch.Utils;
+import com.hswatch.paginaPrincipal;
 
 public class ConfigurationFragment extends Fragment {
 
@@ -128,11 +128,10 @@ public class ConfigurationFragment extends Fragment {
                         Utils.BACKGROUND_CONNECTION
                 );
                 if (this.mainActivity != null) {
-                    SharedPreferences.Editor editor = this.mainActivity
-                            .getSharedPreferences(Utils.HISTORY_SHARED_PREFERENCES,
-                                    Context.MODE_PRIVATE).edit();
-                    editor.putBoolean(Utils.FIRST_START, false);
-                    editor.apply();
+                    PreferenceManager.getDefaultSharedPreferences(
+                            this.mainActivity.getApplicationContext()).edit().putBoolean(
+                                    Utils.FIRST_START, false
+                    ).apply();
                 }
                 break;
 
@@ -159,7 +158,9 @@ public class ConfigurationFragment extends Fragment {
                         .replace(R.id.frame, new paginaPrincipal())
                         .commit();
                 if (this.mainActivity != null) {
-                    this.mainActivity.verifyNotificationsSetup();
+                    this.mainActivity.checkPermissionsDialog();
+                    this.mainActivity.activateToolbar();
+                    this.mainActivity.connectionOn();
                 }
                 break;
             default:break;

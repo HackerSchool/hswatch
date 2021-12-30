@@ -8,11 +8,10 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.PreferenceManager;
 
 import com.hswatch.bluetooth.MainServico;
 import com.hswatch.bluetooth.NoBTActivity;
-
-import static com.hswatch.Utils.HISTORY_SHARED_PREFERENCES;
 
 //TODO(documentar)
 public class SplashActivity extends AppCompatActivity {
@@ -27,8 +26,8 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void verifyStateConnection() {
-        SharedPreferences sharedPreferences = getSharedPreferences(HISTORY_SHARED_PREFERENCES,
-                MODE_PRIVATE);
+        SharedPreferences sharedPreferences = PreferenceManager
+                .getDefaultSharedPreferences(this);
         // First time open the app
         if (sharedPreferences.getBoolean(Utils.FIRST_START, true) ||
                 MainServico.getCurrentState() == MainServico.NULL_STATE) {
@@ -65,8 +64,7 @@ public class SplashActivity extends AppCompatActivity {
                     Toast.LENGTH_LONG).show();
             finish();
         } else if (requestCode == Utils.BT_REQUEST && resultCode == RESULT_OK) {
-            SharedPreferences sharedPreferences = getSharedPreferences(HISTORY_SHARED_PREFERENCES,
-                    MODE_PRIVATE);
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
             if (sharedPreferences.getBoolean(Utils.FIRST_START, true)) {
                 Intent intent = new Intent(this, MainActivity.class);
                 intent.putExtra(Utils.MAIN_ACTIVITY_MODE, Utils.MAIN_ACTIVITY_FIRST_START);

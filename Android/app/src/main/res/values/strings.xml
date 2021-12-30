@@ -108,4 +108,14 @@
     <string name="notifications_received_item">Notificações Recebidas</string>
     <string name="calls_received_item">Chamadas Recebidas</string>
     <string name="conecteded">Conectado</string>
+    <string name="confirm">Sim</string>
+    <string name="KEY_API_PREFERENCES">API_submited</string>
+    <string name="edittxt_config_dialog_hint">Put here the key</string>
+    <string name="toast_API_key_missing">É preciso uma API para poder usar a funcionalidade de meteorologia.</string>
+    <string name="API_KEY_TITLE">CHAVE DA API</string>
+    <string name="API_KEY_CONTENT">Para poder operacionar a mateorologia no relógio, será necessário adicionar uma chave da API do WeatherBit: https://www.weatherbit.io/</string>
+    <string name="toast_API_key_accepting">A tua chave da API foi guardada</string>
+    <string name="warning_KEY_API">no_api_key_found</string>
+    <string name="API_KEY_CONTENT_SHORT">Chave da API WeatherBit</string>
+    <string name="toast_API_key_error">Chave de API inválida</string>
 </resources>

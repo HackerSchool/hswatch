@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/config_dialog_background"
+    android:padding="12dp">
+
+    <TextView
+        android:id="@+id/txt_config_dialog_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TITULO"
+        android:textAlignment="center"
+        android:textAllCaps="true"
+        android:textSize="@dimen/txt_title"
+        android:textColor="@android:color/black"
+        android:layout_marginBottom="8dp"
+        />
+
+    <View
+        android:id="@+id/ruler_config_dialog"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/width_ruler"
+        android:layout_below="@id/txt_config_dialog_title"
+        android:background="@android:color/darker_gray"
+        android:layout_marginBottom="@dimen/margin_ruler"
+        />
+
+    <TextView
+        android:id="@+id/txt_config_dialog_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Conteudo"
+        android:layout_below="@id/ruler_config_dialog"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/txt_content"
+        android:layout_margin="@dimen/txt_config_dialog_padding_start"
+        android:autoLink="all"
+        android:clickable="true"
+        />
+
+<!--    todo -> fazer custom edittext -->
+    <EditText
+        android:id="@+id/edittxt_config_dialog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txt_config_dialog_content"
+        android:layout_marginStart="@dimen/txt_config_dialog_padding_start"
+        android:layout_marginEnd="@dimen/txt_config_dialog_padding_start"
+        android:autofillHints="name"
+        android:background="@drawable/hs_edittext"
+        android:hint="@string/edittxt_config_dialog_hint"
+        android:inputType="text"
+        android:padding="@dimen/edittxt_padding_start"
+        android:textColor="@android:color/black"
+        android:textColorHint="@android:color/darker_gray"
+        android:textAlignment="center"
+        />
+
+    <Button
+        android:id="@+id/btn_config_dialog_negative"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Não"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@id/edittxt_config_dialog"
+        android:layout_marginTop="@dimen/btn_config_dialog_margin_top"
+        />
+
+    <Button
+        android:id="@+id/btn_config_dialog_positive"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sim"
+        android:layout_toStartOf="@id/btn_config_dialog_negative"
+        android:layout_marginEnd="@dimen/btn_margin"
+        android:layout_alignTop="@id/btn_config_dialog_negative"
+        />
+
+</RelativeLayout>

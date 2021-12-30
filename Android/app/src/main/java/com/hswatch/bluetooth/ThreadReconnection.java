@@ -1,9 +1,8 @@
 package com.hswatch.bluetooth;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 
-import static com.hswatch.Utils.HISTORY_SHARED_PREFERENCES;
+import androidx.preference.PreferenceManager;
 
 class ThreadReconnection extends Thread {
 
@@ -20,10 +19,11 @@ class ThreadReconnection extends Thread {
     @Override
     public void run() {
         super.run();
-        SharedPreferences sharedPreferences = this.mainServico.getCurrentContext()
-                .getSharedPreferences(HISTORY_SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(
+                this.mainServico.getCurrentContext()
+        );
         synchronized (this) {
-            while (sharedPreferences.getBoolean("connection", true) && this.mainServico.isFlagReconnection()) {
+            while (sharedPreferences.getBoolean("connection", true) && MainServico.isFlagReconnection()) {
                 try {
                     this.mainServico.setFlagError(false);
                     this.mainServico.createConection(this.mainServico.getBluetoothDevice());

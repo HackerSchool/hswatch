@@ -2,20 +2,17 @@ package com.hswatch;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -25,9 +22,10 @@ import androidx.preference.PreferenceManager;
 
 import com.google.android.material.navigation.NavigationView;
 import com.hswatch.databinding.ActivityMainBinding;
+import com.hswatch.dialog.ConfigDialog;
 import com.hswatch.refactor.ConfigurationFragment;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, ActivityCompat.OnRequestPermissionsResultCallback {
 
     public static final String TAG = "hswatch_activity_main";
 
@@ -39,7 +37,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         binding = ActivityMainBinding.inflate(LayoutInflater.from(this));
         setContentView(binding.getRoot());
         setSupportActionBar(binding.toolbar);
-
 
 //        Iniciar Menu Lateral
         iniciarEcraPrinciapal(savedInstanceState);
@@ -94,20 +91,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if (mode == Utils.MAIN_ACTIVITY_FIRST_START) {
             startConfiguration(true);
-            binding.toolbar.setVisibility(View.GONE);
         } else if (mode == Utils.MAIN_ACTIVITY_NEEDS_CONNECTION) {
             startConfiguration(false);
-            binding.toolbar.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             getSupportFragmentManager().beginTransaction().replace(R.id.frame,
                     new paginaPrincipal(), Utils.MAIN_FRAGMENT_KEY)
                     .commit();
 
-            binding.toolbar.setVisibility(View.VISIBLE);
+            checkPermissionsDialog();
 
-            if (gotPermissions(this)) {
-                ActivityCompat.requestPermissions(this, Utils.PERMISSOES, 1);
-            }
+            activateToolbar();
+
         }
 
     }
@@ -129,16 +123,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         startActivity(browserIntent);
     }
 
-    private boolean gotPermissions(Context context) {
+    private boolean gotPermissionsAccepted(Context context) {
         if (context != null) {
             for (String permissao : Utils.PERMISSOES) {
                 if (ContextCompat.checkSelfPermission(context, permissao) !=
                         PackageManager.PERMISSION_GRANTED) {
-                    return true;
+                    return false;
                 }
             }
         }
-        return false;
+        return true;
     }
 
     @Override
@@ -153,27 +147,54 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }
             }
             if (ativouPermissoes) {
-                configurarNotifcacoes();
+                configureDialog();
             }
         }
     }
 
-    void configurarNotifcacoes() {
-        String notificationListenerString = Settings.Secure.getString(this.getContentResolver(),"enabled_notification_listeners");
-        //Check notifications access permission
-        if (notificationListenerString == null || !notificationListenerString.contains(getPackageName()))
-        {
-            //The notification access has not acquired yet!
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage(getResources().getString(R.string.AVISO_NOT_LIST))
-                    .setPositiveButton("Sim", (dialog, which) ->
-                            startActivity(new Intent(Settings
-                                    .ACTION_NOTIFICATION_LISTENER_SETTINGS)))
-                    .setNegativeButton("Não", (dialog, which) -> {
-                        dialog.cancel();
-                        finish();
-                    }).create().show();
-        }
+    /**
+     * A function which can create and show a {@link ConfigDialog} object to request the API KEY to
+     * the user
+     */
+    private void configureDialog() {
+        ConfigDialog configDialog = new ConfigDialog(
+                getString(R.string.API_KEY_TITLE),
+                getString(R.string.API_KEY_CONTENT),
+                new ConfigDialog.ConfigOptions() {
+                    @Override
+                    public void positiveButton(String key, ConfigDialog configDialog) {
+                        Utils.testAPI(key, getApplicationContext(), responseSucceed -> {
+                            if (responseSucceed) {
+                                PreferenceManager.getDefaultSharedPreferences(
+                                        getApplicationContext()
+                                ).edit().putString(getString(R.string.KEY_API_PREFERENCES), key).apply();
+                                Toast.makeText(
+                                        getApplicationContext(),
+                                        getString(R.string.toast_API_key_accepting),
+                                        Toast.LENGTH_SHORT
+                                ).show();
+                                configDialog.dismiss();
+                            } else {
+                                Toast.makeText(
+                                        getApplicationContext(),
+                                        getString(R.string.toast_API_key_error),
+                                        Toast.LENGTH_SHORT
+                                ).show();
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void negativeButton(ConfigDialog configDialog) {
+                        Toast.makeText(
+                                getApplicationContext(),
+                                getString(R.string.toast_API_key_missing),
+                                Toast.LENGTH_SHORT
+                        ).show();
+                        configDialog.dismiss();
+                    }
+                });
+        configDialog.show(getSupportFragmentManager(), "config_dialog");
     }
 
     @Override
@@ -182,7 +203,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             binding.atividadePrincipal.closeDrawer(GravityCompat.START);
         } else {
             ConfigurationFragment configurationFragment = (ConfigurationFragment) getSupportFragmentManager()
-                .findFragmentByTag(Utils.CONFIGURATION_SETUP_KEY);
+                    .findFragmentByTag(Utils.CONFIGURATION_SETUP_KEY);
             if (configurationFragment != null) {
                 if (configurationFragment.getChildFragmentManager().getBackStackEntryCount() > 0) {
                     configurationFragment.getChildFragmentManager().popBackStack();
@@ -194,7 +215,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         }
     }
-
 
 
     @Override
@@ -223,11 +243,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 //            Debug
             case R.id.apagar:
-                SharedPreferences sharedPreferences = getSharedPreferences(
-                        Utils.HISTORY_SHARED_PREFERENCES,
-                        MODE_PRIVATE
-                );
-                sharedPreferences.edit().clear().apply();
+                PreferenceManager.getDefaultSharedPreferences(this).edit().clear().apply();
                 finishAffinity();
             case R.id.notif:
                 startActivity(new Intent(Settings
@@ -237,13 +253,38 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
-    public void verifyNotificationsSetup() {
-        if (gotPermissions(this)) {
-            ActivityCompat.requestPermissions(this, Utils.PERMISSOES, 1);
-        }
+    /**
+     * This function shows a sequence of dialogs within ask the user for permissions and/or other
+     * values which are necessary for the user to use the app at its full potential.
+     * <p>
+     * If needed, it can grant access for more permissions, as long as those permissions are in the
+     * {@link Utils#PERMISSOES}
+     */
+    public void checkPermissionsDialog() {
+        String api_key = PreferenceManager.getDefaultSharedPreferences(this)
+                .getString(getString(R.string.KEY_API_PREFERENCES), "");
 
-        if (this.binding.toolbar.getVisibility() == View.GONE) {
-            this.binding.toolbar.setVisibility(View.VISIBLE);
+        // Checks for the access on the permissions
+        if (!gotPermissionsAccepted(this)) {
+            ActivityCompat.requestPermissions(this, Utils.PERMISSOES, 1);
+        } else {
+            // In case that they were accepted, check if the API Key was insert on the app's
+            // SharedPreferences
+            if (api_key != null && api_key.isEmpty()) {
+                configureDialog();
+            }
         }
+    }
+
+    /**
+     * Activates the toolbar, whether it's GONE or VISIBLE
+     */
+    public void activateToolbar() {
+        this.binding.toolbar.setVisibility(View.VISIBLE);
+    }
+
+    public void connectionOn() {
+        PreferenceManager.getDefaultSharedPreferences(this)
+                .edit().putBoolean("connection", true).apply();
     }
 }

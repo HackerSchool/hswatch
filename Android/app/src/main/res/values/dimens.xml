@@ -3,4 +3,15 @@
     <dimen name="raio_pagina_principal_toolbar">40dp</dimen>
     <dimen name="setup_padding">15dp</dimen>
     <dimen name="setup_fragment_padding">26dp</dimen>
+    <dimen name="btn_margin">12dp</dimen>
+    <dimen name="txt_title">24sp</dimen>
+    <dimen name="width_ruler">2dp</dimen>
+    <dimen name="margin_ruler">6dp</dimen>
+    <dimen name="dialog_config_corners">25dp</dimen>
+    <dimen name="edittxt_padding_start">12dp</dimen>
+    <dimen name="btn_config_dialog_margin_top">12dp</dimen>
+    <dimen name="txt_content">16sp</dimen>
+    <dimen name="txt_config_dialog_padding_start">8dp</dimen>
+    <dimen name="edittext_corner_radius">12dp</dimen>
+    <dimen name="edittext_corner_width">3dp</dimen>
 </resources>

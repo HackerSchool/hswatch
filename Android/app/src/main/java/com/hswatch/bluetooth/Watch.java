@@ -3,6 +3,7 @@ package com.hswatch.bluetooth;
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.preference.PreferenceManager;
@@ -11,6 +12,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.hswatch.R;
 import com.hswatch.Utils;
 
 import org.json.JSONArray;
@@ -18,14 +20,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
 //TODO(documentar)
 public class Watch {
 
-    private String name;
+    private final String name;
     private String address;
     private final Map<String, String> weeksMap;
     private int timeInterval;
@@ -44,7 +45,6 @@ public class Watch {
         this.address = bluetoothDevice.getAddress();
         this.context = context;
         this.weeksMap = Utils.getWeekArray(context);
-
         this.requestQueue = Volley.newRequestQueue(context);
     }
 
@@ -52,15 +52,24 @@ public class Watch {
 
         String API_URL = getAPIURL();
 
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, API_URL, null,
-                response -> {
-                    try {
-                        callBack.requestReturn(parseResponse(response));
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }, Throwable::printStackTrace);
-        this.requestQueue.add(request);
+        if (API_URL.equals(this.context.getString(R.string.warning_KEY_API))) {
+            // TODO: 30/12/2021 enviar mensagem ao relógio de não haver chave de API &&
+            // TODO: 30/12/2021 avisar ao utilizador que precisa de meter a chave de API para poder ter a funcionalidade
+            Toast.makeText(this.context, this.context.getString(R.string.toast_API_key_missing), Toast.LENGTH_SHORT).show();
+        } else {
+            JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, API_URL, null,
+                    response -> {
+                        try {
+                            callBack.requestReturn(parseResponse(response));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }, error -> {
+                // TODO: 29/12/2021 enviar uma mensagem de erro ao relógio
+            });
+            this.requestQueue.add(request);
+        }
+
 
     }
 
@@ -92,17 +101,27 @@ public class Watch {
 
     @NonNull
     private String getAPIURL() {
-        // URL Link to request the weather
-        String url = "https://api.weatherbit.io/v2.0/forecast/daily?";
+        String apikey = Utils.getKey(
+                PreferenceManager.getDefaultSharedPreferences(this.context).getString(
+                        context.getString(R.string.KEY_API_PREFERENCES),
+                        ""
+                ));
 
-        // Get the user or default' preferences and add them on the URL Link
-        SharedPreferences sharedPreferences = PreferenceManager
-                .getDefaultSharedPreferences(this.context);
+        if (apikey.isEmpty()) {
+            return context.getString(R.string.warning_KEY_API);
+        } else {
+            // URL Link to request the weather
+            String url = "https://api.weatherbit.io/v2.0/forecast/daily?";
 
-        url += getLocationString(sharedPreferences) +
-                getUnitSystem(sharedPreferences) + Utils.getKey();
+            // Get the user or default' preferences and add them on the URL Link
+            SharedPreferences sharedPreferences = PreferenceManager
+                    .getDefaultSharedPreferences(this.context);
 
-        return url;
+            url += getLocationString(sharedPreferences) +
+                    getUnitSystem(sharedPreferences) + apikey;
+
+            return url;
+        }
     }
 
     @NonNull
@@ -120,10 +139,10 @@ public class Watch {
 
     @NonNull
     private String getLocationString(@NonNull SharedPreferences sharedPreferences) {
-        // Tells if the user choose to use the GPS location - gpsOn - and define that on the URL Link
-        // to the API
+        // Tells if the user choose to use the GPS location - gpsOn - and define that on the URL
+        // Link to the API
         //TODO(criar chave e default na Utils)
-        boolean gpsOn = sharedPreferences.getBoolean("gps_switch", false);
+        boolean gpsOn = sharedPreferences.getBoolean("gps_switch", true);
 
         if (!gpsOn) {
             String cityChoosen = sharedPreferences.getString("cidades", "Lisbon");

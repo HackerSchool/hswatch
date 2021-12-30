@@ -8,7 +8,12 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Projetos/Git/hswatch/Android/app/src/main/res/drawable/config_dialog_background.xml" value="0.1162280701754386" />
+        <entry key="..\:/Projetos/Git/hswatch/Android/app/src/main/res/drawable/hs_edittext.xml" value="0.3223684210526316" />
         <entry key="..\:/Projetos/Git/hswatch/Android/app/src/main/res/drawable/layout_setup_fragment.xml" value="0.3223684210526316" />
+        <entry key="..\:/Projetos/Git/hswatch/Android/app/src/main/res/layout/dialog_config.xml" value="0.3087719298245614" />
+        <entry key="..\:/Projetos/Git/hswatch/Android/app/src/main/res/layout/settings_activity.xml" value="0.3087719298245614" />
+        <entry key="..\:/Projetos/Git/hswatch/Android/app/src/main/res/xml/root_preferences.xml" value="0.3087719298245614" />
       </map>
     </option>
   </component>

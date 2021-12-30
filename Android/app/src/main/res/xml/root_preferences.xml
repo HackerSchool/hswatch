@@ -23,7 +23,8 @@
         <SwitchPreferenceCompat
             app:key="gps_switch"
             app:title="@string/LOC_USE"
-            android:disableDependentsState="true"/>
+            android:disableDependentsState="true"
+            app:defaultValue="true"/>
 
         <DropDownPreference
             app:dependency="gps_switch"
@@ -34,6 +35,14 @@
             app:entries="@array/cidades_values"
             app:entryValues="@array/cidades_values"
             app:useSimpleSummaryProvider="true"/>
+
+        <EditTextPreference
+            app:key="@string/KEY_API_PREFERENCES"
+            app:title="@string/API_KEY_CONTENT_SHORT"
+            app:useSimpleSummaryProvider="true"
+            app:defaultValue=""
+            android:inputType="text"
+            />
 
     </PreferenceCategory>
 
