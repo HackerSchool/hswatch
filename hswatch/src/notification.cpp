@@ -2,6 +2,7 @@
 #include "display.h"
 #include "home.h"
 #include <map>
+#include <vector>
 
 std::map<std::string, std::vector<unsigned char>> notification_color = {
     { "SMS", {150,25,0} },
