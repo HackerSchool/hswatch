@@ -22,6 +22,7 @@
 #include "weather.h"
 #include "flashlight.h"
 #include "settings.h"
+#include "quotes.h"
 
 #define B_LEFT_UP 18
 #define B_LEFT_DOWN 16
@@ -91,6 +92,7 @@ void setup() {
 	new Weather("WEA","Weather", logo_weather);
 	new FlashLight("FLA","Flashlight", logo_flashlight);
 	new Settings("SET","Settings", logo_settings);
+	new Quotes("QUO","Quotes", logo_quotes);
 	
 	new Menu("MEN","Menu",NULL);
 

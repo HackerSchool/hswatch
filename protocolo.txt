@@ -11,6 +11,9 @@ NOT;|SMS|;hora;minuto;titulo;texto\0
 
 WEA;location{;icon;temp_max;temp_min;precepitação}\0
                           repetirx6
+
+QUO;texto;autor\0
+
 ;=0x03
 semana=1-domingo
        2-segunda
@@ -22,3 +25,4 @@ semana=1-domingo
 
 Relogio->Telemovel
 WEA\0
+QUO\0
