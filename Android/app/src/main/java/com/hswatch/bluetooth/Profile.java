@@ -41,14 +41,6 @@ public class Profile {
 
         this.context = context;
         this.requestQueue = Volley.newRequestQueue(this.context);
-
-//        Criar Mapa de conversão de dias de semana para um numero
-        String[] semanaArray = context.getResources().getStringArray(R.array.nomes_semana);
-        for (int i = 1; i <= semanaArray.length; i++) {
-            semanaNumeroMap.put(semanaArray[i - 1], String.valueOf(i));
-        }
-
-
     }
 
     public void jsonParserTempo(final VolleyCallBack callBack) {

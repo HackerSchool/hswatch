@@ -9,7 +9,8 @@ import com.android.volley.Request;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
-import java.text.DateFormat;
+import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -118,29 +119,24 @@ public class Utils {
     public static final String CONFIGURATION_MODE = "CONFIGURATION_MODE";
 
     @NonNull
-    public static Map<String, String> getWeekArray(@NonNull Context context) {
-        String[] weekArray = context.getResources()
-                .getStringArray(R.array.nomes_semana);
-        HashMap<String, String> returnMap = new HashMap<>();
-        for (int i = 1; i <= weekArray.length; i++) {
-            returnMap.put(weekArray[i - 1], String.valueOf(i));
-        }
-        return returnMap;
-    }
+    public static String[] getCurrentTime() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
 
-    @NonNull
-    public static String[] getCurrentTime(@NonNull Map<String, String> weekMap) {
-        String[] hora = DateFormat.getTimeInstance().format(new Date()).split(":");
-        String[] data = DateFormat.getDateInstance().format(new Date()).split("/");
-        return new String[]{
-                // HH       mm      SS
-                hora[0], hora[1], hora[2],
-                // DD       MM      AAAA
-                data[0], data[1], data[2],
-                // Week number
-                weekMap.get(DateFormat.getDateInstance(DateFormat.FULL)
-                        .format(new Date()).split(",")[0])
-        };
+        int[] date = Arrays.stream(new int[]{
+                // HH                 mm               SS
+                Calendar.HOUR_OF_DAY, Calendar.MINUTE, Calendar.SECOND,
+                // DD                  MM              AAAA
+                Calendar.DAY_OF_MONTH, Calendar.MONTH, Calendar.YEAR,
+                // Weekday number
+                Calendar.DAY_OF_WEEK
+            })
+            .map(calendar::get)
+            .toArray();
+
+        // Month is counted from zero
+        date[4] += 1;
+        return Arrays.stream(date).mapToObj(Integer::toString).toArray(String[]::new);
     }
 
     /**

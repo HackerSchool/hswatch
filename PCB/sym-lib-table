@@ -1,0 +1,3 @@
+(sym_lib_table
+  (lib (name hswatch)(type Legacy)(uri ${KIPRJMOD}/hswatch.lib)(options "")(descr ""))
+)
