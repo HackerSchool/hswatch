@@ -20,7 +20,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.Objects;
 
 //TODO(documentar)
@@ -28,7 +27,6 @@ public class Watch {
 
     private final String name;
     private String address;
-    private final Map<String, String> weeksMap;
     private int timeInterval;
 
 
@@ -44,7 +42,6 @@ public class Watch {
         this.name = bluetoothDevice.getName();
         this.address = bluetoothDevice.getAddress();
         this.context = context;
-        this.weeksMap = Utils.getWeekArray(context);
         this.requestQueue = Volley.newRequestQueue(context);
     }
 
@@ -176,7 +173,7 @@ public class Watch {
     }
 
     public String[] getCurrentTime() {
-        return Utils.getCurrentTime(this.weeksMap);
+        return Utils.getCurrentTime();
     }
 
     public String getName() {
