@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="HSWatch_Notification_Title_Connection_Started">Está agora conectado a %s!</string>
+    <string name="HSWatch_Notification_Content_Connection_Started">Carrega para alterar ou afetar outra conexão nova.</string>
+    <string name="HSWatch_Notification_Title_Error">Um erro foi encontrado!</string>
+    <string name="HSWatch_Notification_Content_Error">Um erro foi encontrado durante a conexão! Tenta contactar os desenvolvedores para mais informação.</string>
+    <string name="HSWatch_Notification_Title_BTOFF">Bluetooth desligado</string>
+    <string name="HSWatch_Notification_Content_BTOFF">A conexão foi desligada, bem como o seu serviço. Pressione aqui caso queira criar uma nova conexão.</string>
+    <string name="HSWatch_Notification_Title_Service_End">Serviço desligado!</string>
+    <string name="HSWatch_Notification_Content_Reconnecting">A aplicação está a tentar reconectar-se…</string>
+    <string name="HSWatch_Notification_Title_Reconnection">A tentar reconectar a %s</string>
+    <string name="HSWatch_Notification_Content_Reconnection">Carregue para parar a reconexão</string>
+</resources>
