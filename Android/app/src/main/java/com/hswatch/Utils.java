@@ -123,7 +123,7 @@ public class Utils {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date());
 
-        return Arrays.stream(new int[]{
+        int[] date = Arrays.stream(new int[]{
                 // HH                 mm               SS
                 Calendar.HOUR_OF_DAY, Calendar.MINUTE, Calendar.SECOND,
                 // DD                  MM              AAAA
@@ -132,7 +132,11 @@ public class Utils {
                 Calendar.DAY_OF_WEEK
             })
             .map(calendar::get)
-            .mapToObj(Integer::toString).toArray(String[]::new);
+            .toArray();
+
+        // Month is counted from zero
+        date[4] += 1;
+        return Arrays.stream(date).mapToObj(Integer::toString).toArray(String[]::new);
     }
 
     /**
