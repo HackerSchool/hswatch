@@ -93,7 +93,7 @@
 
     <!--    Strings for the baground service setup -->
     <string name="setup_background_service_app_title">Atividade em 2º Plano</string>
-    <string name="setup_background_service_app_content">Com o relógio emparelhado, falta só mais um passo antes de se conectar a 100%! Dada a restrições do Android, é preciso dês a permissão de atividade em 2º plano nas definições da aplicação, sob a categoria da bateria ou algo semelhante.\n\nA aplicação tentará usar, por enquanto e em futuras atualizações, o minimo de recursos necessários para o seu bom funcionamento.</string>
+    <string name="setup_background_service_app_content">Com o relógio emparelhado, falta só mais um passo antes de se conectar a 100%! Dada a restrições do Android, é preciso que dês a permissão de atividade em 2º plano nas definições da aplicação, sob a categoria da bateria ou algo semelhante.\n\nA aplicação tentará usar, por enquanto e em futuras atualizações, o minimo de recursos necessários para o seu bom funcionamento.</string>
     <string name="setup_background_service_app_image_description">Terceira imagem da configuração</string>
 
     <!--    Strings for the finished setup-->
@@ -113,7 +113,7 @@
     <string name="edittxt_config_dialog_hint">Put here the key</string>
     <string name="toast_API_key_missing">É preciso uma API para poder usar a funcionalidade de meteorologia.</string>
     <string name="API_KEY_TITLE">CHAVE DA API</string>
-    <string name="API_KEY_CONTENT">Para poder operacionar a mateorologia no relógio, será necessário adicionar uma chave da API do WeatherBit: https://www.weatherbit.io/</string>
+    <string name="API_KEY_CONTENT">Para poder operacionar a meteorologia no relógio, será necessário adicionar uma chave da API do WeatherBit: https://www.weatherbit.io/</string>
     <string name="toast_API_key_accepting">A tua chave da API foi guardada</string>
     <string name="warning_KEY_API">no_api_key_found</string>
     <string name="API_KEY_CONTENT_SHORT">Chave da API WeatherBit</string>
