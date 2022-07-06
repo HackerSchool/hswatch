@@ -15,7 +15,7 @@
 
 # Built application files
 /*/build/
-
+/*/release/
 # Crashlytics configuations
 com_crashlytics_export_strings.xml
 
