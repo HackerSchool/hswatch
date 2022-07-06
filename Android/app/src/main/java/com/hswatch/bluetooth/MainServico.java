@@ -1,5 +1,13 @@
 package com.hswatch.bluetooth;
 
+import static com.hswatch.App.SERVICO_CHANNEL;
+import static com.hswatch.Utils.BT_DEVICE_NAME;
+import static com.hswatch.Utils.FOREGROUND_ID;
+import static com.hswatch.Utils.NOTIFICATION_SERVICE_ID;
+import static com.hswatch.Utils.REQUEST_CODE_PENDING_INTENT;
+import static com.hswatch.Utils.connectionSucceeded;
+import static com.hswatch.Utils.tryConnecting;
+
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -26,14 +34,6 @@ import com.hswatch.Utils;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.hswatch.App.SERVICO_CHANNEL;
-import static com.hswatch.Utils.BT_DEVICE_NAME;
-import static com.hswatch.Utils.NOTIFICATION_SERVICE_ID;
-import static com.hswatch.Utils.REQUEST_CODE_PENDING_INTENT;
-import static com.hswatch.Utils.FOREGROUND_ID;
-import static com.hswatch.Utils.tryConnecting;
-import static com.hswatch.Utils.connectionSucceeded;
 
 //TODO(documentar)
 public class MainServico extends Service {
@@ -181,11 +181,14 @@ public class MainServico extends Service {
      * @return The Foreground Notification used to show the MainServico running in the background
      */
     @NonNull
-    private Notification createForegroundNotification(String title, String contentText) {
+    private Notification createForegroundNotification(CharSequence title, CharSequence contentText) {
         Intent notificationIntent = new Intent(this, SplashActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this,
+        PendingIntent pendingIntent = PendingIntent.getActivity(
+                this,
                 REQUEST_CODE_PENDING_INTENT,
-                notificationIntent, 0);
+                notificationIntent,
+                PendingIntent.FLAG_IMMUTABLE
+        );
 
         return new Notification.Builder(this, SERVICO_CHANNEL)
                 .setContentTitle(title)
@@ -198,7 +201,7 @@ public class MainServico extends Service {
     }
 
 
-    private void createNotification(String title, String contentText) {
+    private void createNotification(CharSequence title, CharSequence contentText) {
         Notification notification = new NotificationCompat.Builder(this, SERVICO_CHANNEL)
                 .setContentTitle(title)
                 .setContentText(contentText)
@@ -374,7 +377,7 @@ public class MainServico extends Service {
     }
     //endregion
 
-    public class BroadcastReceiverMainServico extends BroadcastReceiver {
+    private class BroadcastReceiverMainServico extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, @NonNull Intent intent) {
             final String action = intent.getAction();
