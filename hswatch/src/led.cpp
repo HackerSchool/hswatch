@@ -283,6 +283,7 @@ int enable_led(int status){
 }
 
 void blink_task(void* par_in){
+	xSemaphoreTake(mutex_led, portMAX_DELAY);
 
 	led_pattern * pattern = (led_pattern*) par_in;
 	int j=0;
@@ -300,6 +301,7 @@ void blink_task(void* par_in){
 				free(pattern->b);
 				free(pattern->time);
 				free(pattern);
+				xSemaphoreGive(mutex_led);
 
 				*led_task=NULL;
 				led_task=NULL;
@@ -366,14 +368,12 @@ void create_blink_task(led_pattern * p, TaskHandle_t * task_h, int priority){
 
 		led_task=task_h;
 
-		xSemaphoreTake(mutex_led,portMAX_DELAY);
 		xTaskCreate(blink_task,"blink task",8192,p,1,task_h);
 	}else{
 		
 		if(uxSemaphoreGetCount(mutex_led)==1){
 			led_task=task_h;
 
-			xSemaphoreTake(mutex_led,portMAX_DELAY);
 			xTaskCreate(blink_task,"blink task",8192,p,1,task_h);
 		}else{
 
